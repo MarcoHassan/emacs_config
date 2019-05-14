@@ -1,5 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{;;    (require \PYGZsq{}ido);; plug\PYGZhy{}in that helps with general auto\PYGZhy{}completion}
-
-\PYG{c+c1}{;;    (ido\PYGZhy{}mode t);; activates ido\PYGZhy{}mode}
-\end{Verbatim}

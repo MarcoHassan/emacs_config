@@ -1,8 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{p}{(}\PYG{n+nb}{use\PYGZhy{}package} \PYG{n+nv}{company}
-  \PYG{l+s+ss}{:config}
-  \PYG{p}{(}\PYG{k}{setq} \PYG{n+nv}{company\PYGZhy{}dabbrev\PYGZhy{}downcase} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{c+c1}{;; I noted that company is particularly slow in suggesting auto\PYGZhy{}completion words in comparison to auto\PYGZhy{}complete.}
-  \PYG{p}{(}\PYG{k}{setq} \PYG{n+nv}{company\PYGZhy{}idle\PYGZhy{}delay} \PYG{l+m+mi}{0}\PYG{p}{)}       \PYG{c+c1}{;; The below code was suggested on the internet to speed company suggestion up and is tried now.}
-  \PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}company\PYGZhy{}mode} \PYG{n+no}{t}\PYG{p}{)}                                  \PYG{c+c1}{;(add\PYGZhy{}hook \PYGZsq{}org\PYGZhy{}mode\PYGZhy{}hook \PYGZsq{}company\PYGZhy{}mode)}
-   \PYG{p}{)}
-\end{Verbatim}

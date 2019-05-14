@@ -1,5 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{;; Removes *messages* from the buffer.}
-\PYG{c+c1}{;;(setq\PYGZhy{}default message\PYGZhy{}log\PYGZhy{}max nil)}
-\PYG{c+c1}{;;(kill\PYGZhy{}buffer \PYGZdq{}*Messages*\PYGZdq{})}
-\end{Verbatim}

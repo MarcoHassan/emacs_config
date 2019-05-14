@@ -1,9 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{;;Use the diff\PYGZhy{}hl package to highlight changed\PYGZhy{}and\PYGZhy{}uncommitted lines}
-\PYG{c+c1}{;;when programming.}
-
-\PYG{c+c1}{;;(use\PYGZhy{}package diff\PYGZhy{}hl}
-\PYG{c+c1}{;;  :config}
-\PYG{c+c1}{;;  (add\PYGZhy{}hook \PYGZsq{}prog\PYGZhy{}mode\PYGZhy{}hook \PYGZsq{}turn\PYGZhy{}on\PYGZhy{}diff\PYGZhy{}hl\PYGZhy{}mode)}
-\PYG{c+c1}{;;  (add\PYGZhy{}hook \PYGZsq{}vc\PYGZhy{}dir\PYGZhy{}mode\PYGZhy{}hook \PYGZsq{}turn\PYGZhy{}on\PYGZhy{}diff\PYGZhy{}hl\PYGZhy{}mode))}
-\end{Verbatim}

@@ -1,3 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{p}{(}\PYG{k}{setq} \PYG{n+nv}{inhibit\PYGZhy{}startup\PYGZhy{}message} \PYG{n+no}{t}\PYG{p}{)}\PYG{c+c1}{;; this will hide the initial tutorial}
-\end{Verbatim}
