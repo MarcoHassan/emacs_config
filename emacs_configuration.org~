@@ -232,20 +232,18 @@ Create general function to set transparency.
    usual <DEL>. This will not allow to cancel entire chunks of
    highlighted text. Set another key binding for paredit delete.
 
-   Notice the code below removes the paredit delete altogether because
-   I do not find it that useful. Another option would just to add
-   another line shifting the paredit =<DEL>= to some other key binding. 
-
 #+BEGIN_SRC emacs-lisp
-  (eval-after-load "paredit" '(define-key paredit-mode-map (kbd "<DEL>") nil))
+  eval-after-load 'paredit
+  '((define-key paredit-mode-map (kbd "<DEL>") nil))
 
   (add-hook 'org-mode-hook 'enable-paredit-mode) ;; notice at the moment paredit is just bound to org-mode. Expand it.
+
 #+END_SRC
 
 
 Rainbow-delimiters is convenient for coloring matching parentheses.
 
-    #+BEGIN_SRC emacs-lisp
+    ,#+BEGIN_SRC emacs-lisp
       (use-package rainbow-delimiters) 
       (add-hook 'prog-mode-hook 'rainbow-delimiters-mode) ;; to enable it in all programming-related modes
    #+END_SRC
@@ -690,7 +688,7 @@ Link for this handy tool: [[https://gist.github.com/aaronjensen/a46f88dbd1ab9bb3
  #+RESULTS:
  : company-simple-complete
 
- 
+
 * Redirect Back up files into a single file
 
 This saves all of the back-up files in the =.~/.saves=  directory and
@@ -1013,53 +1011,34 @@ moment emacs shell is set to be the shell interacting with the Linux partition.
 
 * TO DO
 
-***** TODO Incorporate unique file for agenda. There should be packages to further incorporate simple tools for making efficient agendas
+** TODO Incorporate unique file for agenda. There should be packages to further incorporate simple tools for making efficient agendas
 
-      This should be especially done looking at harry shwartz
-      configuration file at the beginning. He masters it quite well.
+   This should be especially done looking at harry shwartz
+   configuration file at the beginning. He masters it quite well.
    
-      Makes also sense to look at the app integrating org mode to do on
-      the phone.
+   Makes also sense to look at the app integrating org mode to do on
+   the phone.
 
-***** TODO Continue watching blog of the guy with tons of emacs tricks
-      Find the link also at the beginning.
-***** TODO Further understand how to improve literate programming in org mode 
-***** TODO Watch dracula mood and theme of this crazy video about org mode on the internet.
-***** TODO Fix auctex issues
-***** TODO Understand about blogging with github.io pages
-***** TODO include calendar piping and understand calendar scheduling. :calendar:
-      SCHEDULED: <2019-05-30 gio>
+** TODO Continue watching blog of the guy with tons of emacs tricks
+   Find the link also at the beginning.
+** TODO Further understand how to improve literate programming in org mode 
+** TODO Watch dracula mood and theme of this crazy video about org mode on the internet.
+** TODO Fix auctex issues
+** TODO Understand about blogging with github.io pages
+** TODO include calendar piping and understand calendar scheduling. :calendar:
+   SCHEDULED: <2019-05-30 gio>
 
-***** TODO Check at company-iron c++ and company-pyhton jedi integration.
-***** TODO Integrate tramp 
-***** TODO Check at magit. Seems to be a very nice feature for git integration within emacs.
-***** TODO Watch again Howard Abraham Emacs config. 
+** TODO Check at company-iron c++ and company-pyhton jedi integration.
+** TODO Integrate tramp 
+** TODO Check at magit. Seems to be a very nice feature for git integration within emacs.
+** TODO Watch again Howard Abraham Emacs config. 
 
-      There are very very nice tricks to be implemented there such as the
-      wrapper functionalities to insert parentheses quotes etc. of all
-      kind across words and section.
-***** TODO Google translate
+   There are very very nice tricks to be implemented there such as the
+   wrapper functionalities to insert parentheses quotes etc. of all
+   kind across words and section.
+** TODO Google translate
 
-      Check at google translate package on MELPA. Sounds interesting for my case.
-***** TODO Configure Cloud Storage system with local computer
-
-      This is a must. There is also the option to combine git
-      functionalities with dropbox. Check at the following blog for
-      more [[https://nicolaiarocci.com/usare-git-con-dropbox/][link dropbox-git]].
-      
-      You need to understand if other cloud provider allows similar.
-      pCloud sounds like a very interesting option. Try to combine the
-      two.
-      
-      In any case the beauty of cloud storage is that when properly
-      synchronized it automatically saves your file periodically so no
-      risk of loosing them and that is also the actual strength of the
-      storage in comparison to github-like storage. Notice though that
-      there is no version control of cloud storage this is why github
-      still useful.
-
-      Important if allowing the automatic storage is to encrypt the
-      files when uploading. 
+   Check at google translate package on MELPA. Sounds interesting for my case.
 
 
 * Test mode
@@ -1071,7 +1050,6 @@ the long run.
 ** TODO Consider Separate Folder
   
  for managing packages in "test mode"
-
 
 * Deal with conflicting key bindings
 
