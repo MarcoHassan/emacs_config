@@ -1,0 +1,30 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{;; it looks like counsel is a requirement for swiper}
+\PYG{p}{(}\PYG{n+nb}{use\PYGZhy{}package} \PYG{n+nv}{counsel}
+\PYG{l+s+ss}{:ensure} \PYG{n+no}{t}
+\PYG{p}{)}
+
+\PYG{p}{(}\PYG{n+nb}{use\PYGZhy{}package} \PYG{n+nv}{swiper}
+\PYG{l+s+ss}{:ensure} \PYG{n+nv}{try}
+\PYG{l+s+ss}{:config}
+\PYG{p}{(}\PYG{k}{progn}
+\PYG{p}{(}\PYG{n+nv}{ivy\PYGZhy{}mode} \PYG{l+m+mi}{1}\PYG{p}{)}
+\PYG{p}{(}\PYG{k}{setq} \PYG{n+nv}{ivy\PYGZhy{}use\PYGZhy{}virtual\PYGZhy{}buffers} \PYG{n+no}{t}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{l+s}{\PYGZdq{}\PYGZbs{}C\PYGZhy{}s\PYGZdq{}} \PYG{l+s+ss}{\PYGZsq{}swiper}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}C\PYGZhy{}c C\PYGZhy{}r\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}ivy\PYGZhy{}resume}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}\PYGZlt{}f6\PYGZgt{}\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}ivy\PYGZhy{}resume}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}M\PYGZhy{}x\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}M\PYGZhy{}x}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}C\PYGZhy{}x C\PYGZhy{}f\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}find\PYGZhy{}file}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}\PYGZlt{}f1\PYGZgt{} f\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}describe\PYGZhy{}function}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}\PYGZlt{}f1\PYGZgt{} v\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}describe\PYGZhy{}variable}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}\PYGZlt{}f1\PYGZgt{} l\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}load\PYGZhy{}library}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}\PYGZlt{}f2\PYGZgt{} i\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}info\PYGZhy{}lookup\PYGZhy{}symbol}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}\PYGZlt{}f2\PYGZgt{} u\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}unicode\PYGZhy{}char}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}C\PYGZhy{}c g\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}git}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}C\PYGZhy{}c j\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}git\PYGZhy{}grep}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}C\PYGZhy{}c k\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}ag}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}C\PYGZhy{}x l\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}locate}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}C\PYGZhy{}S\PYGZhy{}o\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}rhythmbox}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{define\PYGZhy{}key} \PYG{n+nv}{read\PYGZhy{}expression\PYGZhy{}map} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}C\PYGZhy{}r\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}counsel\PYGZhy{}expression\PYGZhy{}history}\PYG{p}{)}
+\PYG{p}{))}
+\end{Verbatim}

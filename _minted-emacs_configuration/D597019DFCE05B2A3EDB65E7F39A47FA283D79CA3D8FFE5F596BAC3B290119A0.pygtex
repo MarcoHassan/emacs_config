@@ -1,0 +1,79 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{;; Org Mode}
+\PYG{c+c1}{;; ========}
+
+\PYG{c+c1}{;; To open all .org files in org mode.}
+\PYG{p}{(}\PYG{n+nv}{autoload} \PYG{l+s+ss}{\PYGZsq{}org\PYGZhy{}mode} \PYG{l+s}{\PYGZdq{}org\PYGZhy{}mode\PYGZdq{}} \PYG{l+s}{\PYGZdq{}Org Mode.\PYGZdq{}} \PYG{n+no}{t}\PYG{p}{)}
+
+\PYG{c+c1}{;; Necessary to download org from MELPA at first.}
+\PYG{c+c1}{;; Moreover necessary to download the USE\PYGZhy{}PACKAGE library.}
+\PYG{p}{(}\PYG{n+nb}{use\PYGZhy{}package} \PYG{n+nv}{org}\PYG{p}{)}
+
+\PYG{c+c1}{;; Activate flyspell for org documents.}
+\PYG{p}{(}\PYG{n+nb}{use\PYGZhy{}package} \PYG{n+nv}{flyspell}
+  \PYG{l+s+ss}{:config}
+  \PYG{p}{(}\PYG{n+nv}{add\PYGZhy{}hook} \PYG{l+s+ss}{\PYGZsq{}org\PYGZhy{}mode\PYGZhy{}hook} \PYG{l+s+ss}{\PYGZsq{}flyspell\PYGZhy{}mode}\PYG{p}{))}
+
+\PYG{c+c1}{;; Use syntax highlighting in source blocks while editing.}
+\PYG{p}{(}\PYG{k}{setq} \PYG{n+nv}{org\PYGZhy{}src\PYGZhy{}fontify\PYGZhy{}natively} \PYG{n+no}{t}\PYG{p}{)}
+
+\PYG{c+c1}{;; Make TAB act as if it were issued in a buffer of the languages major mode.}
+\PYG{p}{(}\PYG{k}{setq} \PYG{n+nv}{org\PYGZhy{}src\PYGZhy{}tab\PYGZhy{}acts\PYGZhy{}natively} \PYG{n+no}{t}\PYG{p}{)}
+
+\PYG{c+c1}{;; I like to see an outline of pretty bullets instead of a list of asterisks.}
+\PYG{p}{(}\PYG{n+nb}{use\PYGZhy{}package} \PYG{n+nv}{org\PYGZhy{}bullets}
+  \PYG{l+s+ss}{:init}
+  \PYG{p}{(}\PYG{n+nv}{add\PYGZhy{}hook} \PYG{l+s+ss}{\PYGZsq{}org\PYGZhy{}mode\PYGZhy{}hook} \PYG{l+s+ss}{\PYGZsq{}org\PYGZhy{}bullets\PYGZhy{}mode}\PYG{p}{))}
+
+\PYG{c+c1}{;; I like seeing a little downward\PYGZhy{}pointing arrow instead of the usual}
+\PYG{c+c1}{;; ellipsis (...) that org displays when there is stuff under a header.}
+\PYG{p}{(}\PYG{k}{setq} \PYG{n+nv}{org\PYGZhy{}ellipsis} \PYG{l+s}{\PYGZdq{} \PYGZgt{}\PYGZgt{}\PYGZdq{}}\PYG{p}{)}
+
+\PYG{c+c1}{;; Shortcut for org agenda}
+\PYG{p}{(}\PYG{n+nv}{define\PYGZhy{}key} \PYG{n+nv}{global\PYGZhy{}map} \PYG{l+s}{\PYGZdq{}\PYGZbs{}C\PYGZhy{}ca\PYGZdq{}} \PYG{l+s+ss}{\PYGZsq{}org\PYGZhy{}agenda}\PYG{p}{)}
+
+\PYG{c+c1}{;; Exporting in markdown and beamer mode}
+\PYG{p}{(}\PYG{n+nb}{require} \PYG{l+s+ss}{\PYGZsq{}ox\PYGZhy{}md}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nb}{require} \PYG{l+s+ss}{\PYGZsq{}ox\PYGZhy{}beamer}\PYG{p}{)}
+
+\PYG{c+c1}{;; workaround for not workign source code shortcut}
+\PYG{p}{(}\PYG{n+nb}{when} \PYG{p}{(}\PYG{n+nv}{version\PYGZlt{}=} \PYG{l+s}{\PYGZdq{}9.2\PYGZdq{}} \PYG{p}{(}\PYG{n+nv}{org\PYGZhy{}version}\PYG{p}{))}
+    \PYG{p}{(}\PYG{n+nb}{require} \PYG{l+s+ss}{\PYGZsq{}org\PYGZhy{}tempo}\PYG{p}{))}
+
+\PYG{c+c1}{;; specify to\PYGZhy{}do iterations with C\PYGZhy{}c t}
+\PYG{p}{(}\PYG{k}{setq} \PYG{n+nv}{org\PYGZhy{}todo\PYGZhy{}keywords}
+      \PYG{o}{\PYGZsq{}}\PYG{p}{((}\PYG{n+nc}{sequence} \PYG{l+s}{\PYGZdq{}TODO\PYGZdq{}} \PYG{l+s}{\PYGZdq{}IN\PYGZhy{}PROGRESS\PYGZdq{}} \PYG{l+s}{\PYGZdq{}WAITING\PYGZdq{}} \PYG{l+s}{\PYGZdq{}DONE\PYGZdq{}}\PYG{p}{)))}
+
+
+\PYG{c+c1}{;; Babel evaluing ;;}
+
+\PYG{c+c1}{;; For babel evaluing in R}
+\PYG{p}{(}\PYG{n+nb}{require} \PYG{l+s+ss}{\PYGZsq{}ess\PYGZhy{}site}\PYG{p}{)}
+
+\PYG{c+c1}{;; Allowing minted to highlight code in latex mode when exporting}
+\PYG{p}{(}\PYG{k}{setq} \PYG{n+nv}{org\PYGZhy{}latex\PYGZhy{}pdf\PYGZhy{}process}
+      \PYG{o}{\PYGZsq{}}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}xelatex \PYGZhy{}shell\PYGZhy{}escape \PYGZhy{}interaction nonstopmode \PYGZhy{}output\PYGZhy{}directory \PYGZpc{}o \PYGZpc{}f\PYGZdq{}}
+\PYG{n+nv}{\PYGZca{}\PYGZca{}I}\PYG{l+s}{\PYGZdq{}xelatex \PYGZhy{}shell\PYGZhy{}escape \PYGZhy{}interaction nonstopmode \PYGZhy{}output\PYGZhy{}directory \PYGZpc{}o \PYGZpc{}f\PYGZdq{}}
+\PYG{n+nv}{\PYGZca{}\PYGZca{}I}\PYG{l+s}{\PYGZdq{}xelatex \PYGZhy{}shell\PYGZhy{}escape \PYGZhy{}interaction nonstopmode \PYGZhy{}output\PYGZhy{}directory \PYGZpc{}o \PYGZpc{}f\PYGZdq{}}\PYG{p}{))}
+
+\PYG{p}{(}\PYG{n+nv}{add\PYGZhy{}to\PYGZhy{}list} \PYG{l+s+ss}{\PYGZsq{}org\PYGZhy{}latex\PYGZhy{}packages\PYGZhy{}alist} \PYG{o}{\PYGZsq{}}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZdq{}} \PYG{l+s}{\PYGZdq{}minted\PYGZdq{}}\PYG{p}{))}
+\PYG{p}{(}\PYG{k}{setq} \PYG{n+nv}{org\PYGZhy{}latex\PYGZhy{}listings} \PYG{l+s+ss}{\PYGZsq{}minted}\PYG{p}{)}
+
+\PYG{c+c1}{;; Allow code evaluation in the org mode source code chunck}
+
+\PYG{p}{(}\PYG{n+nb}{use\PYGZhy{}package} \PYG{n+nv}{gnuplot}\PYG{p}{)} \PYG{c+c1}{;; recall to download it trough MELPA at first}
+
+\PYG{p}{(}\PYG{n+nv}{org\PYGZhy{}babel\PYGZhy{}do\PYGZhy{}load\PYGZhy{}languages}
+ \PYG{l+s+ss}{\PYGZsq{}org\PYGZhy{}babel\PYGZhy{}load\PYGZhy{}languages}
+ \PYG{o}{\PYGZsq{}}\PYG{p}{((}\PYG{n+nv}{C} \PYG{o}{.} \PYG{n+no}{t}\PYG{p}{)}
+   \PYG{p}{(}\PYG{n+nv}{R} \PYG{o}{.} \PYG{n+no}{t}\PYG{p}{)}
+   \PYG{p}{(}\PYG{n+nv}{sql} \PYG{o}{.} \PYG{n+no}{t}\PYG{p}{)}
+   \PYG{p}{(}\PYG{n+nv}{python} \PYG{o}{.} \PYG{n+no}{t}\PYG{p}{)}
+   \PYG{p}{(}\PYG{n+nv}{ipython} \PYG{o}{.} \PYG{n+no}{t}\PYG{p}{)}
+   \PYG{p}{(}\PYG{n+nv}{shell} \PYG{o}{.} \PYG{n+no}{t}\PYG{p}{)}
+   \PYG{p}{(}\PYG{n+nv}{emacs\PYGZhy{}lisp} \PYG{o}{.} \PYG{n+no}{t}\PYG{p}{)}
+   \PYG{p}{))}
+
+\PYG{c+c1}{;; Don\PYGZsq{}t ask before executing code in the chunck.}
+\PYG{p}{(}\PYG{k}{setq} \PYG{n+nv}{org\PYGZhy{}confirm\PYGZhy{}babel\PYGZhy{}evaluate} \PYG{n+no}{nil}\PYG{p}{)}
+\end{Verbatim}

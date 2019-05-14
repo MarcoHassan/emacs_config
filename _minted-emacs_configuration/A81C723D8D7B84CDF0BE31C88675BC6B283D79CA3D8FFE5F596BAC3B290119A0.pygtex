@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{n+nv}{load\PYGZhy{}theme} \PYG{l+s+ss}{\PYGZsq{}monokai} \PYG{n+no}{t}\PYG{p}{)} \PYG{c+c1}{;; load the black monokai theme}
+\end{Verbatim}

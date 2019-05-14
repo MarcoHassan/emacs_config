@@ -1,0 +1,99 @@
+* Overview
+
+This file contains packages and emacs workflow tools I used to work
+with and ultimately decided to abandon in favour of other options.
+
+* Hungry Mode
+
+*** Normal hungry mode
+
+   This is a nice package that automatically deletes all of the white
+   spaces between your cursor and the next word when you are
+   canceling.
+
+   Notice that all of the section is commented away. I did not like
+   the confusion. Moreover I like to have differentiated keyboard
+   shortcuts to hungry delete. So I just took the idea from the
+   package and implemented it with other keyboard shortcuts using
+   smart-hungry-delete as below.
+
+**** Old code
+
+   #+BEGIN_SRC emacs-lisp
+      (use-package hungry-delete
+      :ensure t
+      :config
+      (global-hungry-delete-mode))
+   #+END_SRC
+
+   My belief is that the command is masked by some other mode. 
+
+   The belief is confirmed online. Apparently the paredit commands
+   mask the hungry delete commands. [[https://emacs.stackexchange.com/questions/33734/how-to-get-hungry-delete-working-in-paredit-mode][post.]] This does not seem to be the
+   case for me as hungry delete is not active even when paredit mode
+   is off. 
+
+  #+BEGIN_SRC emacs-lisp
+    (setq backward-delete-char-untabify-method 'all)
+  #+END_SRC
+   
+   Ok. With the adjustment the backward option works. But confusing.
+   Decided to use smart-hungry mode instead.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* Auto-complete
+#+Name: word-auto
+#+BEGIN_SRC emacs-lisp
+   (use-package auto-complete
+    :ensure t
+    :init
+    (progn
+      (ac-config-default)
+      (global-auto-complete-mode t)
+      )) 
+#+END_SRC
+
+
+By default auto-complete is not activated in org mode. To activate it
+in org mode use =org-ac= package.
+
+Notice moreover that there are some conflicts with flyspell-mode. I
+had to deactivate the first as for me auto-complete is more valuable.
+
+In general nice package but not good for people working intensively
+in org-mode. 
+
+I decided to switch to company for these reasons. Check at it below.
+
+* Ido for minibuffer search
+
+This is a buffer aid. It is useful for listing the options of opened
+buffers and to quickly move around the windows. 
+
+If you are using swiper as I do now comment this out, as swiper works
+with its own version similar to ido, but which I personally like more
+
+#+BEGIN_SRC emacs-lisp
+    (require 'ido);; plug-in that helps with general auto-completion
+    (ido-mode t);; activates ido-mode
+#+END_SRC

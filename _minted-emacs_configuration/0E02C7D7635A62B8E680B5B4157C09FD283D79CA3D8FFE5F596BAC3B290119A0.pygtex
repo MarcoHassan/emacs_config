@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}linum\PYGZhy{}mode} \PYG{n+no}{t}\PYG{p}{)} \PYG{c+c1}{;; load line number at the beginning of the}
+\PYG{n+nv}{\PYGZca{}\PYGZca{}I\PYGZca{}\PYGZca{}I}      \PYG{c+c1}{;; file. Notice the global argument means that}
+\PYG{n+nv}{\PYGZca{}\PYGZca{}I\PYGZca{}\PYGZca{}I}      \PYG{c+c1}{;; this line configuration will apply to all}
+\PYG{n+nv}{\PYGZca{}\PYGZca{}I\PYGZca{}\PYGZca{}I}      \PYG{c+c1}{;; buffers in emacs. You can also enable things}
+\PYG{n+nv}{\PYGZca{}\PYGZca{}I\PYGZca{}\PYGZca{}I}      \PYG{c+c1}{;; per mode \PYGZhy{} e.g., python\PYGZhy{}mode, markdown\PYGZhy{}mode,}
+\PYG{n+nv}{\PYGZca{}\PYGZca{}I\PYGZca{}\PYGZca{}I}      \PYG{c+c1}{;; text\PYGZhy{}mode.}
+\end{Verbatim}

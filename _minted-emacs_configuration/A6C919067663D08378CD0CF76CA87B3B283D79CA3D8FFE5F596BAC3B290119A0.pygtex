@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{;; Tell emacs where is your personal elisp lib dir}
+\PYG{p}{(}\PYG{n+nv}{add\PYGZhy{}to\PYGZhy{}list} \PYG{l+s+ss}{\PYGZsq{}load\PYGZhy{}path} \PYG{l+s}{\PYGZdq{}c:/Users/Marco Hassan/.emacs.d/ob\PYGZhy{}ipython/\PYGZdq{}}\PYG{p}{)}
+\end{Verbatim}

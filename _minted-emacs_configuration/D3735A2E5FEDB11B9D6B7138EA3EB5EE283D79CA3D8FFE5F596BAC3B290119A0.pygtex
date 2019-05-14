@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{n+nv}{add\PYGZhy{}hook} \PYG{l+s+ss}{\PYGZsq{}org\PYGZhy{}mode\PYGZhy{}hook}
+\PYG{n+nv}{\PYGZca{}\PYGZca{}I}  \PYG{p}{(}\PYG{k}{lambda} \PYG{p}{()} \PYG{p}{(}\PYG{n+nv}{local\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}C\PYGZhy{}c 3\PYGZdq{}}\PYG{p}{)} \PYG{l+s}{\PYGZdq{}\PYGZsh{}+BEGIN\PYGZus{}SRC python\PYGZbs{}n\PYGZbs{}n\PYGZsh{}+END\PYGZus{}SRC\PYGZdq{}}\PYG{p}{)))}
+\end{Verbatim}

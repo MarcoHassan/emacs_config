@@ -1,0 +1,27 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{n+nb}{require} \PYG{l+s+ss}{\PYGZsq{}package}\PYG{p}{)}
+\PYG{p}{(}\PYG{k}{let*} \PYG{p}{((}\PYG{n+nv}{no\PYGZhy{}ssl} \PYG{p}{(}\PYG{n+nb}{and} \PYG{p}{(}\PYG{n+nv}{memq} \PYG{n+nv}{system\PYGZhy{}type} \PYG{o}{\PYGZsq{}}\PYG{p}{(}\PYG{n+nv}{windows\PYGZhy{}nt} \PYG{n+nv}{ms\PYGZhy{}dos}\PYG{p}{))}
+\PYG{n+nv}{\PYGZca{}\PYGZca{}I\PYGZca{}\PYGZca{}I}    \PYG{p}{(}\PYG{n+nb}{not} \PYG{p}{(}\PYG{n+nv}{gnutls\PYGZhy{}available\PYGZhy{}p}\PYG{p}{))))}
+       \PYG{p}{(}\PYG{n+nv}{proto} \PYG{p}{(}\PYG{k}{if} \PYG{n+nv}{no\PYGZhy{}ssl} \PYG{l+s}{\PYGZdq{}http\PYGZdq{}} \PYG{l+s}{\PYGZdq{}https\PYGZdq{}}\PYG{p}{)))}
+  \PYG{c+c1}{;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired}
+  \PYG{p}{(}\PYG{n+nv}{add\PYGZhy{}to\PYGZhy{}list} \PYG{l+s+ss}{\PYGZsq{}package\PYGZhy{}archives} \PYG{p}{(}\PYG{n+nb}{cons} \PYG{l+s}{\PYGZdq{}melpa\PYGZhy{}stable\PYGZdq{}} \PYG{p}{(}\PYG{n+nv}{concat} \PYG{n+nv}{proto} \PYG{l+s}{\PYGZdq{}://stable.melpa.org/packages/\PYGZdq{}}\PYG{p}{))} \PYG{n+no}{t}\PYG{p}{)}
+  \PYG{p}{(}\PYG{n+nb}{when} \PYG{p}{(}\PYG{n+nb}{\PYGZlt{}} \PYG{n+nv}{emacs\PYGZhy{}major\PYGZhy{}version} \PYG{l+m+mi}{24}\PYG{p}{)}
+    \PYG{c+c1}{;; For important compatibility libraries like cl\PYGZhy{}lib}
+    \PYG{p}{(}\PYG{n+nv}{add\PYGZhy{}to\PYGZhy{}list} \PYG{l+s+ss}{\PYGZsq{}package\PYGZhy{}archives} \PYG{p}{(}\PYG{n+nb}{cons} \PYG{l+s}{\PYGZdq{}gnu\PYGZdq{}} \PYG{p}{(}\PYG{n+nv}{concat} \PYG{n+nv}{proto} \PYG{l+s}{\PYGZdq{}://elpa.gnu.org/packages/\PYGZdq{}}\PYG{p}{)))))}
+\PYG{p}{(}\PYG{n+nv}{package\PYGZhy{}initialize}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{custom\PYGZhy{}set\PYGZhy{}variables}
+ \PYG{c+c1}{;; custom\PYGZhy{}set\PYGZhy{}variables was added by Custom.}
+ \PYG{c+c1}{;; If you edit it by hand, you could mess it up, so be careful.}
+ \PYG{c+c1}{;; Your init file should contain only one such instance.}
+ \PYG{c+c1}{;; If there is more than one, they won\PYGZsq{}t work right.}
+ \PYG{o}{\PYGZsq{}}\PYG{p}{(}\PYG{n+nv}{org\PYGZhy{}agenda\PYGZhy{}files} \PYG{p}{(}\PYG{k}{quote} \PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZti{}/Desktop/prova.org\PYGZdq{}}\PYG{p}{)))}
+ \PYG{o}{\PYGZsq{}}\PYG{p}{(}\PYG{n+nv}{package\PYGZhy{}selected\PYGZhy{}packages}
+   \PYG{p}{(}\PYG{k}{quote}
+    \PYG{p}{(}\PYG{n+nv}{org\PYGZhy{}bullets} \PYG{n+nv}{htmlize} \PYG{n+nv}{auctex} \PYG{n+nv}{virtualenvwrapper} \PYG{n+nv}{pyenv\PYGZhy{}mode} \PYG{n+nv}{ein} \PYG{n+nv}{py\PYGZhy{}autopep8} \PYG{n+nv}{flycheck} \PYG{n+nv}{elpy} \PYG{n+nv}{monokai\PYGZhy{}theme}\PYG{p}{))))}
+\PYG{p}{(}\PYG{n+nv}{custom\PYGZhy{}set\PYGZhy{}faces}
+ \PYG{c+c1}{;; custom\PYGZhy{}set\PYGZhy{}faces was added by Custom.}
+ \PYG{c+c1}{;; If you edit it by hand, you could mess it up, so be careful.}
+ \PYG{c+c1}{;; Your init file should contain only one such instance.}
+ \PYG{c+c1}{;; If there is more than one, they won\PYGZsq{}t work right.}
+ \PYG{p}{)}
+\end{Verbatim}

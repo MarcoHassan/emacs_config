@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}H\PYGZhy{}w\PYGZdq{}}\PYG{p}{)} \PYG{n+nf}{\PYGZsh{}\PYGZsq{}}\PYG{n+nv}{aya\PYGZhy{}create}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}H\PYGZhy{}y\PYGZdq{}}\PYG{p}{)} \PYG{n+nf}{\PYGZsh{}\PYGZsq{}}\PYG{n+nv}{aya\PYGZhy{}expand}\PYG{p}{)}
+\end{Verbatim}

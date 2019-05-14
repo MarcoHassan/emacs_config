@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{n+nv}{autoload} \PYG{l+s+ss}{\PYGZsq{}enable\PYGZhy{}paredit\PYGZhy{}mode} \PYG{l+s}{\PYGZdq{}paredit\PYGZdq{}} \PYG{l+s}{\PYGZdq{}Turn on pseudo\PYGZhy{}structural editing of Lisp code.\PYGZdq{}} \PYG{n+no}{t}\PYG{p}{)}
+\PYG{p}{(}\PYG{n+nv}{add\PYGZhy{}hook} \PYG{l+s+ss}{\PYGZsq{}org\PYGZhy{}mode\PYGZhy{}hook} \PYG{l+s+ss}{\PYGZsq{}enable\PYGZhy{}paredit\PYGZhy{}mode}\PYG{p}{)}
+\end{Verbatim}

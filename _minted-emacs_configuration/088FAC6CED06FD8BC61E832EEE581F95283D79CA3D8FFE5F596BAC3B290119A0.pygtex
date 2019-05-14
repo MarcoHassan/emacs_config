@@ -1,0 +1,22 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{(}\PYG{n+nb}{defun} \PYG{n+nv}{my\PYGZhy{}bash\PYGZhy{}on\PYGZhy{}windows\PYGZhy{}shell} \PYG{p}{()}
+  \PYG{p}{(}\PYG{n+nv}{interactive}\PYG{p}{)}
+  \PYG{p}{(}\PYG{k}{let} \PYG{p}{((}\PYG{n+nv}{explicit\PYGZhy{}shell\PYGZhy{}file\PYGZhy{}name} \PYG{l+s}{\PYGZdq{}C:/Windows/System32/bash.exe\PYGZdq{}}\PYG{p}{))}
+    \PYG{p}{(}\PYG{n+nv}{cd} \PYG{l+s}{\PYGZdq{}C:/Users/Marco Hassan/Desktop\PYGZdq{}}\PYG{p}{)}
+    \PYG{p}{(}\PYG{n+nv}{shell}\PYG{p}{)))}
+
+\PYG{c+c1}{;; if you want to run the above function iteractively when using emacs with M\PYGZhy{}x specify it as (interactive) at the end.}
+
+\PYG{p}{(}\PYG{n+nv}{my\PYGZhy{}bash\PYGZhy{}on\PYGZhy{}windows\PYGZhy{}shell}\PYG{p}{)}
+
+\PYG{c+c1}{;; Necessary on windows as two shell windows are somehow opened.}
+\PYG{p}{(}\PYG{n+nv}{delete\PYGZhy{}window}\PYG{p}{)}
+
+
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}C\PYGZhy{}x ì\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}my\PYGZhy{}bash\PYGZhy{}on\PYGZhy{}windows\PYGZhy{}shell}\PYG{p}{)}
+
+\PYG{p}{(}\PYG{n+nv}{setq\PYGZhy{}default} \PYG{n+nv}{explicit\PYGZhy{}shell\PYGZhy{}file\PYGZhy{}name} \PYG{l+s}{\PYGZdq{}bash\PYGZdq{}}\PYG{p}{)} \PYG{c+c1}{;; set default for shell as bash}
+
+\PYG{c+c1}{;; set default directory on start up to be the windows desktop}
+\PYG{p}{(}\PYG{k}{setq} \PYG{n+nv}{default\PYGZhy{}directory} \PYG{l+s}{\PYGZdq{}C:/Users/Marco Hassan/Desktop\PYGZdq{}}\PYG{p}{)}
+\end{Verbatim}

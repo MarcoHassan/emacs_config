@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{;; Always kill current buffer with \PYGZdq{}C\PYGZhy{}x k\PYGZdq{}}
+\PYG{p}{(}\PYG{n+nb}{defun} \PYG{n+nv}{bjm/kill\PYGZhy{}this\PYGZhy{}buffer} \PYG{p}{()}
+  \PYG{l+s}{\PYGZdq{}Kill the current buffer.\PYGZdq{}}
+  \PYG{p}{(}\PYG{n+nv}{interactive}\PYG{p}{)}
+  \PYG{p}{(}\PYG{n+nv}{kill\PYGZhy{}buffer} \PYG{p}{(}\PYG{n+nv}{current\PYGZhy{}buffer}\PYG{p}{))}
+  \PYG{p}{(}\PYG{n+nv}{delete\PYGZhy{}window}\PYG{p}{))}
+
+\PYG{p}{(}\PYG{n+nv}{global\PYGZhy{}set\PYGZhy{}key} \PYG{p}{(}\PYG{n+nv}{kbd} \PYG{l+s}{\PYGZdq{}C\PYGZhy{}x k\PYGZdq{}}\PYG{p}{)} \PYG{l+s+ss}{\PYGZsq{}bjm/kill\PYGZhy{}this\PYGZhy{}buffer}\PYG{p}{)}
+\end{Verbatim}
