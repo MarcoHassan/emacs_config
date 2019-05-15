@@ -2,6 +2,8 @@
 
 *.pdf
 
-*el
+*.el
+
+*.tex
 
 _minted-emacs_configuration
