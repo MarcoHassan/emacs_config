@@ -315,11 +315,92 @@ kill the buffer.
     ;;(kill-buffer "*Messages*")
 #+END_SRC
 
-** Load monokai theme
 
+** Theme
+
+
+
+*** Load Monokai theme as standard theme
+
+    #+BEGIN_SRC emacs-lisp
+      (load-theme 'monokai t) ;; load the black monokai theme  
+    #+END_SRC
+
+    Set the header color for org mode in Monokai
+
+    #+BEGIN_SRC emacs-lisp
+      (custom-set-faces
+       '(org-level-1 ((t (:foreground "spring green"))))
+       '(org-level-2 ((t (:foreground "light blue"))))
+       '(org-level-3 ((t (:foreground "indian red"))))
+       )
+    #+END_SRC
+
+
+Change line highlighting color for monokai. Not always clear
 #+BEGIN_SRC emacs-lisp
-  (load-theme 'monokai t) ;; load the black monokai theme  
+;;(set-face-background 'hl-line "#3e4446")
+
+;;To keep syntax highlighting in the current line:
+
+;;(set-face-foreground 'highlight nil)
 #+END_SRC
+
+
+*** Use light theme for bright light
+
+    Define function for customizing light theme with the colors you
+    want. 
+
+    Define global function that you can call to get the brighter theme.
+    #+BEGIN_SRC emacs-lisp
+      (defun bright/light ()
+	(interactive)
+	(load-theme 'alect-light t) 
+
+	(alect/colors)
+
+	(custom-set-faces
+
+	 ;; Change the color of the org chunks.
+	 '(org-block-begin-line
+	   ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+	 '(org-block
+	   ((t (:background "snow3")))) 
+	 '(org-block-end-line
+	   ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+
+	 ;; Change color of the org headers
+	 '(org-level-1 ((t (:foreground "indian red"))))
+	 '(org-level-2 ((t (:foreground "#008ED1"))))
+	 '(org-level-3 ((t (:foreground "sea green"))))
+
+         ;; Specify the colors of strings etc...
+	 '(font-lock-comment-face ((t :foreground "SeaGreen4"))) 
+	 ;;'(font-lock-builtin-face  ((t :foreground "blue"))) ;; this is the foreground for instance
+	 '(font-lock-string-face  ((t :foreground "black"))) ;; this is the commentary and strings. Use it for custom set faces when you know it.
+
+	 )
+	)
+    #+END_SRC
+
+ Provo
+#+BEGIN_SRC emacs-lisp
+
+
+      ;; '(font-lock-string-face  ((t :foreground green-1)))  
+      ;; '(font-lock-doc-face     ((t :inherit font-lock-string-face)))
+      ;; '(font-lock-comment-face ((t :foreground "white")))
+      ;; '(mode-line-buffer-id    ((t :foreground "yellow" :weight bold)))
+      ;; '(mode-line              ((((background light))
+      ;; 			   :foreground fg+1 :background "#ffaaaa" 
+      ;; 			   :box (:line-width 2 :color bg-2 :style nil))
+      ;; 			  (((background dark))
+      ;; 			   :foreground fg+1 :background "firebrick3"
+      ;; 			   :box (:line-width 2 :color bg-2 :style nil)))))) 
+#+END_SRC
+
+#+RESULTS:
 
 ** Set lining globally
 
@@ -1046,10 +1127,10 @@ moment emacs shell is set to be the shell interacting with the Linux partition.
       This is a must. There is also the option to combine git
       functionalities with dropbox. Check at the following blog for
       more [[https://nicolaiarocci.com/usare-git-con-dropbox/][link dropbox-git]].
-      
-      You need to understand if other cloud provider allows similar.
-      pCloud sounds like a very interesting option. Try to combine the
-      two.
+
+      Understand well the advantage of dropbox git. You can modify the
+      files directly in the dropbox folder and the changes will be
+      tracked automatically.      
       
       In any case the beauty of cloud storage is that when properly
       synchronized it automatically saves your file periodically so no
@@ -1062,15 +1143,29 @@ moment emacs shell is set to be the shell interacting with the Linux partition.
       files when uploading. 
 
 
-* Test mode
+nn* Test mode
 
 
 Here I put changes that I am currently trying and not sure to keep on
 the long run. 
 
-** TODO Consider Separate Folder
+Save files in two different locations concurrently.
+
+Try this.
+
+#+BEGIN_SRC emacs-lisp
+  ;; (add-hook 'local-write-file-hooks 'my-save-hook)
+  ;; (defun my-save-hook ()
+  ;;   "write the file in two places"
+  ;;   (let ((orig (buffer-file-name)))
+  ;;     (write-file (concat "/some/other/path" (file-name-nondirectory orig)) nil)
+  ;;     (write-file orig nil)))
+#+END_SRC
+
+
+***** TODO Consider Separate Folder
   
- for managing packages in "test mode"
+    for managing packages in "test mode"
 
 
 * Deal with conflicting key bindings
