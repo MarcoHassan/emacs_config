@@ -354,51 +354,57 @@ color...
 
     Define global function that you can call to get the brighter theme.
     #+BEGIN_SRC emacs-lisp
-	    (defun bright/light ()
-	      (interactive)
-	      (load-theme 'alect-light t) 
+      (defun bright/light ()
+	(interactive)
+	(load-theme 'alect-light t) 
 
-	      (custom-set-faces
+	(custom-set-faces
 
-	       ;; Change the color of the org chunks.
-	       '(org-block-begin-line
-		 ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
-	       '(org-block
-		 ((t (:background "snow3"))))  
-	       '(org-block-end-line
-		 ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+	 ;; Change the color of the org chunks.
+	 '(org-block-begin-line
+	   ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+	 '(org-block
+	   ((t (:background "snow3"))))  
+	 '(org-block-end-line
+	   ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
 
-	       ;; Change color of the org headers
-	       '(org-level-1 ((t (:foreground "indian red"))))
-	       '(org-level-2 ((t (:foreground "#008ED1"))))
-	       '(org-level-3 ((t (:foreground "sea green"))))
+	 ;; Change color of the org headers
+	 '(org-level-1 ((t (:foreground "indian red"))))
+	 '(org-level-2 ((t (:foreground "#008ED1"))))
+	 '(org-level-3 ((t (:foreground "sea green"))))
 
-	       ;; Specify the colors of strings etc...
-	       '(font-lock-comment-face ((t :foreground "SeaGreen4"))) 
-	       '(font-lock-builtin-face  ((t :foreground "blue"))) ;; this is the foreground for instance
-	       '(font-lock-string-face  ((t :foreground "indian red"))) ;; this is the commentary and strings. Use it for custom set faces when you know it.
-	       )
+	 ;; Specify the colors of strings etc...
+	 '(font-lock-comment-face ((t :foreground "SeaGreen4"))) 
+	 '(font-lock-builtin-face  ((t :foreground "blue"))) ;; this is the foreground for instance
+	 '(font-lock-string-face  ((t :foreground "indian red"))) ;; this is the commentary and strings. Use it for custom set faces when you know it.
+	 )
 
-	       ;; Chnage color of global lining
-	      (set-face-background 'linum "light grey")
+	 ;; Chnage color of global lining
+	(set-face-background 'linum "light grey")
 
-	       ;; Change the color in the minibuffer prompt to read better
-	      (set-face-foreground 'minibuffer-prompt "indian red")
-	      (set-face-background 'minibuffer-prompt "white") 
+	 ;; Change the color in the minibuffer prompt to read better
+	(set-face-foreground 'minibuffer-prompt "indian red")
+	(set-face-background 'minibuffer-prompt "white") 
 
-	       ;; Chnage standard color for org chunks
-	      (set-face-foreground 'org-block "black")
+	 ;; Chnage standard color for org chunks
+	(set-face-foreground 'org-block "black")
 
-	       ;; Org link color
-	      (set-face-foreground 'org-link "blue")
+	 ;; Org link color
+	(set-face-foreground 'org-link "blue")
 
-	       ;; Shell prompt
-	      (set-face-foreground 'comint-highlight-prompt "#008ED1")
+	 ;; Shell prompt
+	(set-face-foreground 'comint-highlight-prompt "#008ED1")
 
-               ;; Folder directories
-              (set-face-foreground 'dired-directory "blue")
-	    )
+	 ;; Folder directories
+	(set-face-foreground 'dired-directory "blue")
+
+         ;; Latex section titles
+        (set-face-foreground 'font-latex-sectioning-2-face "indian red")
+      )
     #+END_SRC
+
+    #+RESULTS:
+    : bright/light
 
 ** Set lining globally
 
