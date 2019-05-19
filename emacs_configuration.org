@@ -8,6 +8,9 @@ configuration file as =org= file as I am currently doing, which I
 enjoy a lot and believe it gives a great overview over the document.
 
 ** TODO watch [[https://www.youtube.com/watch?v=GK3fij-D1G8][this]] incredible video describing literate programming within Org-mode and try to incorporate the mode
+   :PROPERTIES:
+   :ID:       e630a79e-6f1e-48c8-9594-744ac1f36184
+   :END:
 
 
 * Increase cache allowed
@@ -62,6 +65,9 @@ configuration file without having to search for the directory.
 
 
 ** TODO open windows DOS as shell.
+   :PROPERTIES:
+   :ID:       32a70726-ef00-4372-bfb4-753610e26cbe
+   :END:
 
 Refer to the previous chunk. It is straight intuitive how to do that.
 
@@ -129,7 +135,17 @@ Marmalade
 
 
 * Basic Customization
- 
+
+** Set global encoding 
+
+#+BEGIN_SRC emacs-lisp
+;; UTF-8 as default encoding
+(set-language-environment "utf-8")
+(prefer-coding-system 'utf-8)
+(setq coding-system-for-read 'utf-8)
+(setq coding-system-for-write 'utf-8)
+#+END_SRC
+
 ** No beeps, scrollbar etc.
 
 #+BEGIN_SRC emacs-lisp
@@ -334,17 +350,34 @@ kill the buffer.
        )
     #+END_SRC
 
-Change line highlighting color for monokai. At the moment I could not
-find a nice option. But it annoys me that in org chunck it becomes
-almost indistinguishable. Maybe one day you will find the right
-color...
-
 #+BEGIN_SRC emacs-lisp
-  ;; (set-face-background 'hl-line "rosy brown")
+  (custom-set-faces
+   ;; Change the color of the org chunks.
+   '(org-block-begin-line
+     ((t (:background:"#35331D" :foreground "#75715E" ))))
+   '(org-block
+     ((t (:background "#3E3D31" :foreground "#F8F8F0"))))  
+   '(org-block-end-line
+     ((t (:background:"#35331D" :foreground "#75715E" ))))
+   '(font-lock-builtin-face
+     ((t :foreground "cornflower blue"))) ;; this is the foreground for instance
+   )
 
-  ;; ;To keep syntax highlighting in the current line:
+#+END_SRC
 
-  ;; (set-face-foreground 'highlight nil)
+#+RESULTS:
+
+Change line highlighting color for monokai. At the moment I could not
+    find a nice option. But it annoys me that in org chunck it becomes
+    almost indistinguishable. Maybe one day you will find the right
+    color...
+    
+#+BEGIN_SRC emacs-lisp
+      ;; (set-face-background 'hl-line "rosy brown")
+
+      ;; ;To keep syntax highlighting in the current line:
+
+      ;; (set-face-foreground 'highlight nil)
 #+END_SRC
 
 *** Use light theme for bright light
@@ -372,6 +405,7 @@ color...
 	       '(org-level-1 ((t (:foreground "indian red"))))
 	       '(org-level-2 ((t (:foreground "#008ED1"))))
 	       '(org-level-3 ((t (:foreground "sea green"))))
+	       '(org-level-4 ((t (:foreground "salmon3"))))
 
 	       ;; Specify the colors of strings etc...
 	       '(font-lock-comment-face ((t :foreground "SeaGreen4"))) 
@@ -828,6 +862,9 @@ Some configuration for Latex. Still to be improved.
 
 ** TODO finish latex config 
    SCHEDULED: <2019-05-23 gio>
+   :PROPERTIES:
+   :ID:       336943c6-2bd7-46e7-b072-5ed8f48786a0
+   :END:
    
 
 * Snippets
@@ -869,111 +906,81 @@ automatically be avaiable. No need for configuration in emacs.
 
 Very nice mode.
 
+** Basic configuration: 
 
-  To run jupyter like workflow in org mode displaying graphs, using
-  multiple languages etc. Notice at the moment I have issue. 
+   #+begin_src emacs-lisp 
+     ;; To open all .org files in org mode.
+     (autoload 'org-mode "org-mode" "Org Mode." t)
 
-  Package is not on MELPA, but it should. Install it manually. Then you should
-  be able to run the below and start to operate through in org-mode
-  via ob-ipython.
+     ;; Necessary to download org from MELPA at first.
+     (use-package org)
 
-  I downloaded the package manually in the =.emacs.d= folder. Load it
-  adding it to your load path.
+     ;; workaround for not workign source code shortcut
+     (when (version<= "9.2" (org-version))
+       (require 'org-tempo))
+   #+end_src
+
+** Grammar Check
+
+   #+BEGIN_SRC emacs-lisp
+     ;; Activate flyspell for org documents.
+     (use-package flyspell
+       :config
+       (add-hook 'org-mode-hook 'flyspell-mode))
+   #+END_SRC
+
+** Export modes
 
 #+BEGIN_SRC emacs-lisp
-  ;; Tell emacs where is your personal elisp lib dir
-  (add-to-list 'load-path "c:/Users/Marco Hassan/.emacs.d/ob-ipython/")
-
+  ;; Exporting in markdown and beamer mode
+  (require 'ox-md)
+  (require 'ox-beamer)
 #+END_SRC
 
+** Layout
 
-#+BEGIN_SRC emacs-lisp
- (load "obipython")
+   #+BEGIN_SRC emacs-lisp
+     ;; Use syntax highlighting in source blocks while editing.
+     (setq org-src-fontify-natively t)
 
-  ;;; display/update images in the buffer after I evaluate
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-#+END_SRC
+     ;; Make TAB act as if it were issued in a buffer of the languages major mode.
+     (setq org-src-tab-acts-natively t)
 
+     ;; I like to see an outline of pretty bullets instead of a list of asterisks.
+     (use-package org-bullets
+       :init
+       (add-hook 'org-mode-hook 'org-bullets-mode))
 
-  #+begin_src emacs-lisp 
-    ;; Org Mode
-    ;; ========
+     ;; I like seeing a little downward-pointing arrow instead of the usual
+     ;; ellipsis (...) that org displays when there is stuff under a header.
+     (setq org-ellipsis " >>")
+   #+END_SRC
 
-    ;; To open all .org files in org mode.
-    (autoload 'org-mode "org-mode" "Org Mode." t)
+** Ob-ipyhton
 
-    ;; Necessary to download org from MELPA at first.
-    ;; Moreover necessary to download the USE-PACKAGE library.
-    (use-package org)
+   To run jupyter like workflow in org mode displaying graphs, using
+   multiple languages etc. Notice at the moment I have issue. 
 
-    ;; Activate flyspell for org documents.
-    (use-package flyspell
-      :config
-      (add-hook 'org-mode-hook 'flyspell-mode))
+   Package is not on MELPA, but it should. Install it manually. Then you should
+   be able to run the below and start to operate through in org-mode
+   via ob-ipython.
 
-    ;; Use syntax highlighting in source blocks while editing.
-    (setq org-src-fontify-natively t)
+   I downloaded the package manually in the =.emacs.d= folder. Load it
+   adding it to your load path.
 
-    ;; Make TAB act as if it were issued in a buffer of the languages major mode.
-    (setq org-src-tab-acts-natively t)
+   #+BEGIN_SRC emacs-lisp
+     ;; Tell emacs where is your personal elisp lib dir
+     (add-to-list 'load-path "c:/Users/Marco Hassan/.emacs.d/ob-ipython/")
 
-    ;; I like to see an outline of pretty bullets instead of a list of asterisks.
-    (use-package org-bullets
-      :init
-      (add-hook 'org-mode-hook 'org-bullets-mode))
-
-    ;; I like seeing a little downward-pointing arrow instead of the usual
-    ;; ellipsis (...) that org displays when there is stuff under a header.
-    (setq org-ellipsis " >>")
-
-    ;; Shortcut for org agenda
-    (define-key global-map "\C-ca" 'org-agenda)
-
-    ;; Exporting in markdown and beamer mode
-    (require 'ox-md)
-    (require 'ox-beamer)
-
-    ;; workaround for not workign source code shortcut
-    (when (version<= "9.2" (org-version))
-	(require 'org-tempo))
-
-    ;; specify to-do iterations with C-c t
-    (setq org-todo-keywords
-	  '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+   #+END_SRC
 
 
-    ;; Babel evaluing ;;
+   #+BEGIN_SRC emacs-lisp
+     (load "obipython")
 
-    ;; For babel evaluing in R
-    (require 'ess-site)
-
-    ;; Allowing minted to highlight code in latex mode when exporting
-    (setq org-latex-pdf-process
-	  '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	    "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	    "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
-    (add-to-list 'org-latex-packages-alist '("" "minted"))
-    (setq org-latex-listings 'minted)
-
-    ;; Allow code evaluation in the org mode source code chunck
-
-    (use-package gnuplot) ;; recall to download it trough MELPA at first
-
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((C . t)
-       (R . t)
-       (sql . t)
-       (python . t)
-       (ipython . t)
-       (shell . t)
-       (emacs-lisp . t)
-       ))
-
-    ;; Don't ask before executing code in the chunck.
-    (setq org-confirm-babel-evaluate nil)
-  #+end_src
+      ;;; display/update images in the buffer after I evaluate
+     (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+   #+END_SRC
 
 ** Shortcuts to insert chunk of code
 
@@ -1012,17 +1019,190 @@ Very nice mode.
    #+END_SRC
 
 *** TODO Consider Snippets
+    :PROPERTIES:
+    :ID:       e30eef15-0142-443e-b189-d802875fb1a6
+    :END:
     
     The below works but I have noted that it usually takes a while to
     insert a chunk. Another viable solution is to use
     snippets. Consider that
 
+** Babel
+
+   #+BEGIN_SRC emacs-lisp
+     ;; For babel evaluing in R
+     (require 'ess-site)
+
+     ;; Allowing minted to highlight code in latex mode when exporting
+     (setq org-latex-pdf-process
+	   '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	     "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	     "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+     (add-to-list 'org-latex-packages-alist '("" "minted"))
+     (setq org-latex-listings 'minted)
+
+     ;; Allow code evaluation in the org mode source code chunck
+
+     (use-package gnuplot) ;; recall to download it trough MELPA at first
+
+     (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((C . t)
+	(R . t)
+	(sql . t)
+	(python . t)
+	(ipython . t)
+	(shell . t)
+	(emacs-lisp . t)
+        (latex . t)
+	))
+
+     ;; Don't ask before executing code in the chunck.
+     (setq org-confirm-babel-evaluate nil)
+   #+END_SRC
+
+
+* Agenda
+*** General Config
+
+   #+BEGIN_SRC emacs-lisp
+     ;; Shortcut for org agenda
+     (define-key global-map "\C-ca" 'org-agenda)
+
+
+     ;; specify to-do iterations with C-c t
+     (setq org-todo-keywords
+	   '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+   #+END_SRC
+
+*** Open agenda into its own buffer
+ #+BEGIN_SRC emacs-lisp
+ (defun air-pop-to-org-agenda (split)
+   "Visit the org agenda, in the current window or a SPLIT."
+   (interactive "P")
+   (org-agenda-list)
+   (when (not split)
+     (delete-other-windows)))
+
+ (define-key global-map (kbd "C-c t a") 'air-pop-to-org-agenda)
+ #+END_SRC
+
+*** Task and org-capture management
+    
+    Still trying to understand exactly how it works.....
+
+    Orgmobile configuration.
+
+    #+BEGIN_SRC emacs-lisp
+      ;; Create and Specify Agenda folder.
+      (setq org-agenda-files '("~/Dropbox/Agenda"))
+
+    #+END_SRC
+
+    #+BEGIN_SRC emacs-lisp
+      (setq org-directory "~/Desktop/org")
+
+      (setq org-mobile-inbox-for-pull "~/Desktop/org/inbox.org")
+
+      (setq org-mobile-directory "~/Dropbox/Applicazioni/MobileOrg/") 
+    #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+    (defcustom org-mobile-checksum-binary "c:/Users/Marco Hassan/Desktop/Programmi exe/checksum/fciv.exe"
+      "Executable used for computing checksums of agenda files."
+      :group 'org-mobile
+      :type 'string)
+#+END_SRC
+
+#+RESULTS:
+: org-mobile-checksum-binary
+
+Notice that now I also integrate mobileorg with beorg due to its
+improved user interface and giving a better overview of the agenda for
+the next weeks.
+
+Encrypt messages sent to the app and on dropbox via symmetric
+encrytion.
+
+Need OpenSSL to use encryption.
+#+BEGIN_SRC emacs-lisp
+  ;; ;; Enable encryption
+  ;; (setq org-mobile-use-encryption t)
+  ;; ;; Set a password
+  ;; (setq org-mobile-encryption-password "427726")
+#+END_SRC
+
+*** Archiving
+
+#+BEGIN_SRC emacs-lisp
+  ;; Set archiving location.
+  (setq org-archive-location "~/Dropbox/Archive/archive.org::* From %s")
+
+  ;; Done and archive
+  (defun mark-done-and-archive ()
+    "Mark the state of an org-mode item as DONE and archive it."
+    (interactive)
+    (org-todo 'done)
+    (org-archive-subtree))
+
+  (define-key org-mode-map (kbd "C-c C-x C-s") 'mark-done-and-archive)
+  
+  ;; Record the time that a todo was archived.
+  (setq org-log-done 'time)
+#+END_SRC
+
+*** Open index file    
+
+    #+BEGIN_SRC emacs-lisp
+      (defun hrs/open-index-file ()
+	"Open the master org TODO list."
+	(interactive)
+	(hrs/copy-tasks-from-inbox)
+	(find-file org-index-file)
+	(flycheck-mode -1)
+	(end-of-buffer))
+
+      (global-set-key (kbd "C-c i") 'hrs/open-index-file)
+    #+END_SRC
+
+#+RESULTS:
+: hrs/open-index-file
 
 
 * Tramp
 
   To be implemented using: [[https://cestlaz.github.io/posts/using-emacs-25-tramp/][tramp_tut]].
 
+
+* Git
+
+** Git Gutter
+
+Signals on the left automatically if you are up to date with your
+branch, if there are differences, what is added and what is removed
+see:
+
+- [[https://github.com/syohex/emacs-git-gutter/][git gutter]]
+
+- [[https://github.com/syohex/emacs-git-gutter-fringe][git gutter fringe]]
+
++ add in combo: 
+
+  #+Name: Highlight uncommited lines for Git
+  #+BEGIN_SRC emacs-lisp
+    ;;Use the diff-hl package to highlight changed-and-uncommitted lines
+    ;;when programming.
+
+    ;;(use-package diff-hl
+    ;;  :config
+    ;;  (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+    ;;  (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+  #+END_SRC
+
+
+** Magit
+ 
 
 * Python 
 
@@ -1110,30 +1290,20 @@ For versions of GnuPG higher than 2.1 you can set the below to set the
 password directly from emacs mini-buffer and not with the opening of a
 specific dialogue.
 #+BEGIN_SRC emacs-lisp
-(setq epa-pinentry-mode 'loopback)
+  (setq epa-pinentry-mode 'loopback)
 #+END_SRC
 
 #+RESULTS:
 : loopback
 
 
-* TO BE CONTINUED
-
-  #+Name: Highlight uncommited lines for Git
-  #+BEGIN_SRC emacs-lisp
-    ;;Use the diff-hl package to highlight changed-and-uncommitted lines
-    ;;when programming.
-
-    ;;(use-package diff-hl
-    ;;  :config
-    ;;  (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
-    ;;  (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
-  #+END_SRC
-
-
 * TO DO
 
-***** TODO Incorporate unique file for agenda. There should be packages to further incorporate simple tools for making efficient agendas
+
+***** Incorporate unique file for agenda. There should be packages to further incorporate simple tools for making efficient agendas
+      :PROPERTIES:
+      :ID:       73691c90-2956-49ea-b5f4-7773c9a8db62
+      :END:
 
       This should be especially done looking at harry shwartz
       configuration file at the beginning. He masters it quite well.
@@ -1141,70 +1311,65 @@ specific dialogue.
       Makes also sense to look at the app integrating org mode to do on
       the phone.
 
-***** TODO Continue watching blog of the guy with tons of emacs tricks
+***** Continue watching blog of the guy with tons of emacs tricks
+      :PROPERTIES:
+      :ID:       008b7cb6-9fd0-4b54-bcce-abb3b6f8f055
+      :END:
       Find the link also at the beginning.
-***** TODO Further understand how to improve literate programming in org mode 
-***** TODO Watch dracula mood and theme of this crazy video about org mode on the internet.
-***** TODO Fix auctex issues
-***** TODO Understand about blogging with github.io pages
-***** TODO include calendar piping and understand calendar scheduling. :calendar:
+***** Watch dracula mood and theme of this crazy video about org mode on the internet.
+      :PROPERTIES:
+      :ID:       c04b969c-eeca-48d3-b119-6ddf87893721
+      :END:
+***** Fix auctex issues
+      :PROPERTIES:
+      :ID:       eac2375c-f03c-425e-ac40-c20453e286c8
+      :END:
+***** IN-PROGRESS Understand about blogging with github.io pages
+      :PROPERTIES:
+      :ID:       6b801caf-2ba2-4844-a760-e35f8f7f341a
+      :END:
+***** include calendar piping and understand calendar scheduling.  :calendar:
       SCHEDULED: <2019-05-30 gio>
-
-***** TODO Check at company-iron c++ and company-pyhton jedi integration.
-***** TODO Integrate tramp 
-***** TODO Check at magit. Seems to be a very nice feature for git integration within emacs.
-***** TODO Watch again Howard Abraham Emacs config. 
+      :PROPERTIES:
+      :ID:       393bbfbe-7791-49db-8d5a-ec8191c8f0ad
+      :END:
+***** Check at company-iron c++ and company-pyhton jedi integration.
+      :PROPERTIES:
+      :ID:       cb3af3fe-16a9-42d1-b468-5df5a5e5f3a1
+      :END:
+***** Integrate tramp 
+      :PROPERTIES:
+      :ID:       c2b0e00a-b5d6-4606-ae96-8f66c848f395
+      :END:
+***** Check at magit. Seems to be a very nice feature for git integration within emacs.
+      :PROPERTIES:
+      :ID:       0cdd20ee-fc04-47d3-88e8-6b835ab222b0
+      :END:
+***** IN-PROGRESS Watch again Howard Abraham Emacs config. 
+      :PROPERTIES:
+      :ID:       a6a1d021-2541-466f-a328-b2de7b4580d3
+      :END:
 
       There are very very nice tricks to be implemented there such as the
       wrapper functionalities to insert parentheses quotes etc. of all
       kind across words and section.
-***** TODO Google translate
+***** Google translate
+      :PROPERTIES:
+      :ID:       2c6ae19b-bb61-47c2-903e-ccb788ca62b7
+      :END:
 
       Check at google translate package on MELPA. Sounds interesting for my case.
-***** TODO Configure Cloud Storage system with local computer
-
-      This is a must. There is also the option to combine git
-      functionalities with dropbox. Check at the following blog for
-      more [[https://nicolaiarocci.com/usare-git-con-dropbox/][link dropbox-git]].
-
-      Understand well the advantage of dropbox git. You can modify the
-      files directly in the dropbox folder and the changes will be
-      tracked automatically.      
-      
-      In any case the beauty of cloud storage is that when properly
-      synchronized it automatically saves your file periodically so no
-      risk of loosing them and that is also the actual strength of the
-      storage in comparison to github-like storage. Notice though that
-      there is no version control of cloud storage this is why github
-      still useful.
-
-      Important if allowing the automatic storage is to encrypt the
-      files when uploading. 
-
-
-nn* Test mode
-
-
-Here I put changes that I am currently trying and not sure to keep on
-the long run. 
-
-Save files in two different locations concurrently.
-
-Try this.
-
-#+BEGIN_SRC emacs-lisp
-  ;; (add-hook 'local-write-file-hooks 'my-save-hook)
-  ;; (defun my-save-hook ()
-  ;;   "write the file in two places"
-  ;;   (let ((orig (buffer-file-name)))
-  ;;     (write-file (concat "/some/other/path" (file-name-nondirectory orig)) nil)
-  ;;     (write-file orig nil)))
-#+END_SRC
-
-
-***** TODO Consider Separate Folder
+***** Consider Separate Folder
+      :PROPERTIES:
+      :ID:       31360ea4-f79c-4d9c-85bc-fb4a3b6f293d
+      :END:
   
     for managing packages in "test mode"
+
+***** consider piping saving into two different files concurrently for dropbox integration.
+      :PROPERTIES:
+      :ID:       cc52cc25-9ede-49b9-99ca-ab848617edf8
+      :END:
 
 
 * Deal with conflicting key bindings
@@ -1233,4 +1398,25 @@ therefore sensible to keep it here already.
   ;; (my-keys-minor-mode 1)
 #+END_SRC
 
+
+
+* Test-Mode
+
+Gives a nice mode line at the bottom.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package moody
+    :config
+    (setq x-underline-at-descent-line t)
+    (moody-replace-mode-line-buffer-identification)
+    (moody-replace-vc-mode))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package minions
+  :config
+  (setq minions-mode-line-lighter ""
+        minions-mode-line-delimiters '("" . ""))
+  (minions-mode 1))
+#+END_SRC
 
