@@ -136,6 +136,12 @@ Marmalade
 
 * Basic Customization
 
+** Define tilde for windows OS
+
+#+BEGIN_SRC emacs-lisp
+     (add-hook 'after-init-hook
+	       (lambda () (global-set-key (kbd "M-ì") "~")))
+#+END_SRC
 ** Set global encoding 
 
 #+BEGIN_SRC emacs-lisp
