@@ -1,0 +1,128 @@
+ls
+curl -sL https://ibm.biz/idt-installer | bash
+ls
+ls
+pwd
+cd ../Downloads/
+ls
+mv ETL.ipynb Autoencoder.ipynb
+ls
+ls
+cd ../Desktop/Learning/
+ls
+which python
+python3
+pip3 list
+ipython
+cd python_venv/
+ls
+pwd
+deactivate
+deactivate 
+ls 
+which jupyter
+pip3 install --user jupyter
+which jupyter
+/proc/sys/kernel/hostname
+cat /proc/sys/kernel/hostname
+id -u -n
+$HOSTNAMEW
+$HOSTNAME
+echo $HOSTNAME
+hostname
+ssh -R 2210:localhost:22
+ssh 2210:localhost:22
+ssh -R 2210:localhost:22
+ssh -f -R 2210:localhost:22
+hostname
+curl ifconfig.me
+id -u -n
+telnet localhosf 22
+telnet localhost 22
+ssh dsxuser@169.60.36.42
+ssh localhost
+sudo apt-get install openssh-server
+sudo systemsetup -getremotelogin
+sudo systemsetup -setremotelogin on
+sudo systemsetup -getremotelogin
+ssh localhost
+sudo ss -nlput | grep sshd
+sudo ss -nlput | grep sshd
+ssh localhost:22
+ssh 22:localhost
+ssh localhost -p 22
+mv ../Downloads/Twelve_Factor.pptx .
+ls
+mkdir Bureaucracy
+mv Scansione* Bureaucracy/
+ls
+rm prova.py
+rm prova.org 
+ls
+rm ZH-anmeldeformular_hassan.pdf 
+ls
+cd IBM_projects/
+ls
+cd minor
+cd minor_tasks/
+ls
+mv ~/Desktop/openshiftpricing.org .
+ls
+mv ~/Desktop/Data Lake.org .
+ls
+mv ~/Desktop/Data\ Lake.org .
+ls
+cd ~/Desktop/
+ls
+mv Twelve_Factor.pptx Learning/Journey_to_Cloud/
+ls
+cd Program\ Executable\ :\ Drivers/
+ls
+rm ~/Downloads/Spectacle+1.2.zip
+mv ~/Downloads/CH030154.ID ~/Desktop/Bureaucracy/
+mv ~/Downloads/1Password Emergency Kit.pdf ~/Desktop/Bureaucracy/
+mv ~/Downloads/1Password Emergency Kit.pdf ~/Desktop/Bureaucracy/
+mv ~/Downloads/ ~/Desktop/Bureaucracy/
+mv ~/Downloads/1Password\ Emergency\ Kit.pdf ~/Desktop/Bureaucracy/
+mv ~/Downloads/enrollmentProfile.mobileconfig ~/Desktop/Bureaucracy/
+cd ~/Desktop/
+ls
+mv Showroom Server_Room_Armani
+ls
+mv Server_Room_Armani/ IBM_projects/
+cd IBM_projects/
+ls
+mv ../SmallPJs/ ./Armani_ProjectsCode
+ls
+cd ..
+ls
+cd Emacs\ Configuration/
+ls
+ls -la
+cd ..
+git clone https://github.com/MarcoHassan/emacs_config.git
+git@github-PRIVATE:MarcoHassan/emacs_config.git b
+git clone git@github-PRIVATE:MarcoHassan/emacs_config.git b
+xcode-select --reset
+sudo xcode-select --reset 
+git clone https://github.com/MarcoHassan/emacs_config.git
+sudo xcode-select --reset 
+git clone https://github.com/MarcoHassan/emacs_config.git
+sudo xcode-select --install
+git clone https://github.com/MarcoHassan/emacs_config.git
+ls
+cd emacs_config
+ls
+git checkout -b mac_install
+ls
+ls -la
+git checkout master
+ls
+git checkout mac_install
+ls -la
+rm emacs*
+ls
+rm outdated.org 
+ls
+mv ../Emacs\ Configuration/ .
+ls

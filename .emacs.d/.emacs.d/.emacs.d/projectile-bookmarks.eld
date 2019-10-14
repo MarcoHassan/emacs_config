@@ -1,0 +1,1 @@
+("~/Desktop/bits-of-experience/" "~/Desktop/Data_Science_Learning/")

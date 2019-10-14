@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: org_python_chunck
+# key: o_py
+# binding: C-c 3
+# --
+
+#+begin_src python
+$0
+#+end_src
+

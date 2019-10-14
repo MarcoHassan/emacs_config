@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: org_R_chunck
+# key: o_R
+# binding: C-c 2
+# --
+
+#+begin_src R
+$0
+#+end_src
+

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: org_emacs_lisp
+# key: o_lisp
+# binding: C-c 1
+# --
+
+#+begin_src emacs-lisp 
+$0
+#+end_src 
