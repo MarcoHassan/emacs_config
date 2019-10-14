@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: org_ipython_chunck
+# key: o_ipy
+# binding: C-c 4
+# --
+
+#+begin_src ipython
+$0
+#+end_src
+
