@@ -6,4 +6,6 @@
 
 *.tex
 
+*.org~
+
 _minted-emacs_configuration
