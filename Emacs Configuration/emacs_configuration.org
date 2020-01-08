@@ -1,4 +1,6 @@
+
 * Notes
+
 Note that this is an experimentation integrating WSL on window emacs.
 
 In general there are too many conflicts. The major ones discovered to
@@ -60,7 +62,7 @@ configuration file without having to search for the directory.
 #+BEGIN_SRC emacs-lisp
     (defun hrs/visit-emacs-config ()
       (interactive)
-      (find-file "~/Desktop/Emacs Configuration/emacs_configuration.org"))
+      (find-file "~/Desktop/emacs_config/Emacs Configuration/emacs_configuration.org"))
 
     (global-set-key (kbd "C-c e") 'hrs/visit-emacs-config)
 
@@ -68,7 +70,6 @@ configuration file without having to search for the directory.
 
 #+RESULTS:
 : hrs/visit-emacs-config
-
 
 
 * Ensure Use-package
@@ -294,6 +295,9 @@ Rainbow-delimiters is convenient for coloring matching parentheses.
 
     (global-set-key (kbd "C-x k") 'bjm/kill-this-buffer)
 #+END_SRC
+
+#+RESULTS:
+: bjm/kill-this-buffer
 
 In case you want to select as standard which buffer to kill
 #+BEGIN_SRC emacs-lisp
@@ -583,17 +587,21 @@ specified.  Select the current line if the LINES prefix is zero."
 : ha/expand-region
 ** Autofill Mode
 
-Goes to next line on the next space when the line becomes too wide
+Goes to next line on the next space when the line becomes too wide.
 
 #+BEGIN_SRC emacs-lisp
 ;;  (setq-default auto-fill-function 'do-auto-fill)
+
+   (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
 ;;  go to next line but in a horrible way at this stage. try to fix
 ;;  the issue.
 #+END_SRC
 
 #+RESULTS:
-: do-auto-fill
+
+To set the width of the column for which the entry must go to the new
+line, check at the following [[https://www.emacswiki.org/emacs/FillParagraph][page]].
 
 ** Beacon Mode
 
@@ -627,14 +635,14 @@ Goes to next line on the next space when the line becomes too wide
    or for commenting it away.
 
    #+BEGIN_SRC emacs-lisp
-     (defun unfill-paragraph ()
-       "Convert a multi-line paragraph into a single line of text."
-       (interactive)
-       (let ((fill-column (point-max)))
-	 (fill-paragraph nil)))
+   (defun unfill-paragraph ()
+      "Convert a multi-line paragraph into a single line of text."
+      (interactive)
+      (let ((fill-column (point-max)))
+        (fill-paragraph nil)))
 
-     ;; Handy key definition
-     (define-key global-map "\M-Q" 'unfill-paragraph)
+    ;; Handy key definition
+    (define-key global-map "\M-Q" 'unfill-paragraph)
    #+END_SRC
 
 ** Aggressive Indent
@@ -650,61 +658,6 @@ Goes to next line on the next space when the line becomes too wide
 
 #+RESULTS:
 : t
-
-** Eshell
-
-Fancy Prompt
-#+BEGIN_SRC emacs-lisp
-  (defun with-face (str &rest face-plist)
-    (propertize str 'face face-plist))
-  
-  (defun shk-eshell-prompt ()
-    (let ((header-bg "#292929"))   
-      (concat
-       (with-face (concat (eshell/pwd) " ") :background header-bg :foreground "green")
-       (with-face (format-time-string "(%Y-%m-%d %H:%M) " (current-time)) :background header-bg :foreground "#888")
-       (with-face
-        (or (ignore-errors (format "(%s)" (vc-responsible-backend default-directory))) "")
-        :background header-bg)
-       (with-face "\n" :background header-bg)
-       (with-face user-login-name :foreground "indian red")
-       "@"
-       (with-face "localhost" :foreground "sea green")
-       (if (= (user-uid) 0)
-           (with-face " #" :foreground "red")
-         " $")
-       " ")))
-
-  (setq eshell-prompt-function 'shk-eshell-prompt)
-  (setq eshell-highlight-prompt nil)
-#+END_SRC
-
-#+RESULTS:
-
-A built in solution for search of history commands.
-
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'eshell-mode-hook
-	    (lambda ()
-	      (local-set-key (kbd "C-c h")
-			     (lambda ()
-			       (interactive)
-			       (insert
-				(ido-completing-read "Eshell history: "
-						     (delete-dups
-						      (ring-elements eshell-history-ring))))))
-	      ))
-#+END_SRC
-
-#+RESULTS:
-
-Open Eshell at Start-up
-
-#+BEGIN_SRC emacs-lisp
-(cd "/Users/marcohassan/Desktop/")
-(eshell)
-(delete-other-windows)
-#+END_SRC
 
 ** Set Default Size for all Buffers
 
@@ -996,12 +949,34 @@ Switch among org buffers. This is a new feature intended to save time
 as you will be prompted just with org buffers when changing buffers.
 
 #+BEGIN_SRC emacs-lisp
-   (global-set-key (kbd "C-c o") 'org-switchb)
-#+END_SRC
+(global-set-key (kbd "C-c o") 'org-switchb)
+
+(global-set-key (kbd "\M-q") 'fill-paragraph)
+#+End_Src
+
+#+Results:
+: fill-paragraph
+
+#+Begin_Src emacs-lisp 
+(setq org-src-preserve-indentation nil
+      org-edit-src-content-indentation 0)
+#+end_src 
+
+#+RESULTS:
+: 0
+** Store link to current file
+
+#+begin_src emacs-lisp 
+    (global-set-key (kbd "C-c l") 'org-store-link)
+#+end_src 
+
+#+RESULTS:
+: org-store-link
 
 ** Export modes
 
-This modes are not found on mac. So far not important as I never really worked with them. Check at a later point in case of need.
+This modes are not found on mac. So far not important as I never
+really worked with them. Check at a later point in case of need.
 
 #+BEGIN_SRC emacs-lisp
   ;; ;; Exporting in markdown and beamer mode
@@ -1092,37 +1067,40 @@ This modes are not found on mac. So far not important as I never really worked w
 ** Babel
 
    #+BEGIN_SRC emacs-lisp
-     ;; For babel evaluing in R
-     ;;(require 'ess-site)
+   ;; For babel evaluing in R
+   ;;(require 'ess-site)
 
-     ;; Allowing minted to highlight code in latex mode when exporting
-     (setq org-latex-pdf-process
-	   '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	     "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	     "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+   ;; Allowing minted to highlight code in latex mode when exporting
+   (setq org-latex-pdf-process
+	 '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	   "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	   "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
-     (add-to-list 'org-latex-packages-alist '("" "minted"))
-     (setq org-latex-listings 'minted)
+   (add-to-list 'org-latex-packages-alist '("" "minted"))
+   (setq org-latex-listings 'minted)
 
-     ;; Allow code evaluation in the org mode source code chunck
+   ;; Allow code evaluation in the org mode source code chunck
 
-     (use-package gnuplot) ;; recall to download it trough MELPA at first
+   (use-package gnuplot
+     :ensure t) ;; recall to download it trough MELPA at first
 
-     (org-babel-do-load-languages
-      'org-babel-load-languages
-      '((C . t)
-	(R . t)
-	(sql . t)
-	(python . t)
-	(ipython . t)
-	(shell . t)
-	(emacs-lisp . t)
-        (latex . t)
-	))
+   (org-babel-do-load-languages
+    'org-babel-load-languages
+    '((C . t)
+      (R . t)
+      (sql . t)
+      (python . t)
+      (ipython . t)
+      (shell . t)
+      (emacs-lisp . t)
+      (latex . t)
+      ))
 
-     ;; Don't ask before executing code in the chunck.
-     (setq org-confirm-babel-evaluate nil)
+   ;; Don't ask before executing code in the chunck.
+   (setq org-confirm-babel-evaluate nil)
    #+END_SRC
+
+   #+RESULTS:
 
 ** Agenda
 *** General Configuration
@@ -1150,20 +1128,57 @@ This modes are not found on mac. So far not important as I never really worked w
  #+END_SRC
 
 *** Task and org-capture management
-    
-    Still trying to understand exactly how it works.....
 
     Orgmobile configuration.
 
-    #+BEGIN_SRC emacs-lisp
-      ;; Create and Specify Agenda folder.
-      (setq org-agenda-files '("~/Desktop/Agenda"))
+    Org mode has the customizable variable org-agenda-files. The files
+    listed by absolute path under this variable are used for building
+    the org agenda window. If an element in the list is a directory,
+    then all .org files matching the org-agenda-regex are processed to
+    build the agenda view.
 
+    #+BEGIN_SRC emacs-lisp
+    ;; Create and Specify Agenda folder.
+    (setq org-agenda-files (list "~/Dropbox/Agenda"
+			         "~/Desktop/org/inbox.org"
+				 "~/Desktop/TODOs/"))
     #+END_SRC
 
+    #+RESULTS:
+    | ~/Dropbox/Agenda | ~/Desktop/org/inbox.org | ~/Desktop/TODOs/ |
+
     #+BEGIN_SRC emacs-lisp
-      (setq org-directory "~/Desktop/org")
+    (setq org-directory "~/Desktop/org")
+
+    (setq org-mobile-inbox-for-pull "~/Desktop/org/inbox.org")
+
+    (setq org-mobile-directory "~/Dropbox/Applicazioni/MobileOrg/") 
     #+END_SRC
+
+    #+RESULTS:
+    : ~/Dropbox/Applicazioni/MobileOrg/
+
+    Notice that to pull the agendas entries from the mobile; you have to
+    save them in the =mobileorg.org= file in the
+    =Dropbox/Applicazioni/Mobileorg= folder. Just then you will be able to
+    pull the agenda into the ~org-mobile-inbox-for-pull~ above. 
+
+
+    The checksum are a nice way to speed up synchronization in the
+    sense that just things that where not changed will be
+    synchronized. The checksum is the way to see whether the documents
+    were synchronized or not.
+
+
+    #+begin_src emacs-lisp 
+    ;; (defcustom org-mobile-checksum-binary "/usr/bin/shasum"
+    ;;    "Executable used for computing checksums of agenda files."
+    ;;    :group 'org-mobile
+    ;;    :type 'string)
+    #+end_src 
+
+    #+RESULTS:
+    : org-mobile-checksum-binary
 
 *** Archiving
 
@@ -1184,11 +1199,42 @@ This modes are not found on mac. So far not important as I never really worked w
       (setq org-log-done 'time)
     #+END_SRC
 
+
 ** Capture
    
    This section frames the way in which to capture short notes and to
    do stuff in the middle of the day. Here everyday tasks will be
    saved.
+
+#+begin_src emacs-lisp 
+;; where the notes will be stored. the reference is the previously
+;; defined org directory.
+(setq org-default-notes-file "~/Desktop/TODOs/capture.org")
+#+end_src 
+
+#+RESULTS:
+: ~/Desktop/TODOs/capture.org
+
+Define the global map for using org-capture
+
+#+begin_src emacs-lisp 
+(global-set-key  (kbd "\C-c c")  'org-capture)
+#+end_src 
+
+#+RESULTS:
+: org-capture
+
+This is the templates that will allow you to quickly add notes to your
+capture.org file.
+
+#+begin_src emacs-lisp 
+(setq org-capture-templates
+      (quote (("t" "todo" entry (file "~/Desktop/TODOs/capture.org")
+               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("n" "note" entry (file "~/Desktop/TODOs/capture.org")
+               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+              )))
+#+end_src 
 
 
 
@@ -1213,47 +1259,68 @@ Set path to python executable so that emacs can leverage it. This
 step is necessary when operating through Windows OS.
 
 #+BEGIN_SRC emacs-lisp
-  ;; Ativate elpy package to run python code
-  (use-package elpy
-    :ensure t)
+    (use-package elpy
+      :ensure t
+      :config
+      (put 'set-goal-column 'disabled nil)
+      (elpy-enable)
+      (setq elpy-rpc-ignored-buffer-size (* 1024 1024 1024))
+      (setq python-indent-offset 4)
 
-  (elpy-enable) ;; initialize elpy for python IDE in emacs
+      ;; interactive python
+      (setq python-shell-interpreter "python3" ;; "ipython"
+	    elpy-rpc-python-command "python3"  ;; "ipython"
+	    python-shell-interpreter-args "-i"));; "-i --simple-promt"
 
-  ;; Activate flycheck instead of flymake from eply package
-  (when (require 'flycheck  nil t)
-    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-    (add-hook 'elpy-mode-hook 'flycheck-mode))
+    ;; notice that ipython functions just with orgbabel combination on the
+    ;; mac. there are currently soume issues to be solved. this causes
+    ;; isssues when editing with C-c ' on mac. 
 
-  ;; Activate autopep. This integrates with Emacs so that when you save a
-  ;; file trough the -C-x C-s- cmd it will automatically format and correct
-  ;; any PEP8 errors (excluding the ones that you may specify)
+    (when (require 'flycheck  nil t)
+      (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+      (add-hook 'elpy-mode-hook 'flycheck-mode))
 
-  ;; Did not especially appreciated autopep8. Leave it out.
-					  ;(require 'py-autopep8)
-					  ;(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
-  ;; Integrate the eply mode with the IPython REPL and the Jupyter Notebooks.
-  ;; This will allow to run Jupyter Notebooks that looks  very much like
-  ;; R .rmd files directly on Emacs !after connecting to the notebook online!
+    ;; (use-package elpy
+    ;;   :ensure t)
+    ;; (elpy-enable) ;; initialize elpy for python IDE in emacs
 
-  (setq python-shell-interpreter "ipython" 
-	python-shell-interpreter-args "-i --simple-prompt");; uses ipython interpreter. Please remember on Windows systems that you have to download python on winodws and install ipython through the automatically downloaded pip. Then add to the path the folder including ipython and you are good to go.
+    ;; ;; Activate flycheck instead of flymake from eply package
+    ;; (when (require 'flycheck  nil t)
+    ;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    ;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
-  ;; Set standard python interpreter as python 3
-  (setq elpy-rpc-python-command "python")
+    ;; ;; Activate autopep. This integrates with Emacs so that when you save a
+    ;; ;; file trough the -C-x C-s- cmd it will automatically format and correct
+    ;; ;; any PEP8 errors (excluding the ones that you may specify)
 
-  ;; Set up virtual environments emacs connection
-  (use-package virtualenvwrapper
-    :ensure t)
-  (venv-initialize-interactive-shells) ;; if you want interactive shell support
-  (venv-initialize-eshell) ;; if you want eshell support
-  ;; note that setting `venv-location` is not necessary if you
-  ;; use the default location (`~/.virtualenvs`), or if the
-  ;; the environment variable `WORKON_HOME` points to the right place
-  (setq venv-location "/Users/marcohassan/Desktop/python_venv")
+    ;; Did not especially appreciated autopep8. Leave it out.
+    (use-package py-autopep8
+      :ensure t)
+    (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
-  ;; Add hook for còmment highlighting.
-  ;;(add-hook 'python-mode-hook 'add-custom-keyw)
+    ;; ;; Integrate the eply mode with the IPython REPL and the Jupyter Notebooks.
+    ;; ;; This will allow to run Jupyter Notebooks that looks  very much like
+    ;; ;; R .rmd files directly on Emacs !after connecting to the notebook online!
+
+    ;; (setq python-shell-interpreter "ipython" 
+    ;; 	python-shell-interpreter-args "-i --simple-prompt");; uses ipython interpreter. Please remember on Windows systems that you have to download python on winodws and install ipython through the automatically downloaded pip. Then add to the path the folder including ipython and you are good to go.
+
+    ;; ;; Set standard python interpreter as python 3
+    ;; (setq elpy-rpc-python-command "ipython")
+
+    ;; Set up virtual environments emacs connection
+    (use-package virtualenvwrapper
+      :ensure t)
+    (venv-initialize-interactive-shells) ;; if you want interactive shell support
+    (venv-initialize-eshell) ;; if you want eshell support
+    ;; note that setting `venv-location` is not necessary if you
+    ;; use the default location (`~/.virtualenvs`), or if the
+    ;; the environment variable `WORKON_HOME` points to the right place
+    (setq venv-location "/Users/marcohassan/Desktop/python_venv")
+
+    ;; Add hook for còmment highlighting.
+    ;;(add-hook 'python-mode-hook 'add-custom-keyw)
 #+END_SRC
 
 #+RESULTS:
@@ -1266,6 +1333,19 @@ Good. After installing ipyhton thorugh pip everything is working
 smoothly. Remember to run pip on DOS and not on emacs shell as at the
 moment emacs shell is set to be the shell interacting with the Linux
 partition.
+
+
+* YAML
+
+#+begin_src emacs-lisp 
+(use-package yaml-mode
+  :ensure t)
+
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+#+end_src 
+
+#+RESULTS:
+: ((\.yml\' . yaml-mode) (\.odc\' . archive-mode) (\.odf\' . archive-mode) (\.odi\' . archive-mode) (\.otp\' . archive-mode) (\.odp\' . archive-mode) (\.otg\' . archive-mode) (\.odg\' . archive-mode) (\.ots\' . archive-mode) (\.ods\' . archive-mode) (\.odm\' . archive-mode) (\.ott\' . archive-mode) (\.odt\' . archive-mode) (\.\(e?ya?\|ra\)ml\' . yaml-mode) (.*\.ipynb\' . ein:ipynb-mode) (\.gpg\(~\|\.~[0-9]+~\)?\' nil epa-file) (\.elc\' . elisp-byte-code-mode) (\.zst\' nil jka-compr) (\.dz\' nil jka-compr) (\.xz\' nil jka-compr) (\.lzma\' nil jka-compr) (\.lz\' nil jka-compr) (\.g?z\' nil jka-compr) (\.bz2\' nil jka-compr) (\.Z\' nil jka-compr) (\.vr[hi]?\' . vera-mode) (\(?:\.\(?:rbw?\|ru\|rake\|thor\|jbuilder\|rabl\|gemspec\|podspec\)\|/\(?:Gem\|Rake\|Cap\|Thor\|Puppet\|Berks\|Vagrant\|Guard\|Pod\)file\)\' . ruby-mode) (\.re?st\' . rst-mode) (\.py[iw]?\' . python-mode) (\.less\' . less-css-mode) (\.scss\' . scss-mode) (\.awk\' . awk-mode) (\.\(u?lpc\|pike\|pmod\(\.in\)?\)\' . pike-mode) (\.idl\' . idl-mode) (\.java\' . java-mode) (\.m\' . objc-mode) (\.ii\' . c++-mode) (\.i\' . c-mode) (\.lex\' . c-mode) (\.y\(acc\)?\' . c-mode) (\.h\' . c-or-c++-mode) (\.c\' . c-mode) (\.\(CC?\|HH?\)\' . c++-mode) (\.[ch]\(pp\|xx\|\+\+\)\' . c++-mode) (\.\(cc\|hh\)\' . c++-mode) (\.\(bat\|cmd\)\' . bat-mode) (\.[sx]?html?\(\.[a-zA-Z_]+\)?\' . mhtml-mode) (\.svgz?\' . image-mode) (\.svgz?\' . xml-mode) (\.x[bp]m\' . image-mode) (\.x[bp]m\' . c-mode) (\.p[bpgn]m\' . image-mode) (\.tiff?\' . image-mode) (\.gif\' . image-mode) (\.png\' . image-mode) (\.jpe?g\' . image-mode) (\.te?xt\' . text-mode) (\.[tT]e[xX]\' . tex-mode) (\.ins\' . tex-mode) (\.ltx\' . latex-mode) (\.dtx\' . doctex-mode) (\.org\' . org-mode) (\.el\' . emacs-lisp-mode) (Project\.ede\' . emacs-lisp-mode) (\.\(scm\|stk\|ss\|sch\)\' . scheme-mode) (\.l\' . lisp-mode) (\.li?sp\' . lisp-mode) (\.[fF]\' . fortran-mode) (\.for\' . fortran-mode) (\.p\' . pascal-mode) (\.pas\' . pascal-mode) (\.\(dpr\|DPR\)\' . delphi-mode) (\.ad[abs]\' . ada-mode) (\.ad[bs].dg\' . ada-mode) (\.\([pP]\([Llm]\|erl\|od\)\|al\)\' . perl-mode) (Imakefile\' . makefile-imake-mode) (Makeppfile\(?:\.mk\)?\' . makefile-makepp-mode) (\.makepp\' . makefile-makepp-mode) (\.mk\' . makefile-bsdmake-mode) (\.make\' . makefile-bsdmake-mode) (GNUmakefile\' . makefile-gmake-mode) ([Mm]akefile\' . makefile-bsdmake-mode) (\.am\' . makefile-automake-mode) (\.texinfo\' . texinfo-mode) (\.te?xi\' . texinfo-mode) (\.[sS]\' . asm-mode) (\.asm\' . asm-mode) (\.css\' . css-mode) (\.mixal\' . mixal-mode) (\.gcov\' . compilation-mode) (/\.[a-z0-9-]*gdbinit . gdb-script-mode) (-gdb\.gdb . gdb-script-mode) ([cC]hange\.?[lL]og?\' . change-log-mode) ([cC]hange[lL]og[-.][0-9]+\' . change-log-mode) (\$CHANGE_LOG\$\.TXT . change-log-mode) (\.scm\.[0-9]*\' . scheme-mode) (\.[ckz]?sh\'\|\.shar\'\|/\.z?profile\' . sh-mode) (\.bash\' . sh-mode) (\(/\|\`\)\.\(bash_\(profile\|history\|log\(in\|out\)\)\|z?log\(in\|out\)\)\' . sh-mode) (\(/\|\`\)\.\(shrc\|zshrc\|m?kshrc\|bashrc\|t?cshrc\|esrc\)\' . sh-mode) (\(/\|\`\)\.\([kz]shenv\|xinitrc\|startxrc\|xsession\)\' . sh-mode) (\.m?spec\' . sh-mode) (\.m[mes]\' . nroff-mode) (\.man\' . nroff-mode) (\.sty\' . latex-mode) (\.cl[so]\' . latex-mode) (\.bbl\' . latex-mode) (\.bib\' . bibtex-mode) (\.bst\' . bibtex-style-mode) (\.sql\' . sql-mode) (\.m[4c]\' . m4-mode) (\.mf\' . metafont-mode) (\.mp\' . metapost-mode) (\.vhdl?\' . vhdl-mode) (\.article\' . text-mode) (\.letter\' . text-mode) (\.i?tcl\' . tcl-mode) (\.exp\' . tcl-mode) (\.itk\' . tcl-mode) (\.icn\' . icon-mode) (\.sim\' . simula-mode) (\.mss\' . scribe-mode) (\.f9[05]\' . f90-mode) (\.f0[38]\' . f90-mode) (\.indent\.pro\' . fundamental-mode) (\.\(pro\|PRO\)\' . idlwave-mode) (\.srt\' . srecode-template-mode) (\.prolog\' . prolog-mode) (\.tar\' . tar-mode) (\.\(arc\|zip\|lzh\|lha\|zoo\|[jew]ar\|xpi\|rar\|cbr\|7z\|ARC\|ZIP\|LZH\|LHA\|ZOO\|[JEW]AR\|XPI\|RAR\|CBR\|7Z\)\' . archive-mode) (\.oxt\' . archive-mode) (\.\(deb\|[oi]pk\)\' . archive-mode) (\`/tmp/Re . text-mode) (/Message[0-9]*\' . text-mode) (\`/tmp/fol/ . text-mode) (\.oak\' . scheme-mode) (\.sgml?\' . sgml-mode) (\.x[ms]l\' . xml-mode) (\.dbk\' . xml-mode) (\.dtd\' . sgml-mode) (\.ds\(ss\)?l\' . dsssl-mode) (\.jsm?\' . javascript-mode) (\.json\' . javascript-mode) (\.jsx\' . js-jsx-mode) (\.[ds]?vh?\' . verilog-mode) (\.by\' . bovine-grammar-mode) (\.wy\' . wisent-grammar-mode) ([:/\]\..*\(emacs\|gnus\|viper\)\' . emacs-lisp-mode) (\`\..*emacs\' . emacs-lisp-mode) ([:/]_emacs\' . emacs-lisp-mode) (/crontab\.X*[0-9]+\' . shell-script-mode) (\.ml\' . lisp-mode) (\.ld[si]?\' . ld-script-mode) (ld\.?script\' . ld-script-mode) (\.xs\' . c-mode) (\.x[abdsru]?[cnw]?\' . ld-script-mode) (\.zone\' . dns-mode) (\.soa\' . dns-mode) (\.asd\' . lisp-mode) (\.\(asn\|mib\|smi\)\' . snmp-mode) (\.\(as\|mi\|sm\)2\' . snmpv2-mode) (\.\(diffs?\|patch\|rej\)\' . diff-mode) (\.\(dif\|pat\)\' . diff-mode) (\.[eE]?[pP][sS]\' . ps-mode) (\.\(?:PDF\|DVI\|OD[FGPST]\|DOCX?\|XLSX?\|PPTX?\|pdf\|djvu\|dvi\|od[fgpst]\|docx?\|xlsx?\|pptx?\)\' . doc-view-mode-maybe) (configure\.\(ac\|in\)\' . autoconf-mode) (\.s\(v\|iv\|ieve\)\' . sieve-mode) (BROWSE\' . ebrowse-tree-mode) (\.ebrowse\' . ebrowse-tree-mode) (#\*mail\* . mail-mode) (\.g\' . antlr-mode) (\.mod\' . m2-mode) (\.ses\' . ses-mode) (\.docbook\' . sgml-mode) (\.com\' . dcl-mode) (/config\.\(?:bat\|log\)\' . fundamental-mode) (\.\(?:[iI][nN][iI]\|[lL][sS][tT]\|[rR][eE][gG]\|[sS][yY][sS]\)\' . conf-mode) (\.la\' . conf-unix-mode) (\.ppd\' . conf-ppd-mode) (java.+\.conf\' . conf-javaprop-mode) (\.properties\(?:\.[a-zA-Z0-9._-]+\)?\' . conf-javaprop-mode) (\.toml\' . conf-toml-mode) (\.desktop\' . conf-desktop-mode) (\`/etc/\(?:DIR_COLORS\|ethers\|.?fstab\|.*hosts\|lesskey\|login\.?de\(?:fs\|vperm\)\|magic\|mtab\|pam\.d/.*\|permissions\(?:\.d/.+\)?\|protocols\|rpc\|services\)\' . conf-space-mode) (\`/etc/\(?:acpid?/.+\|aliases\(?:\.d/.+\)?\|default/.+\|group-?\|hosts\..+\|inittab\|ksysguarddrc\|opera6rc\|passwd-?\|shadow-?\|sysconfig/.+\)\' . conf-mode) ([cC]hange[lL]og[-.][-0-9a-z]+\' . change-log-mode) (/\.?\(?:gitconfig\|gnokiirc\|hgrc\|kde.*rc\|mime\.types\|wgetrc\)\' . conf-mode) (/\.\(?:enigma\|gltron\|gtk\|hxplayer\|net\|neverball\|qt/.+\|realplayer\|scummvm\|sversion\|sylpheed/.+\|xmp\)rc\' . conf-mode) (/\.\(?:gdbtkinit\|grip\|orbital/.+txt\|rhosts\|tuxracer/options\)\' . conf-mode) (/\.?X\(?:default\|resource\|re\)s\> . conf-xdefaults-mode) (/X11.+app-defaults/\|\.ad\' . conf-xdefaults-mode) (/X11.+locale/.+/Compose\' . conf-colon-mode) (/X11.+locale/compose\.dir\' . conf-javaprop-mode) (\.~?[0-9]+\.[0-9][-.0-9]*~?\' nil t) (\.\(?:orig\|in\|[bB][aA][kK]\)\' nil t) ([/.]c\(?:on\)?f\(?:i?g\)?\(?:\.[a-zA-Z0-9._-]+\)?\' . conf-mode-maybe) (\.[1-9]\' . nroff-mode) (\.tgz\' . tar-mode) (\.tbz2?\' . tar-mode) (\.txz\' . tar-mode) (\.tzst\' . tar-mode) (\.markdown\' . markdown-mode) (\.md\' . markdown-mode))
 
 
 * Mac adjustments
@@ -1289,6 +1369,61 @@ partition.
 #+RESULTS:
 
 
+* Eshell 
+
+Fancy Prompt
+#+BEGIN_SRC emacs-lisp
+  (defun with-face (str &rest face-plist)
+    (propertize str 'face face-plist))
+
+  (defun shk-eshell-prompt ()
+    (let ((header-bg "#292929"))   
+      (concat
+       (with-face (concat (eshell/pwd) " ") :background header-bg :foreground "green")
+       (with-face (format-time-string "(%Y-%m-%d %H:%M) " (current-time)) :background header-bg :foreground "#888")
+       (with-face
+	(or (ignore-errors (format "(%s)" (vc-responsible-backend default-directory))) "")
+	:background header-bg)
+       (with-face "\n" :background header-bg)
+       (with-face user-login-name :foreground "indian red")
+       "@"
+       (with-face "localhost" :foreground "sea green")
+       (if (= (user-uid) 0)
+	   (with-face " #" :foreground "red")
+	 " $ "))))
+
+  (setq eshell-prompt-function 'shk-eshell-prompt)
+  (setq eshell-highlight-prompt nil)
+#+END_SRC
+
+#+RESULTS:
+
+A built in solution for search of history commands.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'eshell-mode-hook
+	    (lambda ()
+	      (local-set-key (kbd "C-c h")
+			     (lambda ()
+			       (interactive)
+			       (insert
+				(ido-completing-read "Eshell history: "
+						     (delete-dups
+						      (ring-elements eshell-history-ring))))))
+	      ))
+#+END_SRC
+
+#+RESULTS:
+
+Open Eshell at Start-up
+
+#+BEGIN_SRC emacs-lisp
+(cd "/Users/marcohassan/Desktop/")
+(eshell)
+(delete-other-windows)
+#+END_SRC
+
+
 Eshell is great but if you do not start eshell from within a terminal,
 it has difficulties to run programs listed in the environment PATH.
 
@@ -1305,4 +1440,5 @@ the emacs configuration file.
 #+END_SRC
 
 #+RESULTS:
+
 
