@@ -8,4 +8,6 @@
 
 *.org~
 
+./Emacs Configuration/credentials
+
 _minted-emacs_configuration
