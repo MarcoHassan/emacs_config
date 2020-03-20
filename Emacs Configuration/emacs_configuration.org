@@ -51,7 +51,8 @@ enjoy a lot and believe it gives a great overview over the document.
 
 From Howard Abraham...
 
-With a long history of working on small machines without gigabytes of RAM, we might as well let Emacs be the beast it has always dreamed.
+With a long history of working on small machines without gigabytes of
+RAM, we might as well let Emacs be the beast it has always dreamed.
 
 First, let’s increase the cache:
 
@@ -59,6 +60,23 @@ First, let’s increase the cache:
 (setq gc-cons-threshold 50000000)
 #+END_SRC
 
+Another interesting trick is to compile byte code. This will make the
+code run faster.
+
+You can do that by following the four instructions should you be
+interested.
+
+#+begin_example
+- Start Emacs.
+- Type [Alt]-x.
+- When prompted for a command, enter byte-force-recompile [Enter].
+- When prompted for a directory name, change the path to your =.el=
+  files press [Enter].
+#+end_example
+
+The end result should be an .elc file for most of the =.el= files (not
+all of the files will be compiled, so don't worry if some are
+missing).
 
 * Shortcut to Configuration File
 
@@ -1559,11 +1577,11 @@ Here you mask your settings through a json
 (setq package-check-signature nil)
 
 (use-package org-gcal
-:ensure t
-:config
-(setq org-gcal-client-id credID
-org-gcal-client-secret secret
-org-gcal-file-alist '(("marco.hassan30@gmail.com" .  "~/dropbox/Applicazioni/MobileOrg/mobileorg.org"))))
+  :ensure t
+  :config
+  (setq org-gcal-client-id credID 
+	org-gcal-client-secret secret
+	org-gcal-file-alist) '(("marco.hassan30@gmail.com" .  "~/dropbox/Applicazioni/MobileOrg/mobileorg.org")))
 #+end_src 
 
 #+RESULTS:
@@ -1778,6 +1796,105 @@ command.
 
 #+RESULTS:
 | flycheck-mode | flymake-json-load |
+
+
+* XML 
+
+
+Some configuration was taken from [[https://lgfang.github.io/mynotes/emacs/emacs-xml.html#sec-8-1][this link]].
+You can refer it if needed.
+
+#+begin_src emacs-lisp 
+(add-to-list 'auto-mode-alist
+             (cons (concat "\\." (regexp-opt
+                                  '("xml" "xsd" "sch"
+                                    "rng" "xslt" "svg" "rss") t)
+                           "\\'") 'nxml-mode))
+(when (> emacs-major-version 21)
+  (setq magic-mode-alist3
+        (cons '("<\\?xml " . nxml-mode) magic-mode-alist)))
+(fset 'xml-mode 'nxml-mode)
+(fset 'html-mode 'nxml-mode)
+(require 'rng-loc nil t)
+#+end_src 
+
+#+RESULTS:
+: rng-loc
+
+
+#+begin_src emacs-lisp 
+(add-hook 'nxml-mode-hook (lambda() (hs-minor-mode 1)))
+
+(add-to-list 'hs-special-modes-alist
+             '(nxml-mode
+               "<!--\\|<[^/>]*[^/]>" ;; regexp for start block
+               "-->\\|</[^/>]*[^/]>" ;; regexp for end block
+               "<!--"
+               nxml-forward-element
+               nil))
+
+(defun lgfang-toggle-level ()
+  "mainly to be used in nxml mode"
+  (interactive) (hs-show-block) (hs-hide-level 1))
+#+end_src 
+
+#+RESULTS:
+
+#+begin_src emacs-lisp 
+(defun nxml-where ()
+  "Display the hierarchy of XML elements the point is on as a path."
+  (interactive)
+  (let ((path nil))
+    (save-excursion
+      (save-restriction
+        (widen)
+        (while (and (< (point-min) (point)) ;; Doesn't error if point is at beginning of buffer
+                    (condition-case nil
+                        (progn
+                          (nxml-backward-up-element) ; always returns nil
+                          t)
+                      (error nil)))
+          (setq path (cons (xmltok-start-tag-local-name) path)))
+        (if (called-interactively-p t)
+            (message "/%s" (mapconcat 'identity path "/"))
+          (format "/%s" (mapconcat 'identity path "/")))))))
+#+end_src 
+
+#+RESULTS:
+: nxml-where
+
+
+#+begin_src emacs-lisp 
+(defun nxml-pretty-print (beg end &optional arg)
+  "Reformat the region between BEG and END.
+    With optional ARG, also auto-fill."
+  (interactive "*r\nP")
+  (let ((fill (or (bound-and-true-p auto-fill-function) -1)))
+    (sgml-mode)
+    (when arg (auto-fill-mode))
+    (sgml-pretty-print beg end)
+    (nxml-mode)
+    (auto-fill-mode fill)))
+#+end_src 
+
+#+RESULTS:
+: nxml-pretty-print
+
+Create shortcuts.
+
+#+begin_src emacs-lisp 
+;; define keyboard shortcuts for special mode
+(eval-after-load "nxml-mode"
+  (progn 
+     (define-key nxml-mode-map (kbd "C-c C-'") 'lgfang-toggle-level)
+     (define-key nxml-mode-map (kbd "C-c C-w") 'nxml-where)
+     (define-key nxml-mode-map  (kbd "C-c C-p") 'nxml-pretty-print)
+  )
+)
+#+end_src 
+
+#+RESULTS:
+: sgml-pretty-print
 
 
 * Mac adjustments
