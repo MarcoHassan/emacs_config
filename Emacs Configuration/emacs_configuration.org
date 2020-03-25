@@ -30,6 +30,7 @@ b* For Mac Specific Issues
 #+END_SRC
 
 #+RESULTS:
+: *is-a-mac*
 
 
 * General sources
@@ -60,6 +61,9 @@ First, let’s increase the cache:
 (setq gc-cons-threshold 50000000)
 #+END_SRC
 
+#+RESULTS:
+: 50000000
+
 Another interesting trick is to compile byte code. This will make the
 code run faster.
 
@@ -77,6 +81,7 @@ interested.
 The end result should be an .elc file for most of the =.el= files (not
 all of the files will be compiled, so don't worry if some are
 missing).
+
 
 * Shortcut to Configuration File
 
@@ -119,6 +124,9 @@ automatically and open them with the predefined configuration options.
   (require 'cl)
 #+END_SRC
 
+#+RESULTS:
+: cl
+
 
 * Enable MELPA package manager
 
@@ -149,6 +157,8 @@ automatically and open them with the predefined configuration options.
      )
   #+END_SRC
 
+  #+RESULTS:
+
 
 * Enable Marmalade and Org ELPA package manager
 
@@ -158,12 +168,15 @@ Org ELPA
 #+END_SRC
 
 #+RESULTS:
-: ((marmalade . http://marmalade-repo.org/packages/) (marmalade . http://orgmode.org/packages/) (gnu . https://elpa.gnu.org/packages/) (melpa-stable . https://stable.melpa.org/packages/) (org . https://orgmode.org/elpa/))
+: ((marmalade . http://marmalade-repo.org/packages/) (gnu . https://elpa.gnu.org/packages/) (melpa-stable . https://stable.melpa.org/packages/) (org . https://orgmode.org/elpa/))
 
 Marmalade
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'package-archives '("marmalade" .  "http://marmalade-repo.org/packages/"))
 #+END_SRC
+
+#+RESULTS:
+: ((marmalade . http://marmalade-repo.org/packages/) (gnu . https://elpa.gnu.org/packages/) (melpa-stable . https://stable.melpa.org/packages/) (org . https://orgmode.org/elpa/))
 
 
 
@@ -180,6 +193,9 @@ Marmalade
 (setq coding-system-for-read 'utf-8)
 (setq coding-system-for-write 'utf-8)
 #+END_SRC
+
+#+RESULTS:
+: utf-8
 
 ** No beeps, scrollbar etc.
 
@@ -212,6 +228,8 @@ Marmalade
 #+BEGIN_SRC emacs-lisp
   (add-hook 'after-init-hook #'color-highlight) ;; to actiavte it when starting emacs.
 #+END_SRC
+
+#+RESULTS:
 
 Create general function to set transparency.
 #+BEGIN_SRC emacs-lisp
@@ -623,7 +641,6 @@ interested into modify.
 
 #+RESULTS:
 
-
 ** Set lining globally
 #+BEGIN_SRC emacs-lisp
 (global-linum-mode t) ;; load line number at the beginning of the
@@ -854,7 +871,6 @@ You can still ameliorate the autocompletion. You have to look on the
 github page for the package for that.
 
 
-
 ** SSH and nice terminal there
 
 The solution to properly ssh into a machine and have a full-fledge
@@ -872,6 +888,13 @@ correct directory in the sshed machine.
 
 You can inspire yourself following [[https://github.com/jwiegley/emacs-release/blob/master/etc/themes/misterioso-theme.el][this link]].
 
+
+
+** Wrap text in quotes
+
+#+begin_src emacs-lisp 
+(global-set-key (kbd "M-\"") 'insert-pair)
+#+end_src 
 
 
 * Swiper for incremental search
@@ -1133,7 +1156,6 @@ documentation for the various snippets can be found at
   To be implemented using: [[https://cestlaz.github.io/posts/using-emacs-25-tramp/][tramp_tut]].
 
 
-  
 * Org Mode
 
 Very nice mode. Important I downloaded 
@@ -1284,7 +1306,6 @@ pandoc notebook.md -o notebook.org
 #+end_example
 
 
-
 ** Layout
 
    #+BEGIN_SRC emacs-lisp
@@ -1353,6 +1374,7 @@ pandoc notebook.md -o notebook.org
       (shell . t)
       (emacs-lisp . t)
       (latex . t)
+      (plantuml . t) ;; for UML diagrams
       ))
 
    ;; Don't ask before executing code in the chunck.
@@ -1376,6 +1398,80 @@ Add to company the ob-ipython dict.
 
 #+RESULTS:
 | org-display-inline-images |
+
+** PlantUML
+
+   For creating UML diagrams in org mode. Followed the instructions
+   [[http://eschulte.github.io/babel-dev/DONE-integrate-plantuml-support.html][here]] for the set-up. You can download the necessary =.jar= file
+   [[https://sourceforge.net/projects/plantuml/files/plantuml.jar/download][here]]. I moved it in the =.emacs.d= repo.
+
+   Important is moreover to install =graphviz= if you want to create
+   diagrams that are not sequence diagrams. This can be done in the
+   MAC [[https://brewinstall.org/install-graphviz-on-mac-with-brew/][as follows]].
+
+   #+begin_src emacs-lisp 
+   (setq org-plantuml-jar-path
+	 (expand-file-name "~/.emacs.d/plantuml.jar"))
+   #+end_src 
+
+   #+RESULTS:
+   : /Users/marcohassan/.emacs.d/plantuml.jar
+
+** Org-Blocks Display temporarily line numbers
+
+From Kitchin [[http://kitchingroup.cheme.cmu.edu/blog/2015/10/13/Line-numbers-in-org-mode-code-blocks/][link]].
+
+#+begin_src emacs-lisp 
+(defun temp-line-src-block ()
+  (interactive)
+      (defvar number-line-overlays '()
+	"List of overlays for line numbers.")
+
+      (make-variable-buffer-local 'number-line-overlays)
+
+      (defun number-line-src-block ()
+	(save-excursion
+	  (let* ((src-block (org-element-context))
+		 (nlines (- (length
+			     (s-split
+			      "\n"
+			      (org-element-property :value src-block)))
+			    1)))
+	    (goto-char (org-element-property :begin src-block))
+	    (re-search-forward (regexp-quote (org-element-property :value src-block)))
+	    (goto-char (match-beginning 0))
+
+	    (loop for i from 1 to nlines
+		  do
+		  (beginning-of-line)
+		  (let (ov)
+		    (setq ov (make-overlay (point) (point)))
+		    (overlay-put ov 'before-string (format "%3s " (number-to-string i)))
+		    (add-to-list 'number-line-overlays ov))
+		  (next-line))))
+
+	;; now read a char to clear them
+	(read-key "Press a key to clear numbers.")
+	(mapc 'delete-overlay number-line-overlays)
+	(setq number-line-overlays '()))
+
+      (number-line-src-block)
+)
+#+end_src 
+
+#+RESULTS:
+: temp-line-src-block
+
+Bind it to a kbd
+
+#+begin_src emacs-lisp 
+;; define keyboard shortcuts for special mode
+(eval-after-load "org-mode"
+     (define-key org-mode-map (kbd "C-c C-v 1") 'temp-line-src-block)
+)
+#+end_src 
+
+#+RESULTS:
 
 ** Agenda
 
@@ -1560,13 +1656,13 @@ Here you mask your settings through a json
 (setq credID (let* ((json-object-type 'hash-table)
 		      (json-array-type 'list)
 		      (json-key-type 'string)
-		      (json (json-read-file "./credentials/gCred.json")))
+		      (json (json-read-file "/Users/marcohassan/Desktop/emacs_config/Emacs Configuration/credentials/gCred.json")))
 		  (gethash "client-id" json)))
 
 (setq secret (let* ((json-object-type 'hash-table)
 		      (json-array-type 'list)
 		      (json-key-type 'string)
-		      (json (json-read-file "./credentials/gCred.json")))
+		      (json (json-read-file "/Users/marcohassan/Desktop/emacs_config/Emacs Configuration/credentials/gCred.json")))
 		  (gethash "secret" json)))
 #+end_src 
 
@@ -1576,12 +1672,12 @@ Here you mask your settings through a json
 #+begin_src emacs-lisp 
 (setq package-check-signature nil)
 
-(use-package org-gcal
-  :ensure t
-  :config
-  (setq org-gcal-client-id credID 
-	org-gcal-client-secret secret
-	org-gcal-file-alist) '(("marco.hassan30@gmail.com" .  "~/dropbox/Applicazioni/MobileOrg/mobileorg.org")))
+;; (use-package org-gcal
+;;   :ensure t
+;;   :config
+;;   (setq org-gcal-client-id credID 
+;; 	org-gcal-client-secret secret
+;; 	org-gcal-file-alist) '(("marco.hassan30@gmail.com" .  "~/dropbox/Applicazioni/MobileOrg/mobileorg.org")))
 #+end_src 
 
 #+RESULTS:
@@ -1748,6 +1844,7 @@ command.
 #+RESULTS:
 : untabify
 
+
 * YAML
 
 #+begin_src emacs-lisp 
@@ -1800,15 +1897,13 @@ command.
 
 * XML 
 
-
 Some configuration was taken from [[https://lgfang.github.io/mynotes/emacs/emacs-xml.html#sec-8-1][this link]].
 You can refer it if needed.
 
 #+begin_src emacs-lisp 
 (add-to-list 'auto-mode-alist
              (cons (concat "\\." (regexp-opt
-                                  '("xml" "xsd" "sch"
-                                    "rng" "xslt" "svg" "rss") t)
+                                  '("xml") t)
                            "\\'") 'nxml-mode))
 (when (> emacs-major-version 21)
   (setq magic-mode-alist3
@@ -1884,20 +1979,46 @@ Create shortcuts.
 
 #+begin_src emacs-lisp 
 ;; define keyboard shortcuts for special mode
-(eval-after-load "nxml-mode"
-  (progn 
-     (define-key nxml-mode-map (kbd "C-c C-'") 'lgfang-toggle-level)
-     (define-key nxml-mode-map (kbd "C-c C-w") 'nxml-where)
-     (define-key nxml-mode-map  (kbd "C-c C-p") 'nxml-pretty-print)
-  )
-)
+;; (eval-after-load "nxml-mode"
+;;   (progn 
+;;      (define-key nxml-mode-map (kbd "C-c C-'") 'lgfang-toggle-level)
+;;      (define-key nxml-mode-map (kbd "C-c C-w") 'nxml-where)
+;;      (define-key nxml-mode-map  (kbd "C-c C-p") 'nxml-pretty-print)
+;;   )
+;; )
 #+end_src 
 
 #+RESULTS:
 : sgml-pretty-print
 
+Use autocomplete nxml which should be a good autocompletor.
+
+#+begin_src emacs-lisp 
+(use-package auto-complete-nxml
+  :ensure t)
+
+;; If you want to start completion manually from the beginning
+(setq auto-complete-nxml-automatic-p nil)
+
+(add-hook 'nxml-mode-hook 'auto-complete-mode)
+#+end_src 
+
+#+RESULTS:
+| auto-complete-mode | autco-complete-mode | (lambda nil (hs-minor-mode 1)) | er/add-nxml-mode-expansions | auto-complete-nxml-setup |
+
+
+
+* Replace Regex
+
+To replace all the text between =<<text>>= you can use:
+
+=M-x replace regex= and enter the following regular expression:
+
+=<<\([^"]+\)>>=
+
 
 * Mac adjustments
+
 
 #+BEGIN_SRC emacs-lisp
    (if *is-a-mac*
