@@ -22,7 +22,7 @@ file configuration; you can simply reload the file using:
 ~M-x eval-buffer~
 
 
-b* For Mac Specific Issues
+* For Mac Specific Issues
 
 #+BEGIN_SRC emacs-lisp
 ;; I set this at the beginning of my init.el for other mac specific settings
@@ -163,17 +163,6 @@ automatically and open them with the predefined configuration options.
       (when (< emacs-major-version 24)
 	;; For important compatibility libraries like cl-lib
 	(add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
-
-    ;;(package-initialize)
-
-    (custom-set-variables
-     ;; custom-set-variables was added by Custom.
-     ;; If you edit it by hand, you could mess it up, so be careful.
-     ;; Your init file should contain only one such instance.
-     ;; If there is more than one, they won't work right.
-     '(package-selected-packages
-       (quote
-	(org-bullets htmlize auctex virtualenvwrapper pyenv-mode ein py-autopep8 flycheck elpy monokai-theme))))
   #+END_SRC
 
   #+RESULTS:
@@ -698,7 +687,7 @@ interested into modify.
 : my-switch
 
 #+begin_src emacs-lisp 
-(global-set-key (kbd "C-c s-c") 'my-switch)
+(global-set-key (kbd "s-b") 'my-switch)
 #+end_src 
 
 #+RESULTS:
@@ -734,7 +723,6 @@ interested into modify.
 
 #+RESULTS:
 
-
 ** Set lining globally
 #+BEGIN_SRC emacs-lisp
 (global-linum-mode t) ;; load line number at the beginning of the
@@ -746,25 +734,28 @@ interested into modify.
       
 #+END_SRC
 
-#+RESULTS:
+
 : t
 
 ** Moving across windows
 
 #+BEGIN_SRC emacs-lisp
-  ; add this to init.el
+(defun ace/window ()
+  (interactive)
   (use-package ace-window
-    :ensure t
-    :init
-    (progn
-      (global-set-key [remap other-window] 'ace-window)
-      (custom-set-faces
-       '(aw-leading-char-face
-	 ((t (:inherit ace-jump-face-foreground :height 3.0)))))
-      ))
+     :ensure t
+     :init
+     (progn
+       (global-set-key [remap other-window] 'ace-window)
+       (custom-set-faces
+	'(aw-leading-char-face
+	  ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+       ))
+)
 #+END_SRC
 
 #+RESULTS:
+: ace/window
 
 To move across windows holding the shift key
 
@@ -995,6 +986,8 @@ You can inspire yourself following [[https://github.com/jwiegley/emacs-release/b
 
 ** Sidebar
 
+Check at the configuration on [[https://github.com/jojojames/dired-sidebar/issues/26][this thread]]. There might be still
+interesting content there.
 
 *** Sidebar config
 
@@ -1032,11 +1025,14 @@ You can inspire yourself following [[https://github.com/jwiegley/emacs-release/b
  (add-to-list 'load-path "/Users/marcohassan/.emacs.d/dired-hacks")
  #+end_src  
 
+ #+RESULTS:
+ | /Users/marcohassan/.emacs.d/ox-ipynb/ | /Users/marcohassan/.emacs.d/ob-ipython/ | /Users/marcohassan/.emacs.d/vscode-icon-emacs | /Users/marcohassan/.emacs.d/dired-hacks | /Users/marcohassan/.emacs.d/dired-sidebar | /Users/marcohassan/.emacs.d/emacs-smart-hungry-delete/ | /Users/marcohassan/.emacs.d/elpa/ace-window-0.9.0 | /Users/marcohassan/.emacs.d/elpa/aggressive-indent-1.9.0 | /Users/marcohassan/.emacs.d/elpa/alect-themes-0.9 | /Users/marcohassan/.emacs.d/elpa/auto-complete-nxml-0.5.0 | /Users/marcohassan/.emacs.d/elpa/auto-yasnippet-0.3.0 | /Users/marcohassan/.emacs.d/elpa/avy-0.5.0 | /Users/marcohassan/.emacs.d/elpa/bash-completion-2.1.0 | /Users/marcohassan/.emacs.d/elpa/beacon-1.3.4 | /Users/marcohassan/.emacs.d/elpa/counsel-0.13.0 | /Users/marcohassan/.emacs.d/elpa/dash-functional-2.17.0 | /Users/marcohassan/.emacs.d/elpa/doom-themes-2.1.6 | /Users/marcohassan/.emacs.d/elpa/all-the-icons-4.0.1 | /Users/marcohassan/.emacs.d/elpa/ein-0.16.2.2 | /Users/marcohassan/.emacs.d/elpa/auto-complete-1.5.1 | /Users/marcohassan/.emacs.d/elpa/elpy-1.32.0 | /Users/marcohassan/.emacs.d/elpa/company-0.9.12 | /Users/marcohassan/.emacs.d/elpa/exec-path-from-shell-1.12 | /Users/marcohassan/.emacs.d/elpa/expand-region-0.11.0 | /Users/marcohassan/.emacs.d/elpa/f-0.20.0 | /Users/marcohassan/.emacs.d/elpa/find-file-in-project-5.7.10 | /Users/marcohassan/.emacs.d/elpa/flycheck-31 | /Users/marcohassan/.emacs.d/elpa/flymake-haml-0.8 | /Users/marcohassan/.emacs.d/elpa/flymake-json-0.1 | /Users/marcohassan/.emacs.d/elpa/flymake-easy-0.10 | /Users/marcohassan/.emacs.d/elpa/gnuplot-0.7.0 | /Users/marcohassan/.emacs.d/elpa/highlight-indentation-0.7.0 | /Users/marcohassan/.emacs.d/elpa/htmlize-1.55 | /Users/marcohassan/.emacs.d/elpa/json-mode-1.7.0 | /Users/marcohassan/.emacs.d/elpa/json-reformat-0.0.6 | /Users/marcohassan/.emacs.d/elpa/json-snatcher-1.0.0 | /Users/marcohassan/.emacs.d/elpa/magit-2.90.1 | /Users/marcohassan/.emacs.d/elpa/git-commit-2.90.1 | /Users/marcohassan/.emacs.d/elpa/ghub-3.3.0 | /Users/marcohassan/.emacs.d/elpa/magit-popup-2.13.2 | /Users/marcohassan/.emacs.d/elpa/markdown-mode-2.3 | /Users/marcohassan/.emacs.d/elpa/memoize-1.1 | /Users/marcohassan/.emacs.d/elpa/monokai-theme-3.5.3 | /Users/marcohassan/.emacs.d/elpa/multi-term-1.2 | /Users/marcohassan/.emacs.d/elpa/org-bullets-0.2.4 | /Users/marcohassan/.emacs.d/elpa/org-gcal-0.2 | /Users/marcohassan/.emacs.d/elpa/alert-1.3 | /Users/marcohassan/.emacs.d/elpa/log4e-0.3.0 | /Users/marcohassan/.emacs.d/elpa/gntp-0.1 | /Users/marcohassan/.emacs.d/elpa/org-projectile-1.1.0 | /Users/marcohassan/.emacs.d/elpa/org-category-capture-1.1.0 | /Users/marcohassan/.emacs.d/elpa/org-9.3.6 | /Users/marcohassan/.emacs.d/elpa/paredit-24 | /Users/marcohassan/.emacs.d/elpa/pdf-tools-0.90 | /Users/marcohassan/.emacs.d/elpa/polymode-0.2 | /Users/marcohassan/.emacs.d/elpa/popup-0.5.3 | /Users/marcohassan/.emacs.d/elpa/projectile-2.1.0 | /Users/marcohassan/.emacs.d/elpa/pkg-info-0.6 | /Users/marcohassan/.emacs.d/elpa/epl-0.9 | /Users/marcohassan/.emacs.d/elpa/py-autopep8-2016.1 | /Users/marcohassan/.emacs.d/elpa/pyvenv-1.21 | /Users/marcohassan/.emacs.d/elpa/rainbow-delimiters-2.1.4 | /Users/marcohassan/.emacs.d/elpa/request-deferred-0.3.2 | /Users/marcohassan/.emacs.d/elpa/request-0.3.2 | /Users/marcohassan/.emacs.d/elpa/deferred-0.5.1 | /Users/marcohassan/.emacs.d/elpa/skewer-mode-1.8.0 | /Users/marcohassan/.emacs.d/elpa/js2-mode-20190219 | /Users/marcohassan/.emacs.d/elpa/simple-httpd-1.5.1 | /Users/marcohassan/.emacs.d/elpa/swiper-0.13.0 | /Users/marcohassan/.emacs.d/elpa/ivy-0.13.0 | /Users/marcohassan/.emacs.d/elpa/tablist-1.0 | /Users/marcohassan/.emacs.d/elpa/treepy-0.1.1 | /Users/marcohassan/.emacs.d/elpa/try-0.0.1 | /Users/marcohassan/.emacs.d/elpa/typescript-mode-0.3 | /Users/marcohassan/.emacs.d/elpa/undo-tree-0.7.4 | /Users/marcohassan/.emacs.d/elpa/use-package-2.4 | /Users/marcohassan/.emacs.d/elpa/bind-key-2.4 | /Users/marcohassan/.emacs.d/elpa/virtualenvwrapper-0.2.0 | /Users/marcohassan/.emacs.d/elpa/s-1.12.0 | /Users/marcohassan/.emacs.d/elpa/dash-2.17.0 | /Users/marcohassan/.emacs.d/elpa/websocket-1.12 | /Users/marcohassan/.emacs.d/elpa/with-editor-2.9.1 | /Users/marcohassan/.emacs.d/elpa/async-1.9.4 | /Users/marcohassan/.emacs.d/elpa/yaml-mode-0.0.14 | /Users/marcohassan/.emacs.d/elpa/yasnippet-0.14.0 | /usr/local/share/emacs/site-lisp | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/vc | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/url | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/textmodes | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/progmodes | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/play | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/org | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/nxml | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/net | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/mh-e | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/mail | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/leim | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/language | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/international | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/image | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/gnus | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/eshell | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/erc | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/emulation | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/emacs-lisp | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/cedet | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/calendar | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/calc | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/share/emacs/28.0.50/lisp/obsolete |
+
  #+begin_src emacs-lisp 
  (load "dired-sidebar")
  #+end_src 
 
- #+RESULTS:
+
  : t
 
  Configuration
@@ -1045,6 +1041,7 @@ You can inspire yourself following [[https://github.com/jwiegley/emacs-release/b
  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
 
+ 
  (setq dired-sidebar-subtree-line-prefix "__")
  (setq dired-sidebar-theme 'vscode)
  (setq dired-sidebar-use-term-integration t)
@@ -1053,6 +1050,12 @@ You can inspire yourself following [[https://github.com/jwiegley/emacs-release/b
 
  #+RESULTS:
  : t
+
+Also changed the default sidebar width to 20 in the =.el= file.
+
+#+begin_quote
+(defcustom dired-sidebar-width 20 ....
+#+end_quote
 
  #+begin_src emacs-lisp 
  (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
@@ -1088,6 +1091,10 @@ Do it again the github way.
 #+RESULTS:
 : t
 
+
+#+RESULTS:
+| (lambda nil (unless (get-buffer dired-synced-shell) (shell dired-synced-shell)) (process-send-string (get-buffer dired-synced-shell) (format cd %s |
+
 ** Wrap text in quotes
 
 
@@ -1107,6 +1114,123 @@ Do it again the github way.
 
 #+RESULTS:
 : 160
+
+** Ibuffer
+
+[[https://emacs.stackexchange.com/questions/2181/ibuffer-how-to-automatically-create-groups-per-project][This link might still be interesting to look at]].
+
+#+begin_src emacs-lisp 
+(setq ibuffer-saved-filter-groups
+      (quote (("default"
+
+	       ("terminal"  (or
+                             (mode . term-mode)
+                             (mode . shell-mode)
+                             (mode . eshell-mode)
+                             ))	       
+
+               ("sidebar" (mode . dired-sidebar-mode))
+
+               ("org" (mode . org-mode))
+
+               ("python" (or
+			  (mode . python-mode)
+			  (mode . inferior-python-mode)
+                          (name . "^\\*ob-ipython.*")
+			  ))
+
+               ("ein"    (name . "^\\*ein.*"))
+
+	       ("magit"  (or
+                             (mode . magit-mode)
+                             (mode . magit-diff-mode)
+                             (mode . magit-process-mode)
+                             ))
+
+               ("planner" (or
+                           (name . "^\\*Calendar\\*$")
+                           (name . "^diary$")
+                           (mode . muse-mode)))
+               ("emacs" (or
+                         (name . "^\\*scratch\\*$")
+                         (name . "^\\*Messages\\*$")
+			 ))
+
+               ("dired" (mode . dired-mode))
+
+               ("latex" (mode . latex-mode))
+
+               ("gnus" (or
+                        (mode . message-mode)
+                        (mode . bbdb-mode)
+                        (mode . mail-mode)
+                        (mode . gnus-group-mode)
+                        (mode . gnus-summary-mode)
+                        (mode . gnus-article-mode)
+                        (name . "^\\.bbdb$")
+                        (name . "^\\.newsrc-dribble")))))))
+#+end_src 
+
+#+RESULTS:
+| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (ein (name . ^\*ein.*)) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode))) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
+
+#+begin_src emacs-lisp 
+(add-hook 'ibuffer-mode-hook
+          (lambda ()
+            (ibuffer-switch-to-saved-filter-groups "default")))
+#+end_src 
+
+#+RESULTS:
+| pdf-occur-ibuffer-minor-mode | (lambda nil (ibuffer-switch-to-saved-filter-groups default)) |
+
+
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+#+end_src 
+
+#+RESULTS:
+: ibuffer
+
+#+begin_src emacs-lisp 
+(defun ibuffer-collapse-all-filter-groups ()
+  "Collapse all filter groups at once"
+  (interactive)
+  (setq ibuffer-hidden-filter-groups
+        (mapcar #'car (ibuffer-current-filter-groups-with-position)))
+  (ibuffer-update nil t))
+#+end_src 
+
+#+RESULTS:
+: ibuffer-collapse-all-filter-groups
+
+#+begin_src emacs-lisp 
+(eval-after-load 'ibuffer'
+  (define-key ibuffer-mode-map (kbd "C-c C-c")   'ibuffer-collapse-all-filter-groups) 
+)
+#+end_src 
+
+#+RESULTS:
+: ibuffer-collapse-all-filter-groups
+
+#+begin_src emacs-lisp 
+(defun ibuffer-expand-all-filter-groups ()
+  "Expand all filter groups at once"
+  (interactive)
+  (setq ibuffer-hidden-filter-groups nil)
+  (ibuffer-update nil t))
+#+end_src 
+
+#+RESULTS:
+: ibuffer-expand-all-filter-groups
+
+#+begin_src emacs-lisp 
+(eval-after-load 'ibuffer'
+  (define-key ibuffer-mode-map (kbd "C-c C-e")  'ibuffer-expand-all-filter-groups) 
+)
+#+end_src 
+
+#+RESULTS:
+: ibuffer-expand-all-filter-groups
 
 
 * Swiper for incremental search
@@ -1367,7 +1491,7 @@ documentation for the various snippets can be found at
 
   To be implemented using: [[https://cestlaz.github.io/posts/using-emacs-25-tramp/][tramp_tut]].
 
-
+  
 * Org Mode
 
 Very nice mode. Important I downloaded 
@@ -1613,6 +1737,163 @@ Add to company the ob-ipython dict.
 
 #+RESULTS:
 | org-display-inline-images |
+
+** Better navigation Scimax like
+
+#+begin_src emacs-lisp 
+ ;; Tell emacs where is your personal elisp lib dir
+ (add-to-list 'load-path "/Users/marcohassan/.emacs.d/scimax-ob/")
+
+ (load "scimax-ob")
+#+end_src 
+
+Just execute region; not working: [[https://emacs.stackexchange.com/questions/19169/org-mode-execute-region-in-session][here]].
+
+Execute till cursor
+
+#+begin_src emacs-lisp 
+(defun execute-till-cursor
+  "Split the current src block with point in upper block.
+    With a prefix BELOW move point to lower block."
+  (interactive)
+  (let* ((el (org-element-context))
+	   (p (point))
+	   (language (org-element-property :language el))
+	   (switches (org-element-property :switches el))
+	   (parameters (org-element-property :parameters el)))
+
+      (insert (format "\n#+END_SRC
+                     ,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters ""))))
+
+    (org-babel-previous-src-block)
+    (org-babel-execute-src-block)
+    (let* ((src (org-element-context))
+	   (nlines (org-element-property :post-blank src)))
+      (goto-char (org-element-property :end src))
+      (when (numberp nlines)
+	(forward-line (* -1 (incf nlines))))
+      (goto-char (line-end-position)))
+    (beginning-of-line)
+    (let ((beg (point)))
+      (org-babel-next-src-block)
+      (forward-line 1)
+      (delete-region beg (point))
+      (backward-delete-char 1)
+      )
+)
+#+end_src 
+
+#+RESULTS:
+: execute-till-cursor
+
+
+#+begin_src emacs-lisp 
+(defun execute-after-cursor ()
+  "Execute the block up until after the cursor"
+  (interactive)
+  (let* ((el (org-element-context))
+	   (p (point))
+	   (language (org-element-property :language el))
+	   (switches (org-element-property :switches el))
+	   (parameters (org-element-property :parameters el)))
+
+      (insert (format "\n#+END_SRC
+                     ,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters ""))))
+
+    (org-babel-execute-src-block)
+    (previous-line 3)
+    (kill-line 3)
+)
+#+end_src 
+
+#+RESULTS:
+: execute-after-cursor
+
+
+For ein issues
+#+begin_src emacs-lisp 
+;; (defun kill-excess-lines ()
+;;   "Execute the block up until after the cursor"
+;;   (interactive)
+;;     (kill-line 3)
+;;     (backward-delete-char 1)
+;; )
+
+;; (defun test ()
+;;   (interactive)
+;;   (call-interactively 'prova-execute-after-cursor)
+;;   (sleep-for 1) ;; else part
+;;   (call-interactively 'kill-excess-lines) ;; then part
+;; )
+#+end_src 
+
+#+RESULTS:
+: test
+
+#+begin_src emacs-lisp 
+(defun babel-eval-region ()
+  (interactive)
+
+  (let* ((el (org-element-context))
+	   (p (point))
+	   (language (org-element-property :language el))
+	   (switches (org-element-property :switches el))
+	   (parameters (org-element-property :parameters el)))
+
+      (insert (format "\n#+END_SRC
+                     ,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters "")))
+      (exchange-point-and-mark)
+      (insert (format "\n#+END_SRC
+                     ,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters ""))))
+
+    (org-babel-execute-src-block)
+    (previous-line 3)
+    (kill-line 3)
+
+    (org-babel-next-src-block)
+    (kill-line 1)
+    (search-backward "#+END_SRC")
+    (kill-line 5)
+
+    (message "%s" (propertize "region executed" 'face '(:foreground "red")))
+)
+#+end_src 
+
+#+RESULTS:
+: babel-eval-region
+
+Map all the nice execution functions for org babel chuncks.
+
+#+begin_src emacs-lisp 
+(eval-after-load 'org' (progn 
+			 (define-key org-mode-map
+			   (kbd "C-c s-c") 'scimax-execute-and-next-block)
+			 (define-key org-mode-map
+			   (kbd "C-c C-v s-c") 'scimax-execute-and-next-block)
+			 (define-key org-mode-map
+			   (kbd "C-c s-m") 'scimax-ob-merge-blocks)
+			 (define-key org-mode-map
+			   (kbd "C-c s-k") 'scimax-ob-kill-block-and-results)
+			 (define-key org-mode-map
+			   (kbd "C-c s-l") 'scimax-ob-clear-all-results)
+			 (define-key org-mode-map
+			   (kbd "C-c C-v m") 'scimax-ob-jump-to-end)
+			 (define-key org-mode-map
+			   (kbd "C-c s-h") 'execute-till-cursor)
+			 (define-key org-mode-map
+			   (kbd "C-c C-v s-h") 'execute-after-cursor)
+			 (define-key org-mode-map
+			   (kbd "C-c s-r") 'babel-eval-region)
+			 ))
+#+end_src 
+
+#+RESULTS:
+: babel-eval-region
+
+
+
+#+end_src 
+
 
 ** PlantUML
 
@@ -1886,20 +2167,20 @@ Here you mask your settings through a json
 #+begin_src emacs-lisp 
 (setq package-check-signature nil)
 
-;; (use-package org-gcal
-;;   :ensure t
-;;   :config
-;;   (setq org-gcal-client-id credID 
-;; 	org-gcal-client-secret secret
-;; 	org-gcal-file-alist) '(("marco.hassan30@gmail.com" .  "~/dropbox/Applicazioni/MobileOrg/mobileorg.org")));
+(use-package org-gcal
+  :ensure t
+  :config
+  (setq org-gcal-client-id credID 
+	org-gcal-client-secret secret
+	org-gcal-file-alist) '(("marco.hassan30@gmail.com" .  "~/dropbox/Applicazioni/MobileOrg/mobileorg.org")));
 #+end_src 
 
 #+RESULTS:
 : t
 
 #+begin_src emacs-lisp 
- (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
- (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
 #+end_src 
 
 #+RESULTS:
@@ -2181,7 +2462,6 @@ You can refer it if needed.
 #+RESULTS:
 : rng-loc
 
-
 #+begin_src emacs-lisp 
 (add-hook 'nxml-mode-hook (lambda() (hs-minor-mode 1)))
 
@@ -2270,6 +2550,58 @@ Use autocomplete nxml which should be a good autocompletor.
 
 #+RESULTS:
 | auto-complete-mode | (lambda nil (hs-minor-mode 1)) | auto-complete-nxml-setup |
+
+
+* QUELPA - works with Emacsmirror for packages not available on MELPA
+
+** example on dired-plus
+
+ Run it once to install quelpa
+
+ Quelpa download
+
+ #+begin_src emacs-lisp 
+ (unless (package-installed-p 'quelpa)
+     (with-temp-buffer
+       (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
+       (eval-buffer)
+       (quelpa-self-upgrade)))
+ #+end_src 
+
+ #+RESULTS:
+
+ Use-package 
+ #+begin_src emacs-lisp 
+ (unless (package-installed-p 'quelpa-use-package)
+   (quelpa
+    '(quelpa-use-package
+      :fetcher git
+      :url "https://github.com/quelpa/quelpa-use-package.git"))
+ )
+ #+end_src 
+
+ #+RESULTS:
+
+ #+begin_src emacs-lisp 
+ (require 'quelpa-use-package)
+ #+end_src 
+
+ #+RESULTS:
+ : quelpa-use-package
+
+ #+begin_src emacs-lisp 
+ (use-package dired+
+   :quelpa (dired+ :fetcher github :repo "emacsmirror/dired-plus"))
+ #+end_src 
+
+ #+RESULTS:
+
+ #+begin_src emacs-lisp 
+ (diredp-toggle-find-file-reuse-dir 1)
+ #+end_src 
+
+ #+RESULTS:
+ : Reusing Dired buffers is now ON
 
 
 * PDF viewer
@@ -2391,28 +2723,46 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
      ("M-o" . term-send-backspace)
      ("M-p" . term-send-up) ;; go to previous input-
      ("M-n" . term-send-down)
-     ("C-c C-d" . term-send-forward-kill-word)
-     ("C-c C-b" . term-send-backward-kill-word)
+     ("M-d" . term-send-forward-kill-word)
+     ("M-w" . term-send-backward-kill-word)
      ("M-r" . term-send-reverse-search-history)
      ("M-," . term-send-input)
      ("M-." . comint-dynamic-complete)))
  #+end_src 
 
  #+RESULTS:
- : ((C-c C-c . term-interrupt-subjob) (C-p . previous-line) (C-n . next-line) (C-s . isearch-forward) (C-r . isearch-backward) (C-m . term-send-raw) (M-f . term-send-forward-word) (M-b . term-send-backward-word) (M-o . term-send-backspace) (M-p . term-send-up) (M-n . term-send-down) (C-c C-d . term-send-forward-kill-word) (C-c C-b . term-send-backward-kill-word) (M-r . term-send-reverse-search-history) (M-, . term-send-input) (M-. . comint-dynamic-complete))
+ : ((C-c C-c . term-interrupt-subjob) (C-p . previous-line) (C-n . next-line) (C-s . isearch-forward) (C-r . isearch-backward) (C-m . term-send-raw) (M-f . term-send-forward-word) (M-b . term-send-backward-word) (M-o . term-send-backspace) (M-p . term-send-up) (M-n . term-send-down) (M-d . term-send-forward-kill-word) (M-w . term-send-backward-kill-word) (M-r . term-send-reverse-search-history) (M-, . term-send-input) (M-. . comint-dynamic-complete))
 
  #+begin_src emacs-lisp 
  (defun term-send-home ()
    (interactive)
    (term-send-raw-string "~"))
- #+end_src 
 
- #+begin_src emacs-lisp 
- (add-to-list 'term-bind-key-alist '("M-1" . term-send-home))
+ (defun term-curly-open ()
+   (interactive)
+   (term-send-raw-string "{"))
+
+ (defun term-curly-close ()
+   (interactive)
+   (term-send-raw-string "}"))
+
+ (defun term-pipe ()
+   (interactive)
+   (term-send-raw-string "|"))
  #+end_src 
 
  #+RESULTS:
- : ((C-x M-1 . term-send-home) (C-c C-c . term-interrupt-subjob) (C-p . previous-line) (C-n . next-line) (C-s . isearch-forward) (C-r . isearch-backward) (C-m . term-send-raw) (M-f . term-send-forward-word) (M-b . term-send-backward-word) (M-o . term-send-backspace) (M-p . term-send-up) (M-n . term-send-down) (C-c C-d . term-send-forward-kill-word) (C-c C-b . term-send-backward-kill-word) (M-r . term-send-reverse-search-history) (M-, . term-send-input) (M-. . comint-dynamic-complete))
+ : term-pipe
+
+ #+begin_src emacs-lisp 
+ (add-to-list 'term-bind-key-alist '("M-2" . term-send-home))
+ (add-to-list 'term-bind-key-alist '("M-8" . term-curly-open))
+ (add-to-list 'term-bind-key-alist '("M-9" . term-curly-close))
+ (add-to-list 'term-bind-key-alist '("M-7" . term-pipe))
+ #+end_src 
+
+ #+RESULTS:
+ : ((M-7 . term-pipe) (M-6 . multi-term-next) (M-5 . multi-term-prev) (M-9 . term-curly-close) (M-8 . term-curly-open) (M-2 . term-send-home) (C-c C-c . term-interrupt-subjob) (C-p . previous-line) (C-n . next-line) (C-s . isearch-forward) (C-r . isearch-backward) (C-m . term-send-raw) (M-f . term-send-forward-word) (M-b . term-send-backward-word) (M-o . term-send-backspace) (M-p . term-send-up) (M-n . term-send-down) (M-d . term-send-forward-kill-word) (M-w . term-send-backward-kill-word) (M-r . term-send-reverse-search-history) (M-, . term-send-input) (M-. . comint-dynamic-complete))
 
 
  #+begin_src emacs-lisp 
@@ -2452,6 +2802,15 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
  #+RESULTS:
  | (lambda nil (add-to-list 'term-bind-key-alist '(M-5 . multi-term-prev)) (add-to-list 'term-bind-key-alist '(M-6 . multi-term-next))) | multi-term-keystroke-setup | (lambda nil (add-to-list 'term-bind-key-alist '(M-[ . multi-term-prev)) (add-to-list 'term-bind-key-alist '(M-] . multi-term-next))) | (lambda nil (define-key term-raw-map (kbd C-c C-k) 'term-char-mode)) | (lambda nil (define-key term-raw-map (kbd C-c C-j) 'term-line-mode)) | (lambda nil (define-key term-raw-map (kbd C-y) 'term-paste)) |
 
+
+Shortcut to open multi term
+
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-x C-j") 'multi-term)
+#+end_src 
+
+#+RESULTS:
+: multi-term
 
 ** Eshell 
 
@@ -2526,6 +2885,9 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
  #+END_SRC
 
 
+
+
+
 * Recognize path on MAC
 
 #+begin_src emacs-lisp 
@@ -2543,7 +2905,7 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
 * Select theme at start up
 
 #+begin_src emacs-lisp 
-(call-interactively 'dark/monokai)
+(call-interactively 'dark/doom)
 #+end_src 
 
 #+RESULTS:
@@ -2592,7 +2954,3 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
  Nice also the =M-x profiler-start= option with the generated report
  in this sense. 
 
-** Theme
-
-You can integrate doom with better tree navigator and icons. You can
-see on the doom official repo for that.
