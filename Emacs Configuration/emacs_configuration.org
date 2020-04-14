@@ -21,17 +21,6 @@ file configuration; you can simply reload the file using:
 
 ~M-x eval-buffer~
 
-
-* For Mac Specific Issues
-
-#+BEGIN_SRC emacs-lisp
-;; I set this at the beginning of my init.el for other mac specific settings
-(defconst *is-a-mac* (eq system-type 'darwin))
-#+END_SRC
-
-#+RESULTS:
-: *is-a-mac*
-
 ** Insert Image Directly
 
 Use =C-u C-c C-l= to navigate directories and insert directly the
@@ -48,6 +37,17 @@ desired image.
  For instance this replace the regular expression  =<< anything >>=.
 
  For testing your regular expression you might refer to [[https://www.debuggex.com/?flavor=python][this website]].
+
+
+* For Mac Specific Issues
+
+#+BEGIN_SRC emacs-lisp
+;; I set this at the beginning of my init.el for other mac specific settings
+(defconst *is-a-mac* (eq system-type 'darwin))
+#+END_SRC
+
+#+RESULTS:
+: *is-a-mac*
 
 
 * General sources
@@ -139,6 +139,40 @@ automatically and open them with the predefined configuration options.
 
 #+RESULTS:
 : t
+
+
+* Quelpa
+
+Quelpa download
+
+ #+begin_src emacs-lisp 
+ (unless (package-installed-p 'quelpa)
+     (with-temp-buffer
+       (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
+       (eval-buffer)
+       (quelpa-self-upgrade)))
+ #+end_src 
+
+ #+RESULTS:
+
+ Use-package 
+ #+begin_src emacs-lisp 
+ (unless (package-installed-p 'quelpa-use-package)
+   (quelpa
+    '(quelpa-use-package
+      :fetcher git
+      :url "https://github.com/quelpa/quelpa-use-package.git"))
+ )
+ #+end_src 
+
+ #+RESULTS:
+
+ #+begin_src emacs-lisp 
+ (require 'quelpa-use-package)
+ #+end_src 
+
+ #+RESULTS:
+ : quelpa-use-package
 
 
 * Make sure you can use standard lisp functions and macros
@@ -1095,6 +1129,89 @@ Do it again the github way.
 #+RESULTS:
 | (lambda nil (unless (get-buffer dired-synced-shell) (shell dired-synced-shell)) (process-send-string (get-buffer dired-synced-shell) (format cd %s |
 
+** Buffers
+** Transpose Buffers
+
+ Change the order of the buffers.
+
+ #+begin_src emacs-lisp 
+ (defun transpose-buffers (arg)
+   "Transpose the buffers shown in two windows."
+   (interactive "p")
+   (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
+     (while (/= arg 0)
+       (let ((this-win (window-buffer))
+             (next-win (window-buffer (funcall selector))))
+         (set-window-buffer (selected-window) next-win)
+         (set-window-buffer (funcall selector) this-win)
+         (select-window (funcall selector)))
+       (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
+ #+end_src 
+
+ #+RESULTS:
+ : transpose-buffers
+
+** Switch Frames
+
+ Switches the content of the frames in the two monitors.
+
+ #+begin_src emacs-lisp 
+ (defun switch-buffers-between-frames ()
+   "switch-buffers-between-frames switches the buffers between the two last frames"
+   (interactive)
+   (let ((this-frame-buffer nil)
+	 (other-frame-buffer nil))
+     (setq this-frame-buffer (car (frame-parameter nil 'buffer-list)))
+     (other-frame 1)
+     (setq other-frame-buffer (car (frame-parameter nil 'buffer-list)))
+     (switch-to-buffer this-frame-buffer)
+     (other-frame 1)
+     (switch-to-buffer other-frame-buffer)))
+ #+end_src 
+
+ #+RESULTS:
+ : switch-buffers-between-frames
+
+
+** Toggle Split
+
+#+begin_src emacs-lisp 
+(defun toggle-window-split ()
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+             (next-win-buffer (window-buffer (next-window)))
+             (this-win-edges (window-edges (selected-window)))
+             (next-win-edges (window-edges (next-window)))
+             (this-win-2nd (not (and (<= (car this-win-edges)
+                                         (car next-win-edges))
+                                     (<= (cadr this-win-edges)
+                                         (cadr next-win-edges)))))
+             (splitter
+              (if (= (car this-win-edges)
+                     (car (window-edges (next-window))))
+                  'split-window-horizontally
+                'split-window-vertically)))
+        (delete-other-windows)
+        (let ((first-win (selected-window)))
+          (funcall splitter)
+          (if this-win-2nd (other-window 1))
+          (set-window-buffer (selected-window) this-win-buffer)
+          (set-window-buffer (next-window) next-win-buffer)
+          (select-window first-win)
+          (if this-win-2nd (other-window 1))))))
+#+end_src 
+
+#+RESULTS:
+: toggle-window-split
+
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-c 0") 'toggle-window-split)
+#+end_src 
+
+#+RESULTS:
+: toggle-window-split
+
 ** Wrap text in quotes
 
 
@@ -1145,7 +1262,10 @@ Do it again the github way.
                              (mode . magit-mode)
                              (mode . magit-diff-mode)
                              (mode . magit-process-mode)
+			     (name . "^magit.*")
                              ))
+
+	       ("PDFs"      (mode . pdf-view-mode))
 
                ("planner" (or
                            (name . "^\\*Calendar\\*$")
@@ -1172,7 +1292,7 @@ Do it again the github way.
 #+end_src 
 
 #+RESULTS:
-| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (ein (name . ^\*ein.*)) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode))) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
+| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (ein (name . ^\*ein.*)) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
 
 #+begin_src emacs-lisp 
 (add-hook 'ibuffer-mode-hook
@@ -1693,12 +1813,16 @@ $ for file in ./*.md ; do pandoc $file -o $(basename -- "$file" .md).org  ; done
 
 ** Babel
 
+#+begin_src emacs-lisp 
+;; For babel evaluing in R
+(use-package ess
+  :ensure t)
+#+end_src 
+
+#+RESULTS:
+
    #+BEGIN_SRC emacs-lisp
-   ;; For babel evaluing in R
-   ;;(require 'ess-site)
-
    ;; Allow code evaluation in the org mode source code chunck
-
    (use-package gnuplot
      :ensure t) ;; recall to download it trough MELPA at first
 
@@ -1752,10 +1876,12 @@ Just execute region; not working: [[https://emacs.stackexchange.com/questions/19
 Execute till cursor
 
 #+begin_src emacs-lisp 
-(defun execute-till-cursor
-  "Split the current src block with point in upper block.
-    With a prefix BELOW move point to lower block."
+(defun babel-till-cursor
   (interactive)
+  "
+  Split the current src block with point in upper block.
+  With a prefix BELOW move point to lower block.
+  "
   (let* ((el (org-element-context))
 	   (p (point))
 	   (language (org-element-property :language el))
@@ -1766,10 +1892,13 @@ Execute till cursor
                      ,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters ""))))
 
     (org-babel-previous-src-block)
+
     (org-babel-execute-src-block)
+
     (let* ((src (org-element-context))
 	   (nlines (org-element-property :post-blank src)))
       (goto-char (org-element-property :end src))
+
       (when (numberp nlines)
 	(forward-line (* -1 (incf nlines))))
       (goto-char (line-end-position)))
@@ -1784,11 +1913,11 @@ Execute till cursor
 #+end_src 
 
 #+RESULTS:
-: execute-till-cursor
+: babel-till-cursor
 
 
 #+begin_src emacs-lisp 
-(defun execute-after-cursor ()
+(defun babel-after-cursor ()
   "Execute the block up until after the cursor"
   (interactive)
   (let* ((el (org-element-context))
@@ -1798,16 +1927,17 @@ Execute till cursor
 	   (parameters (org-element-property :parameters el)))
 
       (insert (format "\n#+END_SRC
-                     ,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters ""))))
+                     ,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters "")))
 
     (org-babel-execute-src-block)
-    (previous-line 3)
-    (kill-line 3)
+    (delete-region p (point)))
+    ;; (previous-line 3)
+    ;; (kill-line 3)
 )
 #+end_src 
 
 #+RESULTS:
-: execute-after-cursor
+: babel-after-cursor
 
 
 For ein issues
@@ -1830,37 +1960,97 @@ For ein issues
 #+RESULTS:
 : test
 
+
+#+begin_src emacs-lisp 
+(defun babel-cursor-line ()
+  (interactive)
+
+
+  (save-excursion 
+     (let* ((el (org-element-context))
+	      (p (point))
+	      (language (org-element-property :language el))
+	      (switches (org-element-property :switches el))
+	      (parameters (org-element-property :parameters el))
+	      )
+
+     (beginning-of-line)
+     (setq beg1 (point))
+
+     (insert (format "\n#+END_SRC
+			,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters "")))
+
+     (end-of-line)
+     (setq end1 (point))
+     (insert (format "\n#+END_SRC
+		      ,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters "")))
+     )
+
+     (org-babel-previous-src-block)
+     (org-babel-execute-src-block)
+     (search-backward "#+END_SRC")
+     (previous-line 1)
+     (kill-line 3)
+     (search-forward "#+END_SRC")
+     (beginning-of-line)
+     (setq p2 (point))
+     (search-forward "#+BEGIN_SRC")
+     (end-of-line) 
+     (delete-region p2 (point))
+     (kill-line 2)
+   )
+)
+#+end_src 
+
+#+RESULTS:
+: babel-cursor-line
+
 #+begin_src emacs-lisp 
 (defun babel-eval-region ()
   (interactive)
 
-  (let* ((el (org-element-context))
-	   (p (point))
-	   (language (org-element-property :language el))
-	   (switches (org-element-property :switches el))
-	   (parameters (org-element-property :parameters el)))
+  (save-excursion
 
-      (insert (format "\n#+END_SRC
-                     ,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters "")))
-      (exchange-point-and-mark)
-      (insert (format "\n#+END_SRC
-                     ,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters ""))))
+    (let* ((el (org-element-context))
+	     (p (point))
+	     (language (org-element-property :language el))
+	     (switches (org-element-property :switches el))
+	     (parameters (org-element-property :parameters el)))
 
-    (org-babel-execute-src-block)
-    (previous-line 3)
-    (kill-line 3)
+	(insert (format "\n#+END_SRC
+		       ,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters "")))
 
-    (org-babel-next-src-block)
-    (kill-line 1)
-    (search-backward "#+END_SRC")
-    (kill-line 5)
+	(exchange-point-and-mark)
 
-    (message "%s" (propertize "region executed" 'face '(:foreground "red")))
+	(insert (format "\n#+END_SRC
+		       ,#+BEGIN_SRC %s %s %s\n" language (or switches "") (or parameters ""))))
+
+      (org-babel-execute-src-block)
+
+      (previous-line 3)
+      (kill-line 3)
+
+      (org-babel-next-src-block)
+      (kill-line 1)
+      (setq p2 (point))
+      (search-backward "#+END_SRC")
+      (delete-region p2 (point))
+      (kill-line 1)
+    )
+
+    (run-with-idle-timer 2 nil
+	    (lambda ()
+	      (message "%s" (propertize "region executed" 'face '(:foreground "red")))
+	      (run-with-idle-timer 3 nil
+		      (lambda ()
+			(message nil)))))
+
 )
 #+end_src 
 
 #+RESULTS:
 : babel-eval-region
+
 
 Map all the nice execution functions for org babel chuncks.
 
@@ -1879,9 +2069,11 @@ Map all the nice execution functions for org babel chuncks.
 			 (define-key org-mode-map
 			   (kbd "C-c C-v m") 'scimax-ob-jump-to-end)
 			 (define-key org-mode-map
-			   (kbd "C-c s-h") 'execute-till-cursor)
+			   (kbd "C-c s-h") 'babel-till-cursor)
 			 (define-key org-mode-map
-			   (kbd "C-c C-v s-h") 'execute-after-cursor)
+			   (kbd "C-c s-a") 'babel-after-cursor)
+			 (define-key org-mode-map
+			   (kbd "C-c s-p") 'babel-cursor-line)
 			 (define-key org-mode-map
 			   (kbd "C-c s-r") 'babel-eval-region)
 			 ))
@@ -1893,7 +2085,6 @@ Map all the nice execution functions for org babel chuncks.
 
 
 #+end_src 
-
 
 ** PlantUML
 
@@ -2552,43 +2743,57 @@ Use autocomplete nxml which should be a good autocompletor.
 | auto-complete-mode | (lambda nil (hs-minor-mode 1)) | auto-complete-nxml-setup |
 
 
-* QUELPA - works with Emacsmirror for packages not available on MELPA
+* Inline online images
 
-** example on dired-plus
 
- Run it once to install quelpa
-
- Quelpa download
-
- #+begin_src emacs-lisp 
- (unless (package-installed-p 'quelpa)
-     (with-temp-buffer
-       (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
-       (eval-buffer)
-       (quelpa-self-upgrade)))
+#+begin_src emacs-lisp 
+ (use-package org-yt
+   :quelpa (org-yt :fetcher github :repo "TobiasZawada/org-yt"))
  #+end_src 
 
  #+RESULTS:
 
- Use-package 
- #+begin_src emacs-lisp 
- (unless (package-installed-p 'quelpa-use-package)
-   (quelpa
-    '(quelpa-use-package
-      :fetcher git
-      :url "https://github.com/quelpa/quelpa-use-package.git"))
- )
- #+end_src 
+#+begin_src emacs-lisp 
+(require 'org-yt)
+#+end_src 
 
- #+RESULTS:
+#+RESULTS:
+: org-yt
 
- #+begin_src emacs-lisp 
- (require 'quelpa-use-package)
- #+end_src 
+#+begin_src emacs-lisp 
+(defun org-image-link (protocol link _description)
+  "Interpret LINK as base64-encoded image data."
+  (cl-assert (string-match "\\`img" protocol) nil
+             "Expected protocol type starting with img")
+  (let ((buf (url-retrieve-synchronously (concat (substring protocol 3) ":" link))))
+    (cl-assert buf nil
+               "Download of image \"%s\" failed." link)
+    (with-current-buffer buf
+      (goto-char (point-min))
+      (re-search-forward "\r?\n\r?\n")
+      (buffer-substring-no-properties (point) (point-max)))))
 
- #+RESULTS:
- : quelpa-use-package
+(org-link-set-parameters
+ "imghttp"
+ :image-data-fun #'org-image-link)
 
+(org-link-set-parameters
+ "imghttps"
+ :image-data-fun #'org-image-link)
+#+end_src 
+
+#+RESULTS:
+| :image-data-fun | org-image-link |
+
+To use it you have to use the following syntax then. You have to use
+=https= if it protected and =http= otherwise.
+
+#+begin_example
+[[imghttps  ://bigdataforeng2020.blob.core.windows.net/exercise07/marketplace.png]]
+#+end_example
+
+* Quelpa - Dired-Plus Example
+   
  #+begin_src emacs-lisp 
  (use-package dired+
    :quelpa (dired+ :fetcher github :repo "emacsmirror/dired-plus"))
@@ -2812,6 +3017,7 @@ Shortcut to open multi term
 #+RESULTS:
 : multi-term
 
+
 ** Eshell 
 
  Fancy Prompt
@@ -2867,6 +3073,7 @@ Shortcut to open multi term
  (delete-other-windows)
  #+END_SRC
 
+
 ** If you want to start with eshell
 
  Open Eshell at Start-up
@@ -2885,6 +3092,25 @@ Shortcut to open multi term
  #+END_SRC
 
 
+** Open last opened terminal in term mode
+
+ #+begin_src emacs-lisp 
+ (defun switch-to-most-recent-terminal ()
+   (interactive)
+   (let (found)
+     (catch 'done
+       (mapc (lambda (x)
+               (when (with-current-buffer x (eq major-mode 'term-mode))
+                 (switch-to-buffer x)
+                 (setq found t)
+                 (throw 'done nil)))
+             (buffer-list))
+       (unless found (message "not found")))))
+ #+end_src 
+
+ #+begin_src emacs-lisp 
+ (global-set-key (kbd "C-c s-s") 'switch-to-most-recent-org-file)
+ #+end_src 
 
 
 
@@ -2953,4 +3179,7 @@ Shortcut to open multi term
 
  Nice also the =M-x profiler-start= option with the generated report
  in this sense. 
+
+
+[[https://emacs.stackexchange.com/questions/2194/how-do-i-force-a-specific-buffer-to-open-in-a-new-window][Open buffer in specific way]]
 
