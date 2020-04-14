@@ -3108,9 +3108,15 @@ Shortcut to open multi term
        (unless found (message "not found")))))
  #+end_src 
 
+ #+RESULTS:
+ : switch-to-most-recent-terminal
+
  #+begin_src emacs-lisp 
  (global-set-key (kbd "C-c s-s") 'switch-to-most-recent-org-file)
  #+end_src 
+
+ #+RESULTS:
+ : switch-to-most-recent-org-file
 
 
 
