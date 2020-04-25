@@ -175,6 +175,21 @@ Quelpa download
  : quelpa-use-package
 
 
+* EmacsMirror
+
+Use epkg to check the available packages on emacsmirror
+
+#+begin_src emacs-lisp 
+;; first download the epkg
+;;  git clone git@github.com:emacsmirror/epkgs.git ~/.emacs.d/epkgs
+
+(use-package epkg
+  :ensure t)
+#+end_src 
+
+#+RESULTS:
+
+
 * Make sure you can use standard lisp functions and macros
 
 #+BEGIN_SRC emacs-lisp
@@ -225,6 +240,42 @@ Marmalade
 
 
 * Basic Customization
+** Mode Line
+
+
+ Important for doom-modeline is to have =all the icons= installed and
+ to run =M-x all-the-icons-install-fonts= one time.
+
+ #+begin_src emacs-lisp 
+ (use-package doom-modeline
+   :ensure t
+   :init
+   (doom-modeline-mode 1))
+ #+end_src 
+
+ #+RESULTS:
+
+ #+begin_src emacs-lisp 
+ ;; How tall the mode-line should be. It's only respected in GUI.
+ ;; If the actual char height is larger, it respects the actual height.
+ (setq doom-modeline-height 1)
+ ;; How wide the mode-line bar should be. It's only respected in GUI.
+ (setq doom-modeline-bar-width 3)
+
+ (setq doom-modeline-lsp t)
+ (setq doom-modeline-project-detection 'project)
+ #+end_src 
+
+ #+RESULTS:
+ : project
+
+ #+begin_src emacs-lisp 
+ (use-package powerline
+   :ensure t)
+ #+end_src 
+
+ #+RESULTS:
+ : t
 
 ** Image size
 
@@ -491,6 +542,7 @@ kill the buffer.
 #+END_SRC
 
 #+RESULTS:
+
 
 ** Theme
 
@@ -1028,7 +1080,6 @@ interesting content there.
  Show the repo structure in a similar way to VScode. Incompact on
  Melpa.
 
-
  #+begin_src emacs-lisp 
  ;; (use-package dired-sidebar
  ;;   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
@@ -1130,6 +1181,16 @@ Do it again the github way.
 | (lambda nil (unless (get-buffer dired-synced-shell) (shell dired-synced-shell)) (process-send-string (get-buffer dired-synced-shell) (format cd %s |
 
 ** Buffers
+
+   Switch to most recent visited buffer
+
+   #+begin_src emacs-lisp 
+   (global-set-key (kbd "C-c M-<")  'mode-line-other-buffer)
+   #+end_src 
+
+   #+RESULTS:
+   : mode-line-other-buffer
+
 ** Transpose Buffers
 
  Change the order of the buffers.
@@ -1172,7 +1233,6 @@ Do it again the github way.
  #+RESULTS:
  : switch-buffers-between-frames
 
-
 ** Toggle Split
 
 #+begin_src emacs-lisp 
@@ -1199,7 +1259,7 @@ Do it again the github way.
    #+RESULTS:
    : insert-pair
 
-** Always split vertically
+Q** Always split vertically
 
 #+begin_src emacs-lisp 
 (setq split-height-threshold nil)
@@ -1260,7 +1320,7 @@ Do it again the github way.
                ("gnus" (or
                         (mode . message-mode)
                         (mode . bbdb-mode)
-                        (mode . mail-mode)
+                        (Mode . mail-mode)
                         (mode . gnus-group-mode)
                         (mode . gnus-summary-mode)
                         (mode . gnus-article-mode)
@@ -1400,6 +1460,26 @@ for the org-mode.
 #+RESULTS: Company-auto-complete
 : t
 
+For having fancy icons associated with different functions/variables
+etc.. 
+
+ #+begin_src emacs-lisp 
+ (use-package company-box
+   :quelpa (company-box :fetcher github :repo "emacsmirror/company-box")
+   :hook (company-mode . company-box-mode))
+ #+end_src 
+
+ #+RESULTS:
+ | company-box-mode | company-mode-set-explicitly |
+
+#+begin_src emacs-lisp 
+(require 'all-the-icons)
+#+end_src 
+
+#+RESULTS:
+: all-the-icons
+
+
 The performance of company increased a lot with the two global options.
 
 *** Synchronize company with pcomplete for org mode 
@@ -1435,32 +1515,33 @@ word and you can then continue writing with the space.
 Link for this handy tool: [[https://gist.github.com/aaronjensen/a46f88dbd1ab9bb3aa22][cycle_company]].
 
  #+BEGIN_SRC emacs-lisp
-  ;; Modify company so that tab and S-tab cycle through completions without
-  ;; needing to hit enter.
 
-  (defvar-local company-simple-complete--previous-prefix nil)
-  (defvar-local company-simple-complete--before-complete-point nil)
+ ;; Modify company so that tab and S-tab cycle through completions without
+ ;; needing to hit enter.
 
-  (defun company-simple-complete-frontend (command)
-    (when (or (eq command 'show)
+ (defvar-local company-simple-complete--previous-prefix nil)
+ (defvar-local company-simple-complete--before-complete-point nil)
+
+ (defun company-simple-complete-frontend (command)
+   (when (or (eq command 'show)
 	      (and (eq command 'update)
 		   (not (equal company-prefix company-simple-complete--previous-prefix))))
-      (setq company-selection -1
+     (setq company-selection -1
 	    company-simple-complete--previous-prefix company-prefix
 	    company-simple-complete--before-complete-point nil)))
 
-  (defun company-simple-complete-next (&optional arg)
-    (interactive "p")
-    (company-select-next arg)
-    (company-simple-complete//complete-selection-and-stay))
+ (defun company-simple-complete-next (&optional arg)
+   (interactive "p")
+   (company-select-next arg)
+   (company-simple-complete//complete-selection-and-stay))
 
-  (defun company-simple-complete-previous (&optional arg)
-    (interactive "p")
-    (company-select-previous arg)
-    (company-simple-complete//complete-selection-and-stay))
+ (defun company-simple-complete-previous (&optional arg)
+   (interactive "p")
+   (company-select-previous arg)
+   (company-simple-complete//complete-selection-and-stay))
 
-  (defun company-simple-complete//complete-selection-and-stay ()
-    (if (cdr company-candidates)
+ (defun company-simple-complete//complete-selection-and-stay ()
+   (if (cdr company-candidates)
 	(when (company-manual-begin)
 	  (when company-simple-complete--before-complete-point
 	    (delete-region company-simple-complete--before-complete-point (point)))
@@ -1469,46 +1550,46 @@ Link for this handy tool: [[https://gist.github.com/aaronjensen/a46f88dbd1ab9bb3
 	    (company--insert-candidate (nth company-selection company-candidates)))
 	  (company-call-frontends 'update)
 	  (company-call-frontends 'post-command))
-      (company-complete-selection)))
+     (company-complete-selection)))
 
-  (defadvice company-set-selection (around allow-no-selection (selection &optional force-update))
-    "Allow selection to be -1"
-    (setq selection
+ (defadvice company-set-selection (around allow-no-selection (selection &optional force-update))
+   "Allow selection to be -1"
+   (setq selection
 	  ;; TODO deal w/ wrap-around
 	  (if company-selection-wrap-around
 	      (mod selection company-candidates-length)
 	    (max -1 (min (1- company-candidates-length) selection))))
-    (when (or force-update (not (equal selection company-selection)))
-      (setq company-selection selection
+   (when (or force-update (not (equal selection company-selection)))
+     (setq company-selection selection
 	    company-selection-changed t)
-      (company-call-frontends 'update)))
+     (company-call-frontends 'update)))
 
-  (defadvice company-tooltip--lines-update-offset (before allow-no-selection (selection _num-lines _limit))
-    "Allow selection to be -1"
-    (when (eq selection -1)
-      (ad-set-arg 0 0)))
+ (defadvice company-tooltip--lines-update-offset (before allow-no-selection (selection _num-lines _limit))
+   "Allow selection to be -1"
+   (when (eq selection -1)
+     (ad-set-arg 0 0)))
 
-  (defadvice company-tooltip--simple-update-offset (before allow-no-selection (selection _num-lines limit))
-    "Allow selection to be -1"
-    (when (eq selection -1)
-      (ad-set-arg 0 0)))
+ (defadvice company-tooltip--simple-update-offset (before allow-no-selection (selection _num-lines limit))
+   "Allow selection to be -1"
+   (when (eq selection -1)
+     (ad-set-arg 0 0)))
 
-  (with-eval-after-load 'company
-    (define-key company-active-map [tab] 'company-simple-complete-next)
-    (define-key company-active-map (kbd "TAB") 'company-simple-complete-next)
-    (define-key company-active-map (kbd "<S-tab>") 'company-simple-complete-previous)
-    (define-key company-active-map (kbd "RET") nil)
-    (define-key company-active-map (kbd "<return>") nil)
+ (with-eval-after-load 'company
+   (define-key company-active-map [tab] 'company-simple-complete-next)
+   (define-key company-active-map (kbd "TAB") 'company-simple-complete-next)
+   (define-key company-active-map (kbd "<S-tab>") 'company-simple-complete-previous)
+   (define-key company-active-map (kbd "RET") nil)
+   (define-key company-active-map (kbd "<return>") nil)
 
-    (put 'company-simple-complete-next 'company-keep t)
-    (put 'company-simple-complete-previous 'company-keep t)
-    (setq company-require-match nil)
-    (ad-activate 'company-set-selection)
-    (ad-activate 'company-tooltip--simple-update-offset)
-    (ad-activate 'company-tooltip--lines-update-offset)
-    (add-to-list 'company-frontends 'company-simple-complete-frontend))
+   (put 'company-simple-complete-next 'company-keep t)
+   (put 'company-simple-complete-previous 'company-keep t)
+   (setq company-require-match nil)
+   (ad-activate 'company-set-selection)
+   (ad-activate 'company-tooltip--simple-update-offset)
+   (ad-activate 'company-tooltip--lines-update-offset)
+   (add-to-list 'company-frontends 'company-simple-complete-frontend))
 
-  (provide 'company-simple-complete)
+ (provide 'company-simple-complete)
  #+END_SRC
 
  #+RESULTS:
@@ -2559,6 +2640,72 @@ command.
 : untabify
 
 
+* Language Server
+
+In order to use the python language server you have to install it via
+pip first =pip3 install python-language-server=.
+
+#+begin_src emacs-lisp 
+(use-package lsp-mode
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (python-mode . lsp)
+         ;; if you want which-key integration
+         ;; (lsp-mode . lsp-enable-which-key-integration)
+	 )
+  :commands lsp)
+
+;;(setq lsp-prefer-capf t)
+(setq gc-cons-threshold 100000000)
+#+end_src 
+
+#+RESULTS:
+: 100000000
+
+#+begin_src emacs-lisp 
+;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+(setq lsp-keymap-prefix "s-l")
+
+
+;; optionally
+(use-package lsp-ui 
+  :commands 
+  lsp-ui-mode)
+;; if you are helm user
+;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+
+;; if you are ivy user
+;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+#+end_src 
+
+#+RESULTS:
+
+#+begin_src emacs-lisp 
+ (use-package dap-mode
+   :quelpa (dap-mode :fetcher github :repo "emacsmirror/dap-mode"))
+
+(require 'dap-python)
+
+ #+end_src 
+
+ #+RESULTS:
+ : dap-python
+
+
+
+
+
+* Which key
+
+#+begin_src emacs-lisp 
+(use-package which-key
+  :config
+  (which-key-mode))
+#+end_src 
+
+Advice on the shortcuts available.
+
+
 * YAML
 
 #+begin_src emacs-lisp 
@@ -2635,7 +2782,7 @@ You can refer it if needed.
 
 (add-to-list 'hs-special-modes-alist
              '(nxml-mode
-               "<!--\\|<[^/>]*[^/]>" ;; regexp for start block
+               "<!--\\|<[^/>]*[^/]>" ;; regexp for starset block
                "-->\\|</[^/>]*[^/]>" ;; regexp for end block
                "<!--"
                nxml-forward-element
@@ -2768,6 +2915,7 @@ To use it you have to use the following syntax then. You have to use
 #+begin_example
 [[imghttps  ://bigdataforeng2020.blob.core.windows.net/exercise07/marketplace.png]]
 #+end_example
+
 
 * Quelpa - Dired-Plus Example
    
@@ -3089,12 +3237,11 @@ Shortcut to open multi term
  : switch-to-most-recent-terminal
 
  #+begin_src emacs-lisp 
- (global-set-key (kbd "C-c s-s") 'switch-to-most-recent-org-file)
+ (global-set-key (kbd "C-c s-s") 'switch-to-most-recent-terminal)
  #+end_src 
 
  #+RESULTS:
- : switch-to-most-recent-org-file
-
+ : switch-to-most-recent-terminal
 
 
 * Recognize path on MAC
