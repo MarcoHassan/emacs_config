@@ -1440,6 +1440,7 @@ swiper as counsel.
 To automatically advice on auto-completion given the words used in the
 buffer.
 
+
 ** Company
 
 *** General set up.
@@ -1449,38 +1450,56 @@ org-mode and it is there chosen as the default auto-completion mode
 for the org-mode.
 #+Name: Company-auto-complete
 #+BEGIN_SRC emacs-lisp
-      (use-package company
-	:config
-        (setq company-dabbrev-downcase 0) ;; I noted that company is particularly slow in suggesting auto-completion words in comparison to auto-complete. 
-        (setq company-idle-delay 0)       ;; The below code was suggested on the internet to speed company suggestion up and is tried now.
-	(global-company-mode t)                                  ;(add-hook 'org-mode-hook 'company-mode)
-	 )
+(use-package company
+  :config
+  (setq company-dabbrev-downcase 0) ;; I noted that company is particularly slow in suggesting auto-completion words in comparison to auto-complete. 
+  (setq company-idle-delay 0)       ;; The below code was suggested on the internet to speed company suggestion up and is tried now.
+  (global-company-mode t)                                  ;(add-hook 'org-mode-hook 'company-mode)
+   )
 #+END_SRC
 
 #+RESULTS: Company-auto-complete
 : t
 
-For having fancy icons associated with different functions/variables
-etc.. 
+The performance of company increased a lot with the two global options.
 
- #+begin_src emacs-lisp 
- (use-package company-box
-   :quelpa (company-box :fetcher github :repo "emacsmirror/company-box")
-   :hook (company-mode . company-box-mode))
- #+end_src 
+*** Company box
+    For having fancy icons associated with different functions/variables
+    etc.. Works nice with the quickhelp. Breaks smth in the front-end...
 
- #+RESULTS:
- | company-box-mode | company-mode-set-explicitly |
+     #+begin_src emacs-lisp 
+     ;; (use-package company-box
+     ;;   :quelpa (company-box :fetcher github :repo "emacsmirror/company-box")
+     ;;   :hook (company-mode . company-box-mode))
+     #+end_src 
+
+     #+RESULTS:
+     | company-box-mode | company-mode-set-explicitly |
+
+
+    #+begin_src emacs-lisp 
+    (require 'all-the-icons)
+    #+end_src 
+
+    #+RESULTS:
+    : all-the-icons
+
+*** Company quickhelp
+
+
+This basically has the same functionality of the company box
+above. The front end is not the best but better than company box.  If
+you fix company box at some point I guess that would be beneficial.
 
 #+begin_src emacs-lisp 
-(require 'all-the-icons)
+(use-package company-quickhelp
+  :ensure t
+  :init 
+  (company-quickhelp-mode))
 #+end_src 
 
 #+RESULTS:
-: all-the-icons
 
-
-The performance of company increased a lot with the two global options.
 
 *** Synchronize company with pcomplete for org mode 
 
@@ -2665,7 +2684,6 @@ pip first =pip3 install python-language-server=.
 ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
 (setq lsp-keymap-prefix "s-l")
 
-
 ;; optionally
 (use-package lsp-ui 
   :commands 
@@ -2690,6 +2708,7 @@ pip first =pip3 install python-language-server=.
 
  #+RESULTS:
  : dap-python
+
 
 
 
