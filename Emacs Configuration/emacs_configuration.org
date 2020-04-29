@@ -38,6 +38,23 @@ desired image.
 
  For testing your regular expression you might refer to [[https://www.debuggex.com/?flavor=python][this website]].
 
+** Poor Performance
+
+   Sometimes it might happen that emacs displays a poor performance
+   and you are not satisfied with it. It recently happened to me on a
+   very large org file with many closed org bullets. 
+
+   In that case navigating through the file and skipping many lines
+   was awfully slow. The solution in such case is to start an profile
+   mode with =M-x profiler-start= do some operations, terminate the
+   profiler =M-x profiler-stop= and finally by inspecting its results
+   =M-x profiler-report=.
+
+   It turned out that in that specific case the bottleneck was in the
+   linum mode, that was taking an awful amount of time to recompute
+   the lines displayed at every cursor change. Entering deeper in the
+   org leafs the performance did in fact increase and stopping linum
+   mode for the file was indeed the solution.
 
 * For Mac Specific Issues
 
@@ -448,7 +465,6 @@ kill the buffer.
     ;;(kill-buffer "*Messages*")
 #+END_SRC
 
-
 ** Theme
 
 *Reminder:* Check the face you are for adapting the colors by using
@@ -477,7 +493,6 @@ interested into modify.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  ;; '(alect-title ((t (:foreground "#077707" :weight bold :height 2.0))))
- '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0))))
  '(bold ((t (:weight bold))))
  '(cursor ((t (:background "white" :foreground "white" :inverse-video t))))
  '(flyspell-duplicate ((t (:background "gray16" :foreground "khaki3" :underline (:color foreground-color :style wave)))))
@@ -496,7 +511,7 @@ interested into modify.
 )
 #+end_src 
 
-
+#+RESULTS:
 
 
 *** Doom Theme
@@ -533,8 +548,6 @@ interested into modify.
   (use-package monokai-theme
     :ensure t)
 
-  (load-theme 'monokai t) ;; load the black monokai theme  
-
   (with-eval-after-load "monokai-theme"
     (custom-theme-set-faces
      'monokai
@@ -549,13 +562,19 @@ interested into modify.
        ((t :foreground "cornflower blue"))) ;; this is the foreground for instance
 
      ;; Change color of the org headers
-     '(org-level-1 ((t (:foreground "spring green"))))
-     '(org-level-2 ((t (:foreground "light blue"))))
-     '(org-level-3 ((t (:foreground "indian red"))))
+     '(org-level-1 ((t (:foreground "spring green" :inherit nil))))
+     '(org-level-2 ((t (:foreground "light blue" :inherit nil))))
+     '(org-level-3 ((t (:foreground "indian red" :inherit nil))))
      )
     )
+
+  (load-theme 'monokai t) ;; load the black monokai theme  
 )
 #+end_src 
+
+#+RESULTS:
+: dark/monokai
+
     Change line highlighting color for monokai. At the moment I could not
     find a nice option. But it annoys me that in org chunck it becomes
     almost indistinguishable. Maybe one day you will find the right
@@ -680,19 +699,25 @@ interested into modify.
       (message "set monokai")
       (setq a 2))
     ((= a 2)
+      (call-interactively 'dark/doom)
+      (message "set doom")
+      (setq a 3))
+    ((= a 3)
       (call-interactively 'dark/misterioso)
       (message "set misterioso")
-      (setq a 3)) 
-    ((= a 3)
+      (setq a 4)) 
+    ((= a 4)
       (call-interactively 'bright/light)
       (message "set bright-light")
       (setq a 1))) )
 #+end_src 
 
+#+RESULTS:
+: my-switch
+
 #+begin_src emacs-lisp 
 (global-set-key (kbd "s-b") 'my-switch)
 #+end_src 
-
 
 ** Set lining globally
 #+BEGIN_SRC emacs-lisp
@@ -1130,13 +1155,20 @@ Q** Always split vertically
                ("gnus" (or
                         (mode . message-mode)
                         (mode . bbdb-mode)
-                        (Mode . mail-mode)
+                        (mode . mail-mode)
                         (mode . gnus-group-mode)
                         (mode . gnus-summary-mode)
                         (mode . gnus-article-mode)
                         (name . "^\\.bbdb$")
-                        (name . "^\\.newsrc-dribble")))))))
+                        (name . "^\\.newsrc-dribble")))
+	       )
+	      )
+	     )
+)
 #+end_src 
+
+#+RESULTS:
+| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (ein (name . ^\*ein.*)) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
 
 #+begin_src emacs-lisp 
 (add-hook 'ibuffer-mode-hook
@@ -1144,10 +1176,16 @@ Q** Always split vertically
             (ibuffer-switch-to-saved-filter-groups "default")))
 #+end_src 
 
+#+RESULTS:
+| pdf-occur-ibuffer-minor-mode | (lambda nil (ibuffer-switch-to-saved-filter-groups default)) |
+
 
 #+begin_src emacs-lisp 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src 
+
+#+RESULTS:
+: ibuffer
 
 #+begin_src emacs-lisp 
 (defun ibuffer-collapse-all-filter-groups ()
@@ -1158,11 +1196,17 @@ Q** Always split vertically
   (ibuffer-update nil t))
 #+end_src 
 
+#+RESULTS:
+: ibuffer-collapse-all-filter-groups
+
 #+begin_src emacs-lisp 
 (eval-after-load 'ibuffer'
   (define-key ibuffer-mode-map (kbd "C-c C-c")   'ibuffer-collapse-all-filter-groups) 
 )
 #+end_src 
+
+#+RESULTS:
+: ibuffer-collapse-all-filter-groups
 
 #+begin_src emacs-lisp 
 (defun ibuffer-expand-all-filter-groups ()
@@ -1172,11 +1216,17 @@ Q** Always split vertically
   (ibuffer-update nil t))
 #+end_src 
 
+#+RESULTS:
+: ibuffer-expand-all-filter-groups
+
 #+begin_src emacs-lisp 
 (eval-after-load 'ibuffer'
   (define-key ibuffer-mode-map (kbd "C-c C-e")  'ibuffer-expand-all-filter-groups) 
 )
 #+end_src 
+
+#+RESULTS:
+: ibuffer-expand-all-filter-groups
 
 
 * Swiper for incremental search
@@ -1239,11 +1289,14 @@ for the org-mode.
 (use-package company
   :config
   (setq company-minimum-prefix-length 1)
-  (setq company-dabbrev-downcase 0) ;; I noted that company is particularly slow in suggesting auto-completion words in comparison to auto-complete. 
+  ;; (setq company-dabbrev-downcase 0) ;; I noted that company is particularly slow in suggesting auto-completion words in comparison to auto-complete. 
   (setq company-idle-delay 0)       ;; The below code was suggested on the internet to speed company suggestion up and is tried now.
   (global-company-mode t)                                  ;(add-hook 'org-mode-hook 'company-mode)
-   )
+  )
 #+END_SRC
+
+#+RESULTS: Company-auto-complete
+: t
 
 The performance of company increased a lot with the two global options.
 
@@ -1383,6 +1436,9 @@ Link for this handy tool: [[https://gist.github.com/aaronjensen/a46f88dbd1ab9bb3
 
  (provide 'company-simple-complete)
  #+END_SRC
+
+ #+RESULTS:
+ : company-simple-complete
 
  
 * Redirect Back up files into a single file
@@ -1919,6 +1975,9 @@ From Kitchin [[http://kitchingroup.cheme.cmu.edu/blog/2015/10/13/Line-numbers-in
 )
 #+end_src 
 
+#+RESULTS:
+: temp-line-src-block
+
 Bind it to a kbd
 
 #+begin_src emacs-lisp 
@@ -1927,6 +1986,8 @@ Bind it to a kbd
      (define-key org-mode-map (kbd "C-c C-v 1") 'temp-line-src-block)
 )
 #+end_src 
+
+#+RESULTS:
 
 ** Agenda
 
@@ -2315,6 +2376,9 @@ Some config.
 ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
 (setq lsp-keymap-prefix "C-c s-l")
 #+end_src 
+
+#+RESULTS:
+: C-c s-l
 
 Notice that you have to toggle
 =lsp-ui-sidebar-toggle-symbols-info=. This is a very valuable thing to
