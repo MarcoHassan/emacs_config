@@ -56,6 +56,7 @@ desired image.
    org leafs the performance did in fact increase and stopping linum
    mode for the file was indeed the solution.
 
+
 * For Mac Specific Issues
 
 #+BEGIN_SRC emacs-lisp
@@ -925,23 +926,6 @@ Did not like it too much.
 You can still ameliorate the autocompletion. You have to look on the
 github page for the package for that.
 
-** SSH and nice terminal there
-
-The solution to properly ssh into a machine and have a full-fledge
-terminal there is to 
-
-- use tramp to ssh into a file. ~C-x C-f~
-
-- you need the user@hostname to do so
-
-- then from there open a second eshell ~C-u 2 M-x eshell~
-
-You will be automatically have your full fledge eshell with set on the
-correct directory in the sshed machine.
-
-
-You can inspire yourself following [[https://github.com/jwiegley/emacs-release/blob/master/etc/themes/misterioso-theme.el][this link]].
-
 ** Sidebar
 
 Check at the configuration on [[https://github.com/jojojames/dired-sidebar/issues/26][this thread]]. There might be still
@@ -1507,6 +1491,27 @@ documentation for the various snippets can be found at
   To be implemented using: [[https://cestlaz.github.io/posts/using-emacs-25-tramp/][tramp_tut]].
 
   
+** SSH and nice terminal there
+
+The solution to properly ssh into a machine and have a full-fledge
+terminal there is to 
+
+- use tramp to ssh into a file. ~C-x C-f~
+
+- you need the user@hostname to do so
+
+- then from there open a second eshell ~C-u 2 M-x eshell~
+
+You will be automatically have your full fledge eshell with set on the
+correct directory in the sshed machine.
+
+If you need to connect to a specific port you can use:
+
+- ~C-x C-f /ssh:test@host#2222:/<file>~
+
+You can inspire yourself following [[https://github.com/jwiegley/emacs-release/blob/master/etc/themes/misterioso-theme.el][this link]].
+  
+
 * Org Mode
 
 Very nice mode. Important I downloaded 
@@ -1524,6 +1529,7 @@ files to =.ipynb=.
 #+BEGIN_SRC emacs-lisp
   (require 'org)
 #+END_SRC
+
 
 ** Basic configuration: 
 
@@ -1601,6 +1607,22 @@ really worked with them. Check at a later point in case of need.
       ;;; display/update images in the buffer after I evaluate
      (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
    #+END_SRC
+
+** For Nikola
+
+#+begin_src emacs-lisp 
+(defun nikola_img_url()
+  (interactive)
+  (search-backward "/images")
+  (setq p2 (point))
+  (search-backward "file")
+  (delete-region p2 (point))
+  (insert "img-url:")
+)
+#+end_src 
+
+#+RESULTS:
+: nikola_img_url
 
 ** Export .org to .ipynb
 
@@ -2232,10 +2254,12 @@ Adds the possibility to edit org todos files via capture in a default
 org file storing todos for the specific project. Essentially the same
 as org capture at projectile level.
 
+In order to use it you have first to create the =tasks.org= file in
+the correct location and finally to use the =C-c n p= shortcut below.
+
 #+begin_src emacs-lisp 
 (use-package org-projectile
-  :bind (("C-c n p" . org-projectile-project-todo-completing-read)
-         ("C-c c" . org-capture))
+  :bind (("C-c n p" . org-projectile-project-todo-completing-read))
   :config
   (progn
     (setq org-projectile-projects-file
