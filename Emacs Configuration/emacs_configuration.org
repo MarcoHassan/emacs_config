@@ -1114,6 +1114,8 @@ Q** Always split vertically
 
                ("ein"    (name . "^\\*ein.*"))
 
+               ("JSON"    (mode . json-mode))
+
 	       ("magit"  (or
                              (mode . magit-mode)
                              (mode . magit-diff-mode)
@@ -1152,7 +1154,7 @@ Q** Always split vertically
 #+end_src 
 
 #+RESULTS:
-| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (ein (name . ^\*ein.*)) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
+| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (ein (name . ^\*ein.*)) | (JSON (mode . json-mode)) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
 
 #+begin_src emacs-lisp 
 (add-hook 'ibuffer-mode-hook
@@ -1306,13 +1308,16 @@ This basically has the same functionality of the company box
 above. The front end is not the best but better than company box.  If
 you fix company box at some point I guess that would be beneficial.
 
-#+begin_src emacs-lisp 
-(use-package company-quickhelp
-  :ensure t
-  :init 
-  (company-quickhelp-mode))
-#+end_src 
+this is also nice. But it breaks some autocompletion functionality
+with the company cycle below. Keep it away for now and check later if
+you do want to integrate it.
 
+#+begin_src emacs-lisp 
+;; (use-package company-quickhelp
+;;   :ensure t
+;;   :init 
+;;   (company-quickhelp-mode))
+#+end_src 
 
 *** Synchronize company with pcomplete for org mode 
 
@@ -1507,7 +1512,7 @@ correct directory in the sshed machine.
 
 If you need to connect to a specific port you can use:
 
-- ~C-x C-f /ssh:test@host#2222:/<file>~
+- ~C-x C-f /ssh:test@host#2222:/<PATH:file>~
 
 You can inspire yourself following [[https://github.com/jwiegley/emacs-release/blob/master/etc/themes/misterioso-theme.el][this link]].
   
@@ -1623,6 +1628,31 @@ really worked with them. Check at a later point in case of need.
 
 #+RESULTS:
 : nikola_img_url
+
+#+begin_src emacs-lisp 
+(eval-after-load 'org' 
+  (define-key org-mode-map
+    (kbd "C-c M-i") 'nikola_img_url)
+  )
+#+end_src 
+
+#+RESULTS:
+: nikola_img_url
+
+** Replace Block 
+
+#+begin_src ein-python :results output
+(defun nikola_img_url()
+  (interactive)
+  (search-backward "#+begin_src")
+  (kill-line)
+  (open-line)
+  (insert "#+begin_src")
+  (Delete-region p2 (point))
+  (insert "img-url:")
+)
+#+end_src
+
 
 ** Export .org to .ipynb
 
@@ -1936,9 +1966,8 @@ Map all the nice execution functions for org babel chuncks.
 			 ))
 #+end_src 
 
-
-
-#+end_src 
+#+RESULTS:
+: babel-eval-region
 
 ** PlantUML
 
@@ -2198,7 +2227,6 @@ Necessary for posting in org mode. Otherwise you will get bugs when publishing.
   (use-package htmlize
     :ensure t)
 #+end_src 
-
 
 * Magit
 
