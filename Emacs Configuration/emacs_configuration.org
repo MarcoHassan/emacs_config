@@ -56,6 +56,35 @@ desired image.
    org leafs the performance did in fact increase and stopping linum
    mode for the file was indeed the solution.
 
+** On the mac install the trash-cli
+
+Nice feature to be used instead of =rm=. You can read of it at the
+[[https://github.com/andreafrancia/trash-cli][following page]].
+
+** Magit diffing
+
+Puahhh... That was a waste of time. I was trying to understand how to
+view the edits between two commits as in ~git diff <commit 1> <commit
+2>~.
+
+It turned out that to do that you can simply go in the wip log via =l
+RET l= once you are in the magit status. Then add the highlighting
+marker. Go between the range you want to select and use the common
+diff command =d=. If you are interested in checking the differences
+for a specific file then you can simply use the ~=f~ option before
+selecting the =d= one.
+
+You can then enter the file path of the file you are interested in,
+for instance =app/test/M001_tests/test_pdf.py=
+
+A particular option in this sense is also the ediffing of two
+files. This is particularly useful when you have changed something and
+want to go back to the previous version but want to double check
+quickly before what has changed/ just take some of the old features.
+
+[[https://stackoverflow.com/questions/215718/how-can-i-reset-or-revert-a-file-to-a-specific-revision][How to revert a single file in git]].
+
+
 
 * For Mac Specific Issues
 
@@ -1123,6 +1152,21 @@ Q** Always split vertically
 			     (name . "^magit.*")
                              ))
 
+	       ("tramp"
+		       (name . "^\\*tramp.*"))
+
+	       ("LSP" (or
+		       (name . "^\\*lsp.*")
+		       (name . "^\\*pyls.*")
+		       )
+		)
+
+	       ("Ediffing" (or
+			    (name . "^\\*ediff.*")
+			    (name . "^\\*Ediff.*")
+			    )
+		)
+
 	       ("PDFs"      (mode . pdf-view-mode))
 
                ("planner" (or
@@ -1154,7 +1198,7 @@ Q** Always split vertically
 #+end_src 
 
 #+RESULTS:
-| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (ein (name . ^\*ein.*)) | (JSON (mode . json-mode)) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
+| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (ein (name . ^\*ein.*)) | (JSON (mode . json-mode)) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (tramp (name . ^\*tramp.*)) | (LSP (or (name . ^\*lsp.*) (name . ^\*pyls.*))) | (Ediffing (or (name . ^\*ediff.*) (name . ^\*Ediff.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
 
 #+begin_src emacs-lisp 
 (add-hook 'ibuffer-mode-hook
@@ -1639,20 +1683,44 @@ really worked with them. Check at a later point in case of need.
 #+RESULTS:
 : nikola_img_url
 
-** Replace Block 
+** Eliminate Results
 
-#+begin_src ein-python :results output
-(defun nikola_img_url()
+#+begin_src emacs-lisp 
+(defun eliminate-forward-results()
   (interactive)
-  (search-backward "#+begin_src")
-  (kill-line)
-  (open-line)
-  (insert "#+begin_src")
-  (Delete-region p2 (point))
-  (insert "img-url:")
+  (save-excursion
+    (search-forward "#+results")
+    (org-hide-block-toggle)
+    (beginning-of-line)
+    (kill-line 2)
+  ) 
 )
-#+end_src
 
+(defun eliminate-backward-results()
+  (interactive)
+  (save-excursion
+    (search-backward "#+results")
+    (org-hide-block-toggle)
+    (beginning-of-line)
+    (kill-line 2)
+  )
+)
+#+end_src 
+
+#+RESULTS:
+: eliminate-backward-results
+
+** Go to the end of the results when particularly long
+
+#+begin_src emacs-lisp 
+(defun end-of-results()
+  (interactive)
+  (search-forward "#+end_example")
+)
+#+end_src 
+
+#+RESULTS:
+: end-of-results
 
 ** Export .org to .ipynb
 
@@ -1939,6 +2007,8 @@ For ein issues
 #+end_src 
 
 
+** Map My Functions OrgMode
+
 Map all the nice execution functions for org babel chuncks.
 
 #+begin_src emacs-lisp 
@@ -1963,11 +2033,17 @@ Map all the nice execution functions for org babel chuncks.
 			   (kbd "C-c s-p") 'babel-cursor-line)
 			 (define-key org-mode-map
 			   (kbd "C-c s-r") 'babel-eval-region)
+			 (define-key org-mode-map
+			   (kbd "C-c s-f") 'eliminate-forward-results)
+			 (define-key org-mode-map
+			   (kbd "C-c s-b") 'eliminate-backward-results)
+			 (define-key org-mode-map
+			   (kbd "C-c s-e") 'end-of-results)
 			 ))
 #+end_src 
 
 #+RESULTS:
-: babel-eval-region
+: end-of-results
 
 ** PlantUML
 
@@ -2227,6 +2303,7 @@ Necessary for posting in org mode. Otherwise you will get bugs when publishing.
   (use-package htmlize
     :ensure t)
 #+end_src 
+
 
 * Magit
 
