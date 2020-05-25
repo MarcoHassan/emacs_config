@@ -1673,6 +1673,40 @@ really worked with them. Check at a later point in case of need.
 #+RESULTS:
 : nikola_img_url
 
+
+#+begin_src emacs-lisp 
+(defun nikola_enter_last_img()
+  (interactive)
+  (insert "\n#+begin_export html\n <img width=\"100%\" height=\"100%\" src=\"../../images/")
+  (yank)
+  (insert ".png\" class=\"center\">\n#+end_export\n")
+)
+#+end_src 
+
+#+begin_src emacs-lisp 
+(defun nikola_img_html()
+  (interactive)
+  (save-excursion
+  (search-backward ".")
+  (setq p1 (point))
+  (search-backward "/images")
+  (kill-region p1(point))
+  (setq p2 (point))
+  (beginning-of-line)
+  (delete-region p2 (point))
+  (insert "\n#+begin_export html\n <img width=\"100%\" height=\"100%\" src=\"../..")
+  (yank)
+  (insert ".png\" class=\"center\">\n#+end_export\n")
+  (kill-line)
+  )
+  (kill-line)
+)
+#+end_src 
+
+#+RESULTS:
+: nikola_img_html
+
+
 #+begin_src emacs-lisp 
 (eval-after-load 'org' 
   (define-key org-mode-map
@@ -1831,6 +1865,17 @@ Add to company the ob-ipython dict.
 #+begin_src emacs-lisp 
 (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
 #+end_src 
+
+#+begin_src emacs-lisp 
+(setq org-src-preserve-indentation t)
+(setq org-src-fontify-natively t)
+(require 'ox-latex)
+(add-to-list 'org-latex-packages-alist '("" "minted"))
+(setq org-latex-listings 'minted) 
+#+end_src 
+
+#+RESULTS:
+: minted
 
 ** Better navigation Scimax like
 
@@ -2334,12 +2379,15 @@ You have to have xelatex on your $PATH for that.
 #+begin_src emacs-lisp 
    ;; Allowing minted to highlight code in latex mode when exporting
    (setq org-latex-pdf-process
-	 '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	   "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	   "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+	 '("xelatex -8bit -shell-escape -interaction nonstopmode -output-directory %o %f"
+	   "xelatex -8bit -shell-escape -interaction nonstopmode -output-directory %o %f"
+	   "xelatex -8bit -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
    (setq org-latex-listings 'minted)
 #+end_src 
+
+#+RESULTS:
+: minted
 
 
 * Projectile
