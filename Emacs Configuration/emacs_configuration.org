@@ -88,6 +88,7 @@ To go back to a specific commit in your git history you can use ~git
 checkout <commit>~. The commit can be easily found in the wip log
 mentioned above.
 
+
 * For Mac Specific Issues
 
 #+BEGIN_SRC emacs-lisp
@@ -2947,7 +2948,7 @@ do.
   :hook (lsp-mode . lsp-ui-mode)
   :init (setq lsp-ui-doc-enable t
 	      lsp-ui-doc-use-webkit nil
-	      lsp-ui-doc-delay 0.2
+	      lsp-ui-doc-delay 0.5
 	      lsp-ui-doc-include-signature t
 	      lsp-ui-doc-position 'top
 	      lsp-ui-doc-border (face-foreground 'default)
@@ -2999,7 +3000,29 @@ the editing buffer of =C-'=.
 
 This was not integrated so far. You can read more about that [[https://github.com/emacs-lsp/lsp-mode/issues/377][here]].
 
+#+begin_src emacs-lisp 
+(defun org-babel-edit-prep:python (babel-info)
+  (setq-local buffer-file-name (->> babel-info caddr (alist-get :file-name)))
+  (setq-local lsp-buffer-uri (->> babel-info caddr (alist-get :file-name) lsp--path-to-uri))
+  (lsp)
 
+    (use-package py-autopep8
+      :ensure t)
+    (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+
+    (pyvenv-mode t) 
+    (undo-tree-mode t) 
+    (flycheck-mode t)
+    (company-mode t)
+    (setq venv-location "/Users/marcohassan/Desktop/python_venv")
+
+    ;; Add hook for còmment highlighting.
+    ;;(add-hook 'python-mode-hook 'add-custom-keyw)
+  )
+#+end_src 
+
+#+RESULTS:
+: org-babel-edit-prep:python
 
 * Which key
 
