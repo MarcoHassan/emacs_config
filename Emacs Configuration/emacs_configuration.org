@@ -3024,6 +3024,42 @@ This was not integrated so far. You can read more about that [[https://github.co
 #+RESULTS:
 : org-babel-edit-prep:python
 
+Hack for =ein-python=. Transform it to python source block and then open
+the edit buffer. Like this you will have the language server. Then
+when closing it back change the header back to =ein-python=.
+
+#+begin_src emacs-lisp 
+(defun ein_python ()
+ (interactive)
+ (search-backward "ein-python")
+ (kill-word 1)
+ (delete-char 1)
+ (org-edit-special)
+)
+
+(defun ein_python_exit ()
+ (interactive)
+ (org-edit-src-exit)
+ (search-backward "python")
+ (insert "ein-")
+)
+
+;; map the two to shortcuts
+(eval-after-load 'org' (progn 
+			 (define-key org-mode-map
+			   (kbd "C-c s-'") 'ein_python)
+			 (define-key python-mode-map
+			   (kbd "C-c s-'") 'ein_python_exit)
+			 ))
+#+end_src 
+
+#+RESULTS:
+: ein_python_exit
+
+Super nice with the tangle property. You write all of the chuncks then
+to a single file you can pass as =:tangle= argument.
+
+
 * Which key
 
 #+begin_src emacs-lisp 
