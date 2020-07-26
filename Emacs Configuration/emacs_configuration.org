@@ -3029,16 +3029,59 @@ the edit buffer. Like this you will have the language server. Then
 when closing it back change the header back to =ein-python=.
 
 #+begin_src emacs-lisp 
-(defun ein_python ()
- (interactive)
+(point)
+#+end_src 
+
+#+RESULTS:
+: 128445
+
+#+begin_src emacs-lisp 
+(setq p (point))
+
+(goto-char p)
+#+end_src 
+
+#+RESULTS:
+: 128528
+
+#+begin_src emacs-lisp 
+(defun ein_copy_packages ()
+ (scimax-ob-jump-to-end)
  (search-backward "ein-python")
  (kill-word 1)
  (delete-char 1)
+ (next-line)
+ (save-excursion
+ (search-backward "#!START_LIB")
+ (next-line)
+ (beginning-of-line)
+ (setq p2 (point))
+ (scimax-ob-jump-to-end)
+ (previous-line)
+ (end-of-line)
+ (copy-region-as-kill p2 (point))))
+
+
+(defun ein_python ()
+ (interactive)
+ (ein_copy_packages)
+ (scimax-ob-jump-to-header)
+ (next-line)
+ (newline)
+ (yank)
+ (newline 2)
  (org-edit-special)
 )
 
 (defun ein_python_exit ()
  (interactive)
+ (goto-char (point-max))
+ (search-backward "#!END_LIB")
+ (end-of-line)
+ (setq p (point))
+ (goto-char (point-min))
+ (delete-region p (point))
+ (kill-line 2)
  (org-edit-src-exit)
  (search-backward "python")
  (insert "ein-")
