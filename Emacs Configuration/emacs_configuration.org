@@ -88,6 +88,17 @@ To go back to a specific commit in your git history you can use ~git
 checkout <commit>~. The commit can be easily found in the wip log
 mentioned above.
 
+** Save reference to other file
+
+    The syntax is the following
+
+    #+begin_example
+    [[/path/to/file.php::line][string-to-display]]
+    #+end_example
+
+
+
+
 
 * For Mac Specific Issues
 
@@ -1801,8 +1812,7 @@ files to =.ipynb=.
 #+RESULTS:
 : org
 
-
-** Basic configuration: 
+** Basic configuration
 
    #+begin_src emacs-lisp 
    ;; ;; To open all .org files in org mode.
@@ -2056,6 +2066,9 @@ really worked with them. Check at a later point in case of need.
 
 #+RESULTS:
 : ox-ipynb
+
+  Notice however the *important point*. You have to have your chunks
+  in *ipython* and not *ein-python*
 
 ** Import .ipynb as .org
 
@@ -2722,6 +2735,7 @@ but `delete-file' is ignored."
 | org-babel-tangle-append-setup | er/add-org-mode-expansions | (closure (org-agenda-skip-regexp org-table1-hline-regexp org-table-tab-recognizes-table.el org-table-dataline-regexp org-table-any-border-regexp org-agenda-restriction-lock-overlay org-agenda-overriding-restriction org-agenda-diary-file org-complex-heading-regexp t) nil (setq imenu-create-index-function 'org-imenu-get-tree)) | flyspell-mode | org-bullets-mode | ob-ipython-auto-configure-kernels | org-tempo-setup | turn-on-auto-fill | enable-paredit-mode | (closure (org--rds reftex-docstruct-symbol org-element-greater-elements org-clock-history org-agenda-current-date org-with-time org-defdecode org-def org-read-date-inactive org-ans2 org-ans1 org-columns-current-fmt-compiled org-clock-current-task org-clock-effort org-agenda-skip-function org-agenda-skip-comment-trees org-agenda-archives-mode org-end-time-was-given org-time-was-given org-log-note-extra org-log-note-purpose org-log-post-message org-last-inserted-timestamp org-last-changed-timestamp org-entry-property-inherited-from org-blocked-by-checkboxes org-state org-agenda-headline-snapshot-before-repeat org-capture-last-stored-marker org-agenda-start-on-weekday org-agenda-buffer-tmp-name org-priority-regexp org-mode-abbrev-table org-mode-syntax-table buffer-face-mode-face org-tbl-menu org-org-menu org-struct-menu org-entities org-last-state org-id-track-globally org-clock-start-time texmathp-why remember-data-file org-agenda-tags-todo-honor-ignore-options iswitchb-temp-buflist calc-embedded-open-mode calc-embedded-open-formula calc-embedded-close-formula align-mode-rules-list org-emphasis-alist org-emphasis-regexp-components org-export-registered-backends org-modules org-babel-load-languages org-indent-indentation-per-level org-element-paragraph-separate ffap-url-regexp org-inlinetask-min-level t) nil (add-hook 'change-major-mode-hook 'org-show-all 'append 'local)) | (closure (org-src-window-setup *this* org-babel-confirm-evaluate-answer-no org-src-preserve-indentation org-src-lang-modes org-edit-src-content-indentation org-babel-library-of-babel t) nil (add-hook 'change-major-mode-hook 'org-babel-show-result-all 'append 'local)) | org-babel-result-hide-spec | org-babel-hide-all-hashes |
 
 
+
 * EIN
 
 #+begin_src emacs-lisp 
@@ -2929,24 +2943,25 @@ smoothly. Remember to run pip on DOS and not on emacs shell as at the
 moment emacs shell is set to be the shell interacting with the Linux
 partition.
 
+** Code Navigation
 
-#+begin_src emacs-lisp 
+ #+begin_src emacs-lisp 
 (add-hook 'python-mode-hook 'hs-minor-mode)
 
 ;; to remap the default C-c @ that is not available on mac
 (define-key hs-minor-mode-map (kbd "C-c M-1") (lookup-key hs-minor-mode-map (kbd "C-c @")))
 (define-key hs-minor-mode-map (kbd "C-c @") nil)
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
+ #+RESULTS:
 
-Notice that to quickly navigate python code you can use =C-M-a= to go
-to the beginning of the current/previous function and =C-M-e= to go to the end
-of the current/next function.
+ Notice that to quickly navigate python code you can use =C-M-a= to go
+ to the beginning of the current/previous function and =C-M-e= to go to the end
+ of the current/next function.
 
-Alternative: navigation via =imenu=.
+ Alternative: navigation via =imenu=.
 
-#+begin_src emacs-lisp 
+ #+begin_src emacs-lisp 
 (defun python-imenu-use-flat-index
     ()
   (setq imenu-create-index-function
@@ -2954,10 +2969,10 @@ Alternative: navigation via =imenu=.
 
 (add-hook 'python-mode-hook
           #'python-imenu-use-flat-index)
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-| lsp | python-imenu-use-flat-index | hs-minor-mode | elpy-mode | smart-hungry-delete-default-c-mode-common-hook | doom-modeline-env-setup-python |
+ #+RESULTS:
+ | lsp | python-imenu-use-flat-index | hs-minor-mode | elpy-mode | smart-hungry-delete-default-c-mode-common-hook | doom-modeline-env-setup-python |
 
 ** Tabs issues
 
@@ -2979,10 +2994,12 @@ command.
 
 * Language Server
 
-In order to use the python language server you have to install it via
-pip first =pip3 install python-language-server=.
+** Config
 
-#+begin_src emacs-lisp 
+ In order to use the python language server you have to install it via
+ pip first =pip3 install python-language-server=.
+
+ #+begin_src emacs-lisp 
 (use-package lsp-mode
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (python-mode . lsp)
@@ -2991,29 +3008,29 @@ pip first =pip3 install python-language-server=.
 	 )
   :commands lsp
   )
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-| lsp | python-imenu-use-flat-index | hs-minor-mode | elpy-mode | smart-hungry-delete-default-c-mode-common-hook | doom-modeline-env-setup-python |
+ #+RESULTS:
+ | lsp | python-imenu-use-flat-index | hs-minor-mode | elpy-mode | smart-hungry-delete-default-c-mode-common-hook | doom-modeline-env-setup-python |
 
-Some config.
+ Some config.
 
-#+begin_src emacs-lisp 
+ #+begin_src emacs-lisp 
 ;; company completing
 (setq lsp-prefer-capf t)
 (setq gc-cons-threshold 100000000)
 ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
 (setq lsp-keymap-prefix "C-c s-l")
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: C-c s-l
+ #+RESULTS:
+ : C-c s-l
 
-Notice that you have to toggle
-=lsp-ui-sidebar-toggle-symbols-info=. This is a very valuable thing to
-do.
+ Notice that you have to toggle
+ =lsp-ui-sidebar-toggle-symbols-info=. This is a very valuable thing to
+ do.
 
-#+begin_src emacs-lisp 
+ #+begin_src emacs-lisp 
 (use-package lsp-ui
   :custom-face
   (lsp-ui-sideline-code-action ((t (:inherit warning))))
@@ -3049,33 +3066,33 @@ do.
 	      (setq lsp-ui-doc-border (face-foreground 'default))
 	      (set-face-background 'lsp-ui-doc-background
 				   (face-background 'tooltip)))))
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-| lsp-ui-mode |
+ #+RESULTS:
+ | lsp-ui-mode |
 
 
-To integrate further and to resolve the issue with python debugging.
+ To integrate further and to resolve the issue with python debugging.
 
-https://github.com/emacsmirror/dap-mode#installation-1
+ https://github.com/emacsmirror/dap-mode#installation-1
 
-#+begin_src emacs-lisp 
+ #+begin_src emacs-lisp 
  (use-package dap-mode
    :quelpa (dap-mode :fetcher github :repo "emacsmirror/dap-mode"))
 
 (require 'dap-python)
 
- #+end_src 
+  #+end_src 
 
- #+RESULTS:
- : dap-python
+  #+RESULTS:
+  : dap-python
 
-Moreover it is possible to integrate the language server with org in
-the editing buffer of =C-'=.
+ Moreover it is possible to integrate the language server with org in
+ the editing buffer of =C-'=.
 
-This was not integrated so far. You can read more about that [[https://github.com/emacs-lsp/lsp-mode/issues/377][here]].
+ This was not integrated so far. You can read more about that [[https://github.com/emacs-lsp/lsp-mode/issues/377][here]].
 
-#+begin_src emacs-lisp 
+ #+begin_src emacs-lisp 
 (defun org-babel-edit-prep:python (babel-info)
   (setq-local buffer-file-name (->> babel-info caddr (alist-get :file-name)))
   (setq-local lsp-buffer-uri (->> babel-info caddr (alist-get :file-name) lsp--path-to-uri))
@@ -3094,32 +3111,32 @@ This was not integrated so far. You can read more about that [[https://github.co
     ;; Add hook for còmment highlighting.
     ;;(add-hook 'python-mode-hook 'add-custom-keyw)
   )
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: org-babel-edit-prep:python
+ #+RESULTS:
+ : org-babel-edit-prep:python
 
-Hack for =ein-python=. Transform it to python source block and then open
-the edit buffer. Like this you will have the language server. Then
-when closing it back change the header back to =ein-python=.
+ Hack for =ein-python=. Transform it to python source block and then open
+ the edit buffer. Like this you will have the language server. Then
+ when closing it back change the header back to =ein-python=.
 
-#+begin_src emacs-lisp 
+ #+begin_src emacs-lisp 
 (point)
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: 130047
+ #+RESULTS:
+ : 130047
 
-#+begin_src emacs-lisp 
+ #+begin_src emacs-lisp 
 (setq p (point))
 
 (goto-char p)
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: 130112
+ #+RESULTS:
+ : 130112
 
-#+begin_src emacs-lisp 
+ #+begin_src emacs-lisp 
 (defun ein_copy_packages ()
  (scimax-ob-jump-to-end)
  (search-backward "ein-python")
@@ -3169,14 +3186,20 @@ when closing it back change the header back to =ein-python=.
 			 (define-key python-mode-map
 			   (kbd "C-c s-'") 'ein_python_exit)
 			 ))
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: ein_python_exit
+ #+RESULTS:
+ : ein_python_exit
 
-Super nice with the tangle property. You write all of the chuncks then
-to a single file you can pass as =:tangle= argument.
+ Super nice with the tangle property. You write all of the chuncks then
+ to a single file you can pass as =:tangle= argument.
 
+
+** Instruction
+
+   Should you be able to leverage this in org chuncks see the
+   workaround with the #!START_LIB. Search for it in this file to
+   understand that better.
 
 * Which key
 
