@@ -2676,8 +2676,6 @@ Here you mask your settings through a json
 		  (gethash "secret" json)))
 #+end_src 
 
-#+RESULTS:
-: hAzSwlckuYACBbBysudfkf2b
 
 #+begin_src emacs-lisp 
 (setq package-check-signature nil)
