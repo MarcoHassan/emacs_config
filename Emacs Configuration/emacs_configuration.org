@@ -878,9 +878,6 @@ interested into modify.
 #+RESULTS:
 : t
 
-
-: t
-
 ** Moving across windows
 
 
@@ -891,7 +888,7 @@ interested into modify.
      :ensure t
      :init
      (progn
-       (global-set-key [remap other-window] 'ace-window)
+       (global-set-key (kbd "C-x s-o") 'ace-window)
        (custom-set-faces
 	'(aw-leading-char-face
 	  ((t (:inherit ace-jump-face-foreground :height 3.0)))))
@@ -1458,6 +1455,8 @@ Q** Always split vertically
 : ibuffer-expand-all-filter-groups
 
 
+
+
 * Swiper for incremental search
 
 Swiper allows you to easily leverage regular expressions. By entering
@@ -1520,7 +1519,7 @@ for the org-mode.
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :config
-  (setq company-minimum-prefix-length 1)
+  (setq company-minimum-prefix-length 3)
   ;; (setq company-dabbrev-downcase 0) ;; I noted that company is particularly slow in suggesting auto-completion words in comparison to auto-complete. 
   (setq company-idle-delay 0)       ;; The below code was suggested on the internet to speed company suggestion up and is tried now.
   (global-company-mode t)                                  ;(add-hook 'org-mode-hook 'company-mode)
@@ -2001,7 +2000,6 @@ really worked with them. Check at a later point in case of need.
 #+RESULTS:
 : nikola_search_next_file
 
-
 ** Eliminate Results
 
 #+begin_src emacs-lisp 
@@ -2374,7 +2372,6 @@ For ein issues
 #+RESULTS:
 : babel-eval-region
 
-
 ** Map My Functions OrgMode
 
 Map all the nice execution functions for org babel chuncks.
@@ -2693,10 +2690,38 @@ Here you mask your settings through a json
 	org-gcal-file-alist) '(("marco.hassan30@gmail.com" .  "~/dropbox/Applicazioni/MobileOrg/mobileorg.org")));
 #+end_src 
 
+#+RESULTS:
+: t
+
 #+begin_src emacs-lisp 
 (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
 (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
 #+end_src 
+
+#+RESULTS:
+| lambda | nil | (org-gcal-sync) |
+
+** Org tangle append
+
+Should tangle then the chunck at the end of a file.
+#+begin_src emacs-lisp 
+(defun org-babel-tangle-append ()
+  "Append source code block at point to its tangle file.
+The command works like `org-babel-tangle' with prefix arg
+but `delete-file' is ignored."
+  (interactive)
+  (cl-letf (((symbol-function 'delete-file) #'ignore))
+    (org-babel-tangle '(4))))
+
+(defun org-babel-tangle-append-setup ()
+  "Add key-binding C-c C-v C-t for `org-babel-tangle-append'."
+  (org-defkey org-mode-map (kbd "C-c C-v +") 'org-babel-tangle-append))
+
+(add-hook 'org-mode-hook #'org-babel-tangle-append-setup)
+#+end_src 
+
+#+RESULTS:
+| org-babel-tangle-append-setup | er/add-org-mode-expansions | (closure (org-agenda-skip-regexp org-table1-hline-regexp org-table-tab-recognizes-table.el org-table-dataline-regexp org-table-any-border-regexp org-agenda-restriction-lock-overlay org-agenda-overriding-restriction org-agenda-diary-file org-complex-heading-regexp t) nil (setq imenu-create-index-function 'org-imenu-get-tree)) | flyspell-mode | org-bullets-mode | ob-ipython-auto-configure-kernels | org-tempo-setup | turn-on-auto-fill | enable-paredit-mode | (closure (org--rds reftex-docstruct-symbol org-element-greater-elements org-clock-history org-agenda-current-date org-with-time org-defdecode org-def org-read-date-inactive org-ans2 org-ans1 org-columns-current-fmt-compiled org-clock-current-task org-clock-effort org-agenda-skip-function org-agenda-skip-comment-trees org-agenda-archives-mode org-end-time-was-given org-time-was-given org-log-note-extra org-log-note-purpose org-log-post-message org-last-inserted-timestamp org-last-changed-timestamp org-entry-property-inherited-from org-blocked-by-checkboxes org-state org-agenda-headline-snapshot-before-repeat org-capture-last-stored-marker org-agenda-start-on-weekday org-agenda-buffer-tmp-name org-priority-regexp org-mode-abbrev-table org-mode-syntax-table buffer-face-mode-face org-tbl-menu org-org-menu org-struct-menu org-entities org-last-state org-id-track-globally org-clock-start-time texmathp-why remember-data-file org-agenda-tags-todo-honor-ignore-options iswitchb-temp-buflist calc-embedded-open-mode calc-embedded-open-formula calc-embedded-close-formula align-mode-rules-list org-emphasis-alist org-emphasis-regexp-components org-export-registered-backends org-modules org-babel-load-languages org-indent-indentation-per-level org-element-paragraph-separate ffap-url-regexp org-inlinetask-min-level t) nil (add-hook 'change-major-mode-hook 'org-show-all 'append 'local)) | (closure (org-src-window-setup *this* org-babel-confirm-evaluate-answer-no org-src-preserve-indentation org-src-lang-modes org-edit-src-content-indentation org-babel-library-of-babel t) nil (add-hook 'change-major-mode-hook 'org-babel-show-result-all 'append 'local)) | org-babel-result-hide-spec | org-babel-hide-all-hashes |
 
 
 * EIN
@@ -2718,6 +2743,8 @@ Necessary for posting in org mode. Otherwise you will get bugs when publishing.
     :ensure t)
 #+end_src 
 
+#+RESULTS:
+
 
 * Magit
 
@@ -2726,11 +2753,16 @@ Necessary for posting in org mode. Otherwise you will get bugs when publishing.
   :ensure t) ;; recall to download it trough MELPA at first
 #+end_src 
 
+#+RESULTS:
+
 Enable magit interface on global mode.
 
 #+begin_src emacs-lisp 
 (global-set-key (kbd "C-x g") 'magit-status)
 #+end_src 
+
+#+RESULTS:
+: magit-status
 
 
 * Latex
@@ -2739,9 +2771,16 @@ Enable magit interface on global mode.
 (setq exec-path (append exec-path '("/usr/texbin")))
 #+end_src 
 
+#+RESULTS:
+| /sbin/ | /usr/local/opt/node@10/bin/ | /Users/marcohassan/Desktop/Program_Executables/OpenshiftCLI/ | /usr/local/texlive/2019/bin/x86_64-darwin/ | /usr/local/bin/ | /Users/marcohassan/Library/Python/3.7/bin/ | /usr/local/sbin/ | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/bin/ | /usr/local/bin/ | /usr/bin/ | /bin/ | /usr/sbin/ | /sbin/ | /Library/TeX/texbin/ | /Users/marcohassan/.go/bin/ | /usr/local/opt/go/libexec/bin/ | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/libexec/emacs/28.0.50/x86_64-apple-darwin19.0.0/ | /usr/texbin |
+
 #+begin_src emacs-lisp 
 (add-to-list 'org-latex-packages-alist '("" "listingsutf8"))
 #+end_src 
+
+#+RESULTS:
+|   | listingsutf8 |
+|   | minted       |
 
 You have to have xelatex on your $PATH for that.
 
@@ -2758,6 +2797,8 @@ You have to have xelatex on your $PATH for that.
 #+RESULTS:
 : minted
 
+Then compile the latex with =C-c C-c= command.
+
 
 * Projectile
 
@@ -2769,6 +2810,9 @@ You have to have xelatex on your $PATH for that.
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 #+END_SRC
+
+#+RESULTS:
+: projectile-command-map
 
 ** Org Projectile
 
@@ -2791,6 +2835,9 @@ the correct location and finally to use the =C-c n p= shortcut below.
   :ensure t)
 #+end_src 
 
+#+RESULTS:
+: org-projectile-project-todo-completing-read
+
 
 * Typescript
 
@@ -2802,6 +2849,8 @@ there are advanced packages providing more support such as _tide_.
 (use-package typescript-mode
   :ensure t) ;; recall to download it trough MELPA at first
 #+end_src 
+
+#+RESULTS:
 
 
 * Python
@@ -2874,6 +2923,9 @@ step is necessary when operating through Windows OS.
     ;;(add-hook 'python-mode-hook 'add-custom-keyw)
 #+END_SRC
 
+#+RESULTS:
+: /Users/marcohassan/Desktop/python_venv
+
 Good. After installing ipyhton thorugh pip everything is working
 smoothly. Remember to run pip on DOS and not on emacs shell as at the
 moment emacs shell is set to be the shell interacting with the Linux
@@ -2890,6 +2942,25 @@ partition.
 
 #+RESULTS:
 
+Notice that to quickly navigate python code you can use =C-M-a= to go
+to the beginning of the current/previous function and =C-M-e= to go to the end
+of the current/next function.
+
+Alternative: navigation via =imenu=.
+
+#+begin_src emacs-lisp 
+(defun python-imenu-use-flat-index
+    ()
+  (setq imenu-create-index-function
+        #'python-imenu-create-flat-index))
+
+(add-hook 'python-mode-hook
+          #'python-imenu-use-flat-index)
+#+end_src 
+
+#+RESULTS:
+| lsp | python-imenu-use-flat-index | hs-minor-mode | elpy-mode | smart-hungry-delete-default-c-mode-common-hook | doom-modeline-env-setup-python |
+
 ** Tabs issues
 
 In org mode I often receive errors because of a mixture of tabs and spaces. This
@@ -2903,6 +2974,9 @@ command.
 #+begin_src emacs-lisp 
  (global-set-key  (kbd "C-c C-v -") 'untabify)      
 #+end_src 
+
+#+RESULTS:
+: untabify
 
 
 * Language Server
@@ -2922,7 +2996,7 @@ pip first =pip3 install python-language-server=.
 #+end_src 
 
 #+RESULTS:
-| lsp | elpy-mode | smart-hungry-delete-default-c-mode-common-hook | doom-modeline-env-setup-python |
+| lsp | python-imenu-use-flat-index | hs-minor-mode | elpy-mode | smart-hungry-delete-default-c-mode-common-hook | doom-modeline-env-setup-python |
 
 Some config.
 
@@ -2995,6 +3069,9 @@ https://github.com/emacsmirror/dap-mode#installation-1
 
  #+end_src 
 
+ #+RESULTS:
+ : dap-python
+
 Moreover it is possible to integrate the language server with org in
 the editing buffer of =C-'=.
 
@@ -3033,7 +3110,7 @@ when closing it back change the header back to =ein-python=.
 #+end_src 
 
 #+RESULTS:
-: 128445
+: 130047
 
 #+begin_src emacs-lisp 
 (setq p (point))
@@ -3042,7 +3119,7 @@ when closing it back change the header back to =ein-python=.
 #+end_src 
 
 #+RESULTS:
-: 128528
+: 130112
 
 #+begin_src emacs-lisp 
 (defun ein_copy_packages ()
@@ -3111,6 +3188,9 @@ to a single file you can pass as =:tangle= argument.
   (which-key-mode))
 #+end_src 
 
+#+RESULTS:
+: t
+
 Advice on the shortcuts available.
 
 
@@ -3123,6 +3203,9 @@ Advice on the shortcuts available.
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 #+end_src 
 
+#+RESULTS:
+: ((\.[pP][dD][fF]\' . pdf-view-mode) (\.\(xml\)\' . nxml-mode) (\.jsonld$ . json-mode) (\.yml\' . yaml-mode) (\.odc\' . archive-mode) (\.odf\' . archive-mode) (\.odi\' . archive-mode) (\.otp\' . archive-mode) (\.odp\' . archive-mode) (\.otg\' . archive-mode) (\.odg\' . archive-mode) (\.ots\' . archive-mode) (\.ods\' . archive-mode) (\.odm\' . archive-mode) (\.ott\' . archive-mode) (\.odt\' . archive-mode) (\.gpg\(~\|\.~[0-9]+~\)?\' nil epa-file) (.*\.ipynb\' . ein:ipynb-mode) (\.lsp\' . XLS-mode) (\.ado\' . STA-mode) (\.do\' . STA-mode) (\.SSC\' . S-mode) (\.ssc\' . S-mode) (\.[qsS]\' . S-mode) (\.sp\' . S-mode) (\.[Ss][Aa][Ss]\' . SAS-mode) (\.Sout . S-transcript-mode) (\.[Ss]t\' . S-transcript-mode) (\.Rd\' . Rd-mode) (/Makevars\(\.win\)?$ . makefile-mode) (\.[Rr]out . R-transcript-mode) (\.[sS]nw\' . Snw-mode) (\.[rR]nw\' . Rnw-mode) (CITATION\' . R-mode) (NAMESPACE\' . R-mode) (\.[rR]profile\' . R-mode) (\.[rR]\' . R-mode) (/R/.*\.q\' . R-mode) (\.hat\' . omegahat-mode) (\.omg\' . omegahat-mode) (\.[Jj][Aa][Gg]\' . ess-jags-mode) (\.[Bb][Mm][Dd]\' . ess-bugs-mode) (\.[Bb][Oo][Gg]\' . ess-bugs-mode) (\.[Bb][Uu][Gg]\' . ess-bugs-mode) (\.json$ . json-mode) (\.jl\' . julia-mode) (/git-rebase-todo\' . git-rebase-mode) (\.ts$ . typescript-mode) (\.\(e?ya?\|ra\)ml\' . yaml-mode) (\.elc\' . elisp-byte-code-mode) (\.zst\' nil jka-compr) (\.dz\' nil jka-compr) (\.xz\' nil jka-compr) (\.lzma\' nil jka-compr) (\.lz\' nil jka-compr) (\.g?z\' nil jka-compr) (\.bz2\' nil jka-compr) (\.Z\' nil jka-compr) (\.vr[hi]?\' . vera-mode) (\(?:\.\(?:rbw?\|ru\|rake\|thor\|jbuilder\|rabl\|gemspec\|podspec\)\|/\(?:Gem\|Rake\|Cap\|Thor\|Puppet\|Berks\|Vagrant\|Guard\|Pod\)file\)\' . ruby-mode) (\.re?st\' . rst-mode) (\.py[iw]?\' . python-mode) (\.m\' . octave-maybe-mode) (\.less\' . less-css-mode) (\.scss\' . scss-mode) (\.awk\' . awk-mode) (\.\(u?lpc\|pike\|pmod\(\.in\)?\)\' . pike-mode) (\.idl\' . idl-mode) (\.java\' . java-mode) (\.m\' . objc-mode) (\.ii\' . c++-mode) (\.i\' . c-mode) (\.lex\' . c-mode) (\.y\(acc\)?\' . c-mode) (\.h\' . c-or-c++-mode) (\.c\' . c-mode) (\.\(CC?\|HH?\)\' . c++-mode) (\.[ch]\(pp\|xx\|\+\+\)\' . c++-mode) (\.\(cc\|hh\)\' . c++-mode) (\.\(bat\|cmd\)\' . bat-mode) (\.[sx]?html?\(\.[a-zA-Z_]+\)?\' . mhtml-mode) (\.svgz?\' . image-mode) (\.svgz?\' . xml-mode) (\.x[bp]m\' . image-mode) (\.x[bp]m\' . c-mode) (\.p[bpgn]m\' . image-mode) (\.tiff?\' . image-mode) (\.gif\' . image-mode) (\.png\' . image-mode) (\.jpe?g\' . image-mode) (\.te?xt\' . text-mode) (\.[tT]e[xX]\' . tex-mode) (\.ins\' . tex-mode) (\.ltx\' . latex-mode) (\.dtx\' . doctex-mode) (\.org\' . org-mode) (\.el\' . emacs-lisp-mode) (Project\.ede\' . emacs-lisp-mode) (\.\(scm\|stk\|ss\|sch\)\' . scheme-mode) (\.l\' . lisp-mode) (\.li?sp\' . lisp-mode) (\.[fF]\' . fortran-mode) (\.for\' . fortran-mode) (\.p\' . pascal-mode) (\.pas\' . pascal-mode) (\.\(dpr\|DPR\)\' . delphi-mode) (\.ad[abs]\' . ada-mode) (\.ad[bs].dg\' . ada-mode) (\.\([pP]\([Llm]\|erl\|od\)\|al\)\' . perl-mode) (Imakefile\' . makefile-imake-mode) (Makeppfile\(?:\.mk\)?\' . makefile-makepp-mode) (\.makepp\' . makefile-makepp-mode) (\.mk\' . makefile-bsdmake-mode) (\.make\' . makefile-bsdmake-mode) (GNUmakefile\' . makefile-gmake-mode) ([Mm]akefile\' . makefile-bsdmake-mode) (\.am\' . makefile-automake-mode) (\.texinfo\' . texinfo-mode) (\.te?xi\' . texinfo-mode) (\.[sS]\' . asm-mode) (\.asm\' . asm-mode) (\.css\' . css-mode) (\.mixal\' . mixal-mode) (\.gcov\' . compilation-mode) (/\.[a-z0-9-]*gdbinit . gdb-script-mode) (-gdb\.gdb . gdb-script-mode) ([cC]hange\.?[lL]og?\' . change-log-mode) ([cC]hange[lL]og[-.][0-9]+\' . change-log-mode) (\$CHANGE_LOG\$\.TXT . change-log-mode) (\.scm\.[0-9]*\' . scheme-mode) (\.[ckz]?sh\'\|\.shar\'\|/\.z?profile\' . sh-mode) (\.bash\' . sh-mode) (\(/\|\`\)\.\(bash_\(profile\|history\|log\(in\|out\)\)\|z?log\(in\|out\)\)\' . sh-mode) (\(/\|\`\)\.\(shrc\|zshrc\|m?kshrc\|bashrc\|t?cshrc\|esrc\)\' . sh-mode) (\(/\|\`\)\.\([kz]shenv\|xinitrc\|startxrc\|xsession\)\' . sh-mode) (\.m?spec\' . sh-mode) (\.m[mes]\' . nroff-mode) (\.man\' . nroff-mode) (\.sty\' . latex-mode) (\.cl[so]\' . latex-mode) (\.bbl\' . latex-mode) (\.bib\' . bibtex-mode) (\.bst\' . bibtex-style-mode) (\.sql\' . sql-mode) (\(acinclude\|aclocal\|acsite\)\.m4\' . autoconf-mode) (\.m[4c]\' . m4-mode) (\.mf\' . metafont-mode) (\.mp\' . metapost-mode) (\.vhdl?\' . vhdl-mode) (\.article\' . text-mode) (\.letter\' . text-mode) (\.i?tcl\' . tcl-mode) (\.exp\' . tcl-mode) (\.itk\' . tcl-mode) (\.icn\' . icon-mode) (\.sim\' . simula-mode) (\.mss\' . scribe-mode) (\.f9[05]\' . f90-mode) (\.f0[38]\' . f90-mode) (\.indent\.pro\' . fundamental-mode) (\.\(pro\|PRO\)\' . idlwave-mode) (\.srt\' . srecode-template-mode) (\.prolog\' . prolog-mode) (\.tar\' . tar-mode) (\.\(arc\|zip\|lzh\|lha\|zoo\|[jew]ar\|xpi\|rar\|cbr\|7z\|ARC\|ZIP\|LZH\|LHA\|ZOO\|[JEW]AR\|XPI\|RAR\|CBR\|7Z\)\' . archive-mode) (\.oxt\' . archive-mode) (\.\(deb\|[oi]pk\)\' . archive-mode) (\`/tmp/Re . text-mode) (/Message[0-9]*\' . text-mode) (\`/tmp/fol/ . text-mode) (\.oak\' . scheme-mode) (\.sgml?\' . sgml-mode) (\.x[ms]l\' . xml-mode) (\.dbk\' . xml-mode) (\.dtd\' . sgml-mode) (\.ds\(ss\)?l\' . dsssl-mode) (\.js[mx]?\' . javascript-mode) (\.har\' . javascript-mode) (\.json\' . javascript-mode) (\.[ds]?va?h?\' . verilog-mode) (\.by\' . bovine-grammar-mode) (\.wy\' . wisent-grammar-mode) ([:/\]\..*\(emacs\|gnus\|viper\)\' . emacs-lisp-mode) (\`\..*emacs\' . emacs-lisp-mode) ([:/]_emacs\' . emacs-lisp-mode) (/crontab\.X*[0-9]+\' . shell-script-mode) (\.ml\' . lisp-mode) (\.ld[si]?\' . ld-script-mode) (ld\.?script\' . ld-script-mode) (\.xs\' . c-mode) (\.x[abdsru]?[cnw]?\' . ld-script-mode) (\.zone\' . dns-mode) (\.soa\' . dns-mode) (\.asd\' . lisp-mode) (\.\(asn\|mib\|smi\)\' . snmp-mode) (\.\(as\|mi\|sm\)2\' . snmpv2-mode) (\.\(diffs?\|patch\|rej\)\' . diff-mode) (\.\(dif\|pat\)\' . diff-mode) (\.[eE]?[pP][sS]\' . ps-mode) (\.\(?:PDF\|DVI\|OD[FGPST]\|DOCX\|XLSX?\|PPTX?\|pdf\|djvu\|dvi\|od[fgpst]\|docx\|xlsx?\|pptx?\)\' . doc-view-mode-maybe) (configure\.\(ac\|in\)\' . autoconf-mode) (\.s\(v\|iv\|ieve\)\' . sieve-mode) (BROWSE\' . ebrowse-tree-mode) (\.ebrowse\' . ebrowse-tree-mode) (#\*mail\* . mail-mode) (\.g\' . antlr-mode) (\.mod\' . m2-mode) (\.ses\' . ses-mode) (\.docbook\' . sgml-mode) (\.com\' . dcl-mode) (/config\.\(?:bat\|log\)\' . fundamental-mode) (/\.\(authinfo\|netrc\)\' . authinfo-mode) (\.\(?:[iI][nN][iI]\|[lL][sS][tT]\|[rR][eE][gG]\|[sS][yY][sS]\)\' . conf-mode) (\.la\' . conf-unix-mode) (\.ppd\' . conf-ppd-mode) (java.+\.conf\' . conf-javaprop-mode) (\.properties\(?:\.[a-zA-Z0-9._-]+\)?\' . conf-javaprop-mode) (\.toml\' . conf-toml-mode) (\.desktop\' . conf-desktop-mode) (/\.redshift.conf\' . conf-windows-mode) (\`/etc/\(?:DIR_COLORS\|ethers\|.?fstab\|.*hosts\|lesskey\|login\.?de\(?:fs\|vperm\)\|magic\|mtab\|pam\.d/.*\|permissions\(?:\.d/.+\)?\|protocols\|rpc\|services\)\' . conf-space-mode) (\`/etc/\(?:acpid?/.+\|aliases\(?:\.d/.+\)?\|default/.+\|group-?\|hosts\..+\|inittab\|ksysguarddrc\|opera6rc\|passwd-?\|shadow-?\|sysconfig/.+\)\' . conf-mode) ([cC]hange[lL]og[-.][-0-9a-z]+\' . change-log-mode) (/\.?\(?:gitconfig\|gnokiirc\|hgrc\|kde.*rc\|mime\.types\|wgetrc\)\' . conf-mode) (/\.\(?:asound\|enigma\|fetchmail\|gltron\|gtk\|hxplayer\|mairix\|mbsync\|msmtp\|net\|neverball\|nvidia-settings-\|offlineimap\|qt/.+\|realplayer\|reportbug\|rtorrent\.\|screen\|scummvm\|sversion\|sylpheed/.+\|xmp\)rc\' . conf-mode) (/\.\(?:gdbtkinit\|grip\|mpdconf\|notmuch-config\|orbital/.+txt\|rhosts\|tuxracer/options\)\' . conf-mode) (/\.?X\(?:default\|resource\|re\)s\> . conf-xdefaults-mode) (/X11.+app-defaults/\|\.ad\' . conf-xdefaults-mode) (/X11.+locale/.+/Compose\' . conf-colon-mode) (/X11.+locale/compose\.dir\' . conf-javaprop-mode) (\.~?[0-9]+\.[0-9][-.0-9]*~?\' nil t) (\.\(?:orig\|in\|[bB][aA][kK]\)\' nil t) ([/.]c\(?:on\)?f\(?:i?g\)?\(?:\.[a-zA-Z0-9._-]+\)?\' . conf-mode-maybe) (\.[1-9]\' . nroff-mode) (\.art\' . image-mode) (\.avs\' . image-mode) (\.bmp\' . image-mode) (\.cmyk\' . image-mode) (\.cmyka\' . image-mode) (\.crw\' . image-mode) (\.dcr\' . image-mode) (\.dcx\' . image-mode) (\.dng\' . image-mode) (\.dpx\' . image-mode) (\.fax\' . image-mode) (\.hrz\' . image-mode) (\.icb\' . image-mode) (\.icc\' . image-mode) (\.icm\' . image-mode) (\.ico\' . image-mode) (\.icon\' . image-mode) (\.jbg\' . image-mode) (\.jbig\' . image-mode) (\.jng\' . image-mode) (\.jnx\' . image-mode) (\.miff\' . image-mode) (\.mng\' . image-mode) (\.mvg\' . image-mode) (\.otb\' . image-mode) (\.p7\' . image-mode) (\.pcx\' . image-mode) (\.pdb\' . image-mode) (\.pfa\' . image-mode) (\.pfb\' . image-mode) (\.picon\' . image-mode) (\.pict\' . image-mode) (\.rgb\' . image-mode) (\.rgba\' . image-mode) (\.tga\' . image-mode) (\.wbmp\' . image-mode) (\.webp\' . image-mode) (\.wmf\' . image-mode) (\.wpg\' . image-mode) (\.xcf\' . image-mode) (\.xmp\' . image-mode) (\.xwd\' . image-mode) (\.yuv\' . image-mode) (\.tgz\' . tar-mode) (\.tbz2?\' . tar-mode) (\.txz\' . tar-mode) (\.tzst\' . tar-mode) (\.markdown\' . markdown-mode) (\.md\' . markdown-mode))
+
 
 * Json
 
@@ -3132,10 +3215,16 @@ Advice on the shortcuts available.
 (setq exec-path (append exec-path '("/Users/marcohassan/.nvm/versions/node/v8.9.0/bin/")))
 #+end_src 
 
+#+RESULTS:
+| /sbin/ | /usr/local/opt/node@10/bin/ | /Users/marcohassan/Desktop/Program_Executables/OpenshiftCLI/ | /usr/local/texlive/2019/bin/x86_64-darwin/ | /usr/local/bin/ | /Users/marcohassan/Library/Python/3.7/bin/ | /usr/local/sbin/ | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/bin/ | /usr/local/bin/ | /usr/bin/ | /bin/ | /usr/sbin/ | /sbin/ | /Library/TeX/texbin/ | /Users/marcohassan/.go/bin/ | /usr/local/opt/go/libexec/bin/ | /usr/local/Cellar/emacs-head/HEAD-6075a7c_1/libexec/emacs/28.0.50/x86_64-apple-darwin19.0.0/ | /usr/texbin | /Users/marcohassan/.nvm/versions/node/v8.9.0/bin/ |
+
 
 #+begin_src emacs-lisp 
 (getenv "PATH")
 #+end_src 
+
+#+RESULTS:
+: /sbin:/usr/local/opt/node@10/bin:/Users/marcohassan/Desktop/Program_Executables/OpenshiftCLI:/usr/local/texlive/2019/bin/x86_64-darwin:/usr/local/bin/:/Users/marcohassan/Library/Python/3.7/bin:/usr/local/sbin:/usr/local/Cellar/emacs-head/HEAD-6075a7c_1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Users/marcohassan/.go/bin:/usr/local/opt/go/libexec/bin:/Users/marcohassan/.nvm/versions/node/v8.9.0/bin/
 
 #+begin_src emacs-lisp 
 (use-package json-mode
@@ -3150,6 +3239,9 @@ Advice on the shortcuts available.
 (global-set-key (kbd "C-c v") 'flymake-json-load)
 (add-hook 'json-mode-hook 'flymake-json-load)
 #+end_src 
+
+#+RESULTS:
+| flymake-json-load |
 
 
 * XML 
@@ -3170,6 +3262,9 @@ You can refer it if needed.
 (require 'rng-loc nil t)
 #+end_src 
 
+#+RESULTS:
+: rng-loc
+
 #+begin_src emacs-lisp 
 (add-hook 'nxml-mode-hook (lambda() (hs-minor-mode 1)))
 
@@ -3185,6 +3280,9 @@ You can refer it if needed.
   "mainly to be used in nxml mode"
   (interactive) (hs-show-block) (hs-hide-level 1))
 #+end_src 
+
+#+RESULTS:
+: lgfang-toggle-level
 
 #+begin_src emacs-lisp 
 (defun nxml-where ()
@@ -3206,6 +3304,9 @@ You can refer it if needed.
           (format "/%s" (mapconcat 'identity path "/")))))))
 #+end_src 
 
+#+RESULTS:
+: nxml-where
+
 
 #+begin_src emacs-lisp 
 (defun nxml-pretty-print (beg end &optional arg)
@@ -3220,6 +3321,9 @@ You can refer it if needed.
     (auto-fill-mode fill)))
 #+end_src 
 
+#+RESULTS:
+: nxml-pretty-print
+
 Create shortcuts.
 
 #+begin_src emacs-lisp 
@@ -3233,6 +3337,8 @@ Create shortcuts.
 ;; )
 #+end_src 
 
+#+RESULTS:
+
 Use autocomplete nxml which should be a good autocompletor.
 
 #+begin_src emacs-lisp 
@@ -3245,6 +3351,9 @@ Use autocomplete nxml which should be a good autocompletor.
 (add-hook 'nxml-mode-hook 'auto-complete-mode)
 #+end_src 
 
+#+RESULTS:
+| auto-complete-mode | (lambda nil (hs-minor-mode 1)) | auto-complete-nxml-setup |
+
 
 * Inline online images
 
@@ -3254,9 +3363,14 @@ Use autocomplete nxml which should be a good autocompletor.
    :quelpa (org-yt :fetcher github :repo "TobiasZawada/org-yt"))
  #+end_src 
 
+ #+RESULTS:
+
 #+begin_src emacs-lisp 
 (require 'org-yt)
 #+end_src 
+
+#+RESULTS:
+: org-yt
 
 #+begin_src emacs-lisp 
 (defun org-image-link (protocol link _description)
@@ -3280,6 +3394,9 @@ Use autocomplete nxml which should be a good autocompletor.
  :image-data-fun #'org-image-link)
 #+end_src 
 
+#+RESULTS:
+| :image-data-fun | org-image-link |
+
 To use it you have to use the following syntax then. You have to use
 =https= if it protected and =http= otherwise.
 
@@ -3295,9 +3412,14 @@ To use it you have to use the following syntax then. You have to use
    :quelpa (dired+ :fetcher github :repo "emacsmirror/dired-plus"))
  #+end_src 
 
+ #+RESULTS:
+
  #+begin_src emacs-lisp 
  (diredp-toggle-find-file-reuse-dir 1)
  #+end_src 
+
+ #+RESULTS:
+ : Reusing Dired buffers is now ON
 
 
 * PDF viewer
@@ -3321,10 +3443,15 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
   (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
 #+end_src 
 
+#+RESULTS:
+: t
+
 
 #+begin_src emacs-lisp 
 ;; (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 #+end_src 
+
+#+RESULTS:
 
 #+begin_src emacs-lisp 
 ;; Finally:
@@ -3335,7 +3462,6 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
 
 
 #+RESULTS:
-: /usr/bin:/bin:/usr/sbin:/sbin:/Users/marcohassan/.nvm/versions/node/v8.9.0/bin/:/usr/local/bin
 
 
 * Mac adjustments
@@ -3357,6 +3483,9 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
    	      (global-set-key "\M-2" '(lambda () (interactive) (insert "~"))))))
 #+END_SRC
 
+#+RESULTS:
+| exec-path-from-shell-initialize | (lambda nil (interactive) (insert ~)) | color-highlight | tramp-register-archive-file-name-handler | table--make-cell-map | magit-auto-revert-mode--init-kludge | magit-startup-asserts | magit-version |
+
 
 * Shell Configs
 
@@ -3365,6 +3494,9 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
  #+begin_src emacs-lisp 
  (setq explicit-shell-file-name "/bin/bash")
  #+end_src 
+
+ #+RESULTS:
+ : /bin/bash
 
  Notice that I have =oh-my-zsh= installed. When I want to use it. I run
  =M-x ansi-term= there you have your nice zsh shell. You can select it
@@ -3383,9 +3515,14 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
    :ensure t)
  #+end_src 
 
+ #+RESULTS:
+
  #+begin_src emacs-lisp 
  (setq multi-term-program "/bin/zsh")
  #+end_src 
+
+ #+RESULTS:
+ : /bin/zsh
 
 
  #+begin_src emacs-lisp 
@@ -3409,6 +3546,9 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
      ("M-." . comint-dynamic-complete)))
  #+end_src 
 
+ #+RESULTS:
+ : ((C-c C-c . term-interrupt-subjob) (C-p . previous-line) (C-n . next-line) (C-s . isearch-forward) (C-r . isearch-backward) (C-m . term-send-raw) (M-f . term-send-forward-word) (M-b . term-send-backward-word) (M-o . term-send-backspace) (M-p . term-send-up) (M-n . term-send-down) (M-d . term-send-forward-kill-word) (M-w . term-send-backward-kill-word) (M-r . term-send-reverse-search-history) (M-, . term-send-input) (M-. . comint-dynamic-complete))
+
  #+begin_src emacs-lisp 
  (defun term-send-home ()
    (interactive)
@@ -3427,6 +3567,9 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
    (term-send-raw-string "|"))
  #+end_src 
 
+ #+RESULTS:
+ : term-pipe
+
  #+begin_src emacs-lisp 
  (add-to-list 'term-bind-key-alist '("M-2" . term-send-home))
  (add-to-list 'term-bind-key-alist '("M-8" . term-curly-open))
@@ -3434,12 +3577,18 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
  (add-to-list 'term-bind-key-alist '("M-7" . term-pipe))
  #+end_src 
 
+ #+RESULTS:
+ : ((M-7 . term-pipe) (M-9 . term-curly-close) (M-8 . term-curly-open) (M-2 . term-send-home) (C-c C-c . term-interrupt-subjob) (C-p . previous-line) (C-n . next-line) (C-s . isearch-forward) (C-r . isearch-backward) (C-m . term-send-raw) (M-f . term-send-forward-word) (M-b . term-send-backward-word) (M-o . term-send-backspace) (M-p . term-send-up) (M-n . term-send-down) (M-d . term-send-forward-kill-word) (M-w . term-send-backward-kill-word) (M-r . term-send-reverse-search-history) (M-, . term-send-input) (M-. . comint-dynamic-complete))
+
 
  #+begin_src emacs-lisp 
  (add-hook 'term-mode-hook
            (lambda ()
              (define-key term-raw-map (kbd "C-y") 'term-paste)))
  #+end_src 
+
+ #+RESULTS:
+ | multi-term-keystroke-setup | (lambda nil (add-to-list 'term-bind-key-alist '(M-5 . multi-term-prev)) (add-to-list 'term-bind-key-alist '(M-6 . multi-term-next))) | (lambda nil (define-key term-raw-map (kbd C-c C-k) 'term-char-mode)) | (lambda nil (define-key term-raw-map (kbd C-c C-j) 'term-line-mode)) | (lambda nil (define-key term-raw-map (kbd C-y) 'term-paste)) |
 
  Notice that an interesting option for the terminal is to go to
  =line-mode= when you want to copy edit stuff. Then you will be able to
@@ -3455,6 +3604,9 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
              (define-key term-raw-map (kbd "C-c C-k") 'term-char-mode)))
  #+end_src 
 
+ #+RESULTS:
+ | multi-term-keystroke-setup | (lambda nil (add-to-list 'term-bind-key-alist '(M-5 . multi-term-prev)) (add-to-list 'term-bind-key-alist '(M-6 . multi-term-next))) | (lambda nil (define-key term-raw-map (kbd C-c C-k) 'term-char-mode)) | (lambda nil (define-key term-raw-map (kbd C-c C-j) 'term-line-mode)) | (lambda nil (define-key term-raw-map (kbd C-y) 'term-paste)) |
+
 
  #+begin_src emacs-lisp 
  (add-hook 'term-mode-hook
@@ -3463,12 +3615,18 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
              (add-to-list 'term-bind-key-alist '("M-6" . multi-term-next))))
  #+end_src 
 
+ #+RESULTS:
+ | multi-term-keystroke-setup | (lambda nil (add-to-list 'term-bind-key-alist '(M-5 . multi-term-prev)) (add-to-list 'term-bind-key-alist '(M-6 . multi-term-next))) | (lambda nil (define-key term-raw-map (kbd C-c C-k) 'term-char-mode)) | (lambda nil (define-key term-raw-map (kbd C-c C-j) 'term-line-mode)) | (lambda nil (define-key term-raw-map (kbd C-y) 'term-paste)) |
+
 
 Shortcut to open multi term
 
 #+begin_src emacs-lisp 
 (global-set-key (kbd "C-x C-j") 'multi-term)
 #+end_src 
+
+#+RESULTS:
+: multi-term
 
 
 ** Eshell 
@@ -3497,6 +3655,8 @@ Shortcut to open multi term
    (setq eshell-highlight-prompt nil)
  #+END_SRC
 
+ #+RESULTS:
+
  A built in solution for search of history commands.
 
  #+BEGIN_SRC emacs-lisp
@@ -3512,6 +3672,9 @@ Shortcut to open multi term
 	       ))
  #+END_SRC
 
+ #+RESULTS:
+ | (lambda nil (local-set-key (kbd C-c h) (lambda nil (interactive) (insert (ido-completing-read Eshell history:  (delete-dups (ring-elements eshell-history-ring))))))) | (lambda nil (local-set-key (kbd C-c h) #'(lambda nil (interactive) (insert (ido-completing-read Eshell history:  (delete-dups (ring-elements eshell-history-ring))))))) | tramp-eshell-directory-change | ess-r-package-activate-directory-tracker |
+
 
 ** Decide shell to open at start-up
 
@@ -3520,6 +3683,8 @@ Shortcut to open multi term
  (multi-term)
  (delete-other-windows)
  #+END_SRC
+
+ #+RESULTS:
 
 
 ** If you want to start with eshell
@@ -3539,6 +3704,8 @@ Shortcut to open multi term
  ;; (delete-other-windows)
  #+END_SRC
 
+ #+RESULTS:
+
 
 ** Open last opened terminal in term mode
 
@@ -3556,9 +3723,15 @@ Shortcut to open multi term
        (unless found (message "not found")))))
  #+end_src 
 
+ #+RESULTS:
+ : switch-to-most-recent-terminal
+
  #+begin_src emacs-lisp 
  (global-set-key (kbd "C-c s-s") 'switch-to-most-recent-terminal)
  #+end_src 
+
+ #+RESULTS:
+ : switch-to-most-recent-terminal
 
 
 * Recognize path on MAC
@@ -3572,12 +3745,18 @@ Shortcut to open multi term
    (add-hook 'after-init-hook 'exec-path-from-shell-initialize))
 #+end_src 
 
+#+RESULTS:
+| exec-path-from-shell-initialize | (lambda nil (interactive) (insert ~)) | color-highlight | tramp-register-archive-file-name-handler | table--make-cell-map | magit-auto-revert-mode--init-kludge | magit-startup-asserts | magit-version |
+
 
 * Select theme at start up
 
 #+begin_src emacs-lisp 
 (call-interactively 'dark/doom)
 #+end_src 
+
+#+RESULTS:
+: t
 
 
 * FIXED Consult when issues
