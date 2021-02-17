@@ -97,6 +97,13 @@ mentioned above.
     #+end_example
 
 
+** References
+
+   These are good fellows you can check from time to time what they
+   are doing:
+
+   - [[https://www.ict4g.net/adolfo/notes/emacs/emacs-caldav.html][fellow1]]
+
 
 
 
@@ -119,7 +126,13 @@ was important to me.
 
 #+begin_example
 $ brew tap daviderestivo/emacs-head
-$ brew install emacs-head --HEAD --with-cocoa --with-librsvg --with-imagemagick@7 --with-jansson --with-multicolor-fonts --with-no-frame-refocus --with-mailutils --with-dbus --with-modules
+$ brew install emacs-head --HEAD --with-cocoa --with-librsvg --with-imagemagick@7 --with-no-frame-refocus --with-mailutils --with-dbus --with-modules 	
+#+end_example
+
+Ok, suddenly my old emacs installed as above stopped working. I installed it again via cask.
+
+#+begin_example
+$ brew install --cask emacs
 #+end_example
 
 As a general resources for generating my emacs configuration I mainly
@@ -189,6 +202,8 @@ This package assure that you do not have to download all of the
 packages manually and it downloads all of the necessary packages
 automatically and open them with the predefined configuration options.
 
+Notice that you have downloaded ~(package-install)~ to your =.emacs=.
+
 #+BEGIN_SRC emacs-lisp
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -200,7 +215,6 @@ automatically and open them with the predefined configuration options.
 
 #+RESULTS:
 : t
-
 
 * Quelpa
 
@@ -235,6 +249,8 @@ Quelpa download
  #+RESULTS:
  : quelpa-use-package
 
+Recall that you can find the packages available in the emacsmirror by
+using =epkg-list-packages= function.
 
 * EmacsMirror
 
@@ -250,7 +266,6 @@ Use epkg to check the available packages on emacsmirror
 
 #+RESULTS:
 
-
 * Make sure you can use standard lisp functions and macros
 
 #+BEGIN_SRC emacs-lisp
@@ -259,7 +274,6 @@ Use epkg to check the available packages on emacsmirror
 
 #+RESULTS:
 : cl
-
 
 * Enable MELPA package manager
 
@@ -295,10 +309,6 @@ Marmalade
 
 #+RESULTS:
 : ((marmalade . http://marmalade-repo.org/packages/) (gnu . https://elpa.gnu.org/packages/) (melpa-stable . https://stable.melpa.org/packages/) (org . https://orgmode.org/elpa/))
-
-
-
-
 
 * Basic Customization
 ** Mode Line
@@ -608,7 +618,7 @@ kill the buffer.
 ** Theme
 
 *Reminder:* Check the face you are for adapting the colors by using
-/C-u C-x =/
+/C-u C-x =/ this is binded to =describe-faces=.
 
 *Reminder:* Notice also that particularly interesting is the option to
 run =M-x customize face=. There you can enter the face you aim to
@@ -626,6 +636,15 @@ interested into modify.
 
 *** Configurations for all themes
 
+
+    Notice this first is necessary in order to allow your modifications to the themes colours
+
+#+begin_src emacs-lisp 
+(setq custom--inhibit-theme-enable nil)
+#+end_src 
+
+    Notice that below is some general modification.
+    
 #+begin_src emacs-lisp 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -653,43 +672,45 @@ interested into modify.
 
 #+RESULTS:
 
-
 *** Doom Theme
 
 #+begin_src emacs-lisp 
-(defun dark/doom ()
-  (interactive)
-  (use-package doom-themes
-    :config
-    ;; Global settings (defaults)
-    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-	  doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-peacock t)
+  (defun dark/doom ()
+    (interactive)
+    (use-package doom-themes
+      :config
+      ;; Global settings (defaults)
+      (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+	    doom-themes-enable-italic t) ; if nil, italics is universally disabled
+      (load-theme 'doom-peacock t)
 
-    ;; Enable flashing mode-line on errors
-    (doom-themes-visual-bell-config)
+      ;; Enable flashing mode-line on errors
+      (doom-themes-visual-bell-config)
 
-    ;; Enable custom neotree theme (all-the-icons must be installed!)
-    ;; (doom-themes-neotree-config)
-    ;; or for treemacs users
-    ;; (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-    ;; (doom-themes-treemacs-config)
+      ;; Enable custom neotree theme (all-the-icons must be installed!)
+      ;; (doom-themes-neotree-config)
+      ;; or for treemacs users
+      ;; (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+      ;; (doom-themes-treemacs-config)
 
-    ;; Corrects (and improves) org-mode's native fontification.
-    (doom-themes-org-config))
-)
+      ;; Corrects (and improves) org-mode's native fontification.
+      (doom-themes-org-config)
+      )
+  )
 #+end_src 
 
 #+RESULTS:
 : dark/doom
 
 *** Load Monokai theme as standard theme
-
+    
 #+begin_src emacs-lisp 
 (defun dark/monokai ()
   (interactive)
   (use-package monokai-theme
     :ensure t)
+
+  (load-theme 'monokai t) ;; load the black monokai theme
 
   (with-eval-after-load "monokai-theme"
     (custom-theme-set-faces
@@ -709,14 +730,14 @@ interested into modify.
      '(org-level-2 ((t (:foreground "light blue" :inherit nil))))
      '(org-level-3 ((t (:foreground "indian red" :inherit nil))))
      )
-    )
-
-  (load-theme 'monokai t) ;; load the black monokai theme  
+  )
 )
 #+end_src 
 
 #+RESULTS:
 : dark/monokai
+
+
 
     Change line highlighting color for monokai. At the moment I could not
     find a nice option. But it annoys me that in org chunck it becomes
@@ -804,18 +825,18 @@ interested into modify.
 (defun dark/misterioso ()
   (interactive)
   (load-theme 'misterioso)
-  (with-eval-after-load "misterioso-theme"
-    (custom-theme-set-faces
-     'misterioso
-     '(default ((t)))
-     (set-face-background 'linum "#2d3743")
-     (set-face-background 'hl-line "#212931")
-     '(org-block
-       ((t (:background "#3E3D31" :foreground "#F8F8F0"))))
-     '(ivy-subdir
-       ((t (:foreground "#ffad29" ))))  
-     )
-    )
+  ;; (with-eval-after-load "misterioso-theme"
+  ;;   (custom-theme-set-faces
+  ;;    'misterioso
+  ;;    '(default ((t)))
+  ;;    (set-face-background 'linum "#2d3743")
+  ;;    (set-face-background 'hl-line "#212931")
+  ;;    '(org-block
+  ;;      ((t (:background "#3E3D31" :foreground "#F8F8F0"))))
+  ;;    '(ivy-subdir
+  ;;      ((t (:foreground "#ffad29" ))))  
+  ;;    )
+  ;;   )
 )
 #+end_src 
 
@@ -866,7 +887,7 @@ interested into modify.
 #+end_src 
 
 #+RESULTS:
-: my-switch
+: 4
 
 #+begin_src emacs-lisp 
 (global-set-key (kbd "s-b") 'my-switch)
@@ -876,7 +897,8 @@ interested into modify.
 : my-switch
 
 ** Set lining globally
-#+BEGIN_SRC emacs-lisp
+
+   #+BEGIN_SRC emacs-lisp
 (global-linum-mode t) ;; load line number at the beginning of the
 		      ;; file. Notice the global argument means that
 		      ;; this line configuration will apply to all
@@ -890,7 +912,6 @@ interested into modify.
 : t
 
 ** Moving across windows
-
 
 #+BEGIN_SRC emacs-lisp
 (defun ace/window ()
@@ -1234,7 +1255,6 @@ Do it again the github way.
 #+RESULTS:
 : t
 
-
 ** Buffers
 
    Switch to most recent visited buffer
@@ -1517,7 +1537,6 @@ swiper as counsel.
 
 To automatically advice on auto-completion given the words used in the
 buffer.
-
 
 ** Company
 
@@ -1950,9 +1969,9 @@ really worked with them. Check at a later point in case of need.
   (setq p2 (point))
   (beginning-of-line)
   (delete-region p2 (point))
-  (insert "\n#+begin_export html\n <img width=\"100%\" height=\"100%\" src=\"../..")
+  (insert "\n#+begin_export html\n <img src=\"../..")
   (yank)
-  (insert ".png\" class=\"center\">\n#+end_export\n")
+  (insert ".png\">\n#+end_export\n")
   (kill-line)
   )
   (kill-line)
@@ -2712,6 +2731,44 @@ Here you mask your settings through a json
 #+RESULTS:
 | lambda | nil | (org-gcal-sync) |
 
+*** Description of org-agenda properties
+
+    [[https://orgmode.org/manual/Repeated-tasks.html][This]] is a nice article that explains you well how to use the
+    agenda tags.
+
+    Basically there are three types of hourly tags:
+
+    - =+= it means that when you mark it as done it shifts by the
+      given amount of time.
+
+    - =++= it means that when you mark it as done it shifts by the
+      given amount of time *in the future*. It means that for instance
+      if you had a scheduled event that you do not mark as done since
+      3 weeks it will not mark it as done and shift the date 2 weeks
+      in the past but rather 1 week *into the future*.
+
+    - =.+= it means that when you mark it as done it shifts by the
+      given amount as of *today/exact moment when you mark it as done*.
+
+*** Org super agenda   
+
+    It's a way to make the agenda look much nicer. Have to look at it
+    at some point.
+
+*** Calfw
+
+
+#+begin_src emacs-lisp 
+(use-package calfw)
+
+(use-package calfw-org
+  :after calfw
+  )
+#+end_src 
+
+#+RESULTS:
+
+
 
 ** Org tangle append
 
@@ -2735,7 +2792,6 @@ but `delete-file' is ignored."
 #+RESULTS:
 | org-babel-tangle-append-setup | er/add-org-mode-expansions | (closure (org-agenda-skip-regexp org-table1-hline-regexp org-table-tab-recognizes-table.el org-table-dataline-regexp org-table-any-border-regexp org-agenda-restriction-lock-overlay org-agenda-overriding-restriction org-agenda-diary-file org-complex-heading-regexp t) nil (setq imenu-create-index-function 'org-imenu-get-tree)) | flyspell-mode | org-bullets-mode | ob-ipython-auto-configure-kernels | org-tempo-setup | turn-on-auto-fill | enable-paredit-mode | (closure (org--rds reftex-docstruct-symbol org-element-greater-elements org-clock-history org-agenda-current-date org-with-time org-defdecode org-def org-read-date-inactive org-ans2 org-ans1 org-columns-current-fmt-compiled org-clock-current-task org-clock-effort org-agenda-skip-function org-agenda-skip-comment-trees org-agenda-archives-mode org-end-time-was-given org-time-was-given org-log-note-extra org-log-note-purpose org-log-post-message org-last-inserted-timestamp org-last-changed-timestamp org-entry-property-inherited-from org-blocked-by-checkboxes org-state org-agenda-headline-snapshot-before-repeat org-capture-last-stored-marker org-agenda-start-on-weekday org-agenda-buffer-tmp-name org-priority-regexp org-mode-abbrev-table org-mode-syntax-table buffer-face-mode-face org-tbl-menu org-org-menu org-struct-menu org-entities org-last-state org-id-track-globally org-clock-start-time texmathp-why remember-data-file org-agenda-tags-todo-honor-ignore-options iswitchb-temp-buflist calc-embedded-open-mode calc-embedded-open-formula calc-embedded-close-formula align-mode-rules-list org-emphasis-alist org-emphasis-regexp-components org-export-registered-backends org-modules org-babel-load-languages org-indent-indentation-per-level org-element-paragraph-separate ffap-url-regexp org-inlinetask-min-level t) nil (add-hook 'change-major-mode-hook 'org-show-all 'append 'local)) | (closure (org-src-window-setup *this* org-babel-confirm-evaluate-answer-no org-src-preserve-indentation org-src-lang-modes org-edit-src-content-indentation org-babel-library-of-babel t) nil (add-hook 'change-major-mode-hook 'org-babel-show-result-all 'append 'local)) | org-babel-result-hide-spec | org-babel-hide-all-hashes |
 
-
 ** IN-PROGRESS This might be big - TEST
 
 It works well... have simply to write a function to set the
@@ -2744,16 +2800,19 @@ properties... not archive_file but rather copy file... however very
 nice... with this I will have a great workflow.
 
 #+begin_src emacs-lisp 
-(setq org-destination-location "~/Desktop/IBM_projects/USZ_development/USZ_Medical_Decision_Support/notebooks/test.org::* From %s")
+(setq org-destination-location "~/Desktop/test.org::* From %s")
 #+end_src 
 
 Have also the issue that at each archivation you do not cancel the
 previously archived section.
 
-But good.. Generally a solid starting point.
+But good.. Generally a solid starting point. 
 
-#+RESULTS:
-: ~/Desktop/IBM_projects/USZ_development/USZ_Medical_Decision_Support/notebooks/test.org::* From %s
+Then you can sort via =org-sort-entries= on time in reverse and kill
+all of the younger headers with the same title. And then order again
+based on archiving age.
+
+Notice that you should move the properties one header up.
 
 #+begin_src emacs-lisp 
 (defun org-subtree-to-file (&optional find-done)
@@ -2843,7 +2902,7 @@ direct children of this heading."
 		    (olpath . ,(mapconcat #'identity
 					  (org-get-outline-path)
 					  "/"))
-		    (time . ,time)
+		    (time . ,(concat (concat "<" time) ">"))
 		    (todo . ,(org-entry-get (point) "TODO")))))
 	    ;; We first only copy, in case something goes wrong
 	    ;; we need to protect `this-command', to avoid kill-region sets it,
@@ -2922,16 +2981,6 @@ direct children of this heading."
 			    infile-p)
 		       (eq org-archive-subtree-add-inherited-tags t))
 		   (org-set-tags all-tags))
-	      ;; Mark the entry as done
-	      (when (and org-archive-mark-done
-			 (let ((case-fold-search nil))
-			   (looking-at org-todo-line-regexp))
-			 (or (not (match-end 2))
-			     (not (member (match-string 2) org-done-keywords))))
-		(let (org-log-done org-todo-log-states)
-		  (org-todo
-		   (car (or (member org-archive-mark-done org-done-keywords)
-			    org-done-keywords)))))
 
 	      ;; Add the context info.
 	      (dolist (item org-archive-save-context-info)
@@ -2969,6 +3018,135 @@ direct children of this heading."
 : org-subtree-to-file
 
 
+* Time management and Pomodoro Technique
+  :LOGBOOK:
+  CLOCK: [2021-02-05 Fri 12:02]--[2021-02-05 Fri 12:15] =>  0:13
+  CLOCK: [2021-02-05 Fri 11:48]--[2021-02-05 Fri 12:01] =>  0:13
+  CLOCK: [2021-02-05 Fri 11:43]--[2021-02-05 Fri 11:48] =>  0:05
+  CLOCK: [2021-02-05 Fri 11:39]--[2021-02-05 Fri 11:42] =>  0:03
+  CLOCK: [2021-02-05 Fri 11:39]--[2021-02-05 Fri 11:39] =>  0:00
+  :END:
+
+  This section experiments a bit with some time management
+  techniques. I discovered it is not just bla bla. You can in fact
+  work much more productively with basics time management
+  techniques. I started using some during my last exam session. It was
+  a hard one and I was often distracted. Well I decided to set
+  timers. During some time I was working. Then I was regularly doing
+  breaks reading my current book. It worked and I managed to read 250
+  pages during the most hard exam session I ever experienced. 
+
+  It turned out when discussing with my dare gf, that there is a very
+  well known technique that supports such a behaviour. It is the
+  pomodoro technique. It consists in measuring everything in
+  pomodoros. That is 25min. intervals.
+
+  During such intervals you work at 100% without any distractions and
+  then from time to time you take breaks and switch off. But when you
+  work you work at 100%. You do not mix stuff.
+
+  Let's start with the basics in emacs. And let's then expand to the
+  pomodoro.
+
+  
+** Org-Clocks
+
+   So the basics thing is to log all of your work. I.e. check how much
+   time you needed to compute tasks. After all: /just if you can
+   measure it, you can improve it/. 
+
+   One very easy way to do that in emacs is via the =org-clock-in=
+   function mapped to ~C-c C-x TAB~, in my emacs. Its correspondent is
+   =org-clock-out= mapped to ~C-c C-x C-o~. In such a way you will be
+   able to start a measurement in the org header and stop it and the
+   time the time of the clock will be registered in the logbook. Check
+   this very emacs file you are editing should you be confused at any
+   time. Also interesting are the ~C-c C-x C-j~, i.e. the
+   =org-clock-goto= command that makes you jump to the header where
+   your clocks are registered. Even more interesting are the ~C-c C-x
+   C-d~ command, i.e. =org-clock-display= command that when run in the
+   section it tells you exactly how many hours you spend on the section
+   according to your clocked in time.
+
+   Well, that all came in by default with emacs =org-mode=. I just have
+   never the time so far to check at it properly and makes sense of all
+   of that. Now that I am taking the time and writing this post it
+   makes well sense. Wonderful tool. Quick usage through the
+   shortcuts. 
+
+   Notice that there are also other more advanced features. Let's
+   leave it for now. Should you want to check at them later check the
+   official [[https://orgmode.org/manual/Clocking-Work-Time.html][org documentation]].
+
+** Pomodoro
+
+   Let's go back to the pomodoro technique, the thing for which you
+   actually started to dig into such time management tools. So
+   apparently tools to work with the pomodoro technique were
+   implemented /en mass/ into emacs. Well no surprise. If you know
+   emacs, then you know we emacs people value a lot productivity and
+   try all the sorts of the escamotages in order to increase it.
+
+   So the most popular package is the pomodoro one. You can install it
+   as follows given that you are using the =use-package= package. 
+
+ #+begin_src emacs-lisp 
+;; could not find it normally.
+;; (use-package pomodoro
+;;   :ensure t
+;;   :init (pomodoro-add-to-mode-line))
+
+
+;; use the quelpa mirror because of that
+ (use-package pomodoro
+   :quelpa (pomodoro :fetcher github :repo "emacsmirror/pomodoro")
+   :config (pomodoro-add-to-mode-line)
+   :bind (("C-c C-v s-p" . pomodoro-start)
+	  ("C-c C-v s-s" . pomodoro-stop)
+          ("C-c C-x s-p" . pomodoro-pause)
+	  ("C-c C-x s-r" . pomodoro-resume))
+   )
+ #+end_src 
+
+ #+RESULTS:
+ : pomodoro-resume
+
+
+   Good with the above quelpa mirror you managed to install it. Notice
+   that here the functions to start your pomodoro timer is
+   =pomodoro-start=. There are then a couple of functions to =pause=,
+   =resume= etc. your pomodoro. Notice that here the time with the
+   add-to-mode-line above is displayed in little on the bottom left of
+   your mode-line. That is fine. Use this in general and not when
+   editing org files. For this there is a better option that we will
+   explore next.
+
+   Another option that directly integrates with emacs org
+   mode clocks previously described is the =org-pomodoro=
+   package. That starts a clock as the =clock-in= command above and
+   after 25 min. it should expire. I read that the notification when
+   it expires is not that great so they suggested to add the
+   =libnotify= option below.
+
+ #+begin_src emacs-lisp 
+(use-package org-pomodoro
+  :ensure t
+  :config
+  (setq alert-user-configuration (quote ((((:category . "org-pomodoro")) libnotify nil))))
+   :bind (("C-c C-x s-o" . org-pomodoro)
+	  ("C-c C-x s-e" . org-pomodoro-extend-last-clock))
+)
+ #+End_src 
+
+ #+RESULTS:
+ : org-pomodoro-extend-last-clock
+
+   Let's give it a go for the next task then. Now I have no time to
+   wait other 25min. to see the behaviour. The milestone was set and
+   for the next projects you can start with your time management
+   techniques.
+
+
 * EIN
 
 #+begin_src emacs-lisp 
@@ -2979,6 +3157,7 @@ direct children of this heading."
 : ein:edit-cell-save-and-execute
 
 Consider [[https://github.com/nnicandro/emacs-jupyter][this package]]. Looks promising.
+
 
 * Nikola
 
@@ -3022,11 +3201,10 @@ Enable magit interface on global mode.
 
 #+begin_src emacs-lisp 
 (add-to-list 'org-latex-packages-alist '("" "listingsutf8"))
+(add-to-list 'org-latex-packages-alist '("" "minted"))
 #+end_src 
 
 #+RESULTS:
-|   | listingsutf8 |
-|   | minted       |
 
 You have to have xelatex on your $PATH for that.
 
@@ -3038,10 +3216,11 @@ You have to have xelatex on your $PATH for that.
 	   "xelatex -8bit -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
    (setq org-latex-listings 'minted)
+   (setq org-latex-minted-options
+	 '(("frame" "lines") ("linenos=true")))
 #+end_src 
 
 #+RESULTS:
-: minted
 
 Then compile the latex with =C-c C-c= command.
 
@@ -3185,6 +3364,42 @@ smoothly. Remember to run pip on DOS and not on emacs shell as at the
 moment emacs shell is set to be the shell interacting with the Linux
 partition.
 
+** Running Code in different python runtimes
+
+It happened to me that I had to run an algorithm that was
+experimental and was taking a lot of time to run. For this I did could
+not wait until each of the experiment was finished before starting a
+new one. 
+
+I had to start new processes concurrently. 
+
+Moreover this is a good trivial way to parallelize in your algorithm
+in case you can simply do it letting it run on different subsets of
+data as was the case for me with the spade algorithm.
+
+In order to do that you can leverage the =python-shell-xxx=  commands.
+
+Notice that this are different in comparison to the =elpy= commands
+your =C-c C-c= is bounded to in python mode.
+
+In this sense you can achieve the above by starting a different
+runtime for each pyhton script using: ~C-u M-x run-python~
+
+Then RET RET until a runtime is created. =python-shell= commands of
+the particular script will then be bounded to the runtime. 
+
+With this keyboard binding you can then send the results for each
+script to the respective runtime and run multiple runtimes
+concurrently.
+
+#+begin_src emacs-lisp 
+(define-key python-mode-map (kbd "C-c C-x C-c") 'python-shell-send-region)
+(define-key python-mode-map (kbd "C-c C-x C-b") 'python-shell-send-buffer)
+#+end_src 
+
+#+RESULTS:
+: python-shell-send-buffer
+
 ** Code Navigation
 
  #+begin_src emacs-lisp 
@@ -3235,6 +3450,7 @@ command.
 
 
 * Language Server
+
 
 ** Config
 
@@ -3436,7 +3652,6 @@ command.
  Super nice with the tangle property. You write all of the chuncks then
  to a single file you can pass as =:tangle= argument.
 
-
 ** Instruction
 
    Should you be able to leverage this in org chuncks see the
@@ -3506,6 +3721,38 @@ Advice on the shortcuts available.
 
 #+RESULTS:
 | flymake-json-load |
+
+
+This is a nice option. It will show your json as a tree and you can
+observe the structure of the json in there and navigate it in such a
+way.
+
+#+begin_src emacs-lisp :async t
+(use-package json-navigator
+  :ensure t)
+#+end_src 
+
+#+RESULTS:
+
+With yafolding you will be able to fold in and out the json documents.
+
+#+begin_src emacs-lisp 
+(use-package yafolding
+  :quelpa (yafolding :fetcher github :repo "emacsmirror/yafolding")
+  :ensure t)
+#+end_src 
+
+#+RESULTS:
+
+#+begin_src emacs-lisp 
+(add-hook 'json-mode-hook
+	    (local-set-key (kbd "C-c h")
+			   'yafolding-hide-element)
+	    )
+#+end_src 
+
+#+RESULTS:
+| yafolding-hide-element | flymake-json-load |
 
 
 * XML 
@@ -3699,12 +3946,12 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
 
 #+begin_src emacs-lisp 
 ;; Then:
-(use-package pdf-tools
-  :ensure t
-  :config
-  (custom-set-variables
-    '(pdf-tools-handle-upgrades nil))
-  (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
+;; (use-package pdf-tools
+;;   :ensure t
+;;   :config
+;;   (custom-set-variables
+;;     '(pdf-tools-handle-upgrades nil))
+;;   (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
 #+end_src 
 
 #+RESULTS:
@@ -3721,7 +3968,7 @@ As on the [[https://github.com/politza/pdf-tools][official webpage]].
 ;; Finally:
 ;; just run it once. Otherwise it asks to rebuild on each start-up
 ;; (setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/zlib/1.2.8/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")
-(pdf-tools-install)
+;; (pdf-tools-install)
 #+end_src 
 
 
