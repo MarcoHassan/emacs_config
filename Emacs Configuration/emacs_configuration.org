@@ -256,7 +256,6 @@ using =epkg-list-packages= function.
 
 Use epkg to check the available packages on emacsmirror
 
-
 #+begin_src emacs-lisp 
 ;; first download the epkg
 ;;  git clone git@github.com:emacsmirror/epkgs.git ~/.emacs.d/epkgs
@@ -358,12 +357,20 @@ Imagemagick is missing.
 
 #+RESULTS:
 
-#+begin_src emacs-lisp 
-(setq org-image-actual-width (/ (display-pixel-width) 3))
-#+end_src 
+  The following does the following:
 
-#+RESULTS:
-: 640
+    => if there is a #+ATTR.*: width="200", resize to 200,
+     otherwise resize to 600; this was chosen as it is a good display
+     on my screen.
+
+  #+begin_src emacs-lisp 
+  (setq org-image-actual-width '(600))
+
+;; (setq org-image-actual-width (/ (display-pixel-width) 3))
+  #+end_src 
+
+  #+RESULTS:
+  : 600
 
 ** Set global encoding 
 
