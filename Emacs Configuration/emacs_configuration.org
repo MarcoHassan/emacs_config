@@ -110,7 +110,13 @@ mentioned above.
    - [[https://www.ict4g.net/adolfo/notes/emacs/emacs-caldav.html][fellow1]]
 
 
+** For debugging
 
+   You can use =toggle-debug-on-error= to see the backtrace and where
+   your emacs functions fails.
+
+   You can watch [[https://www.youtube.com/watch?v=odkYXXYOxpo][this crash course]].
+   
 
 * For Mac Specific Issues
 
@@ -258,6 +264,7 @@ using =epkg-list-packages= function.
 #+BEGIN_SRC emacs-lisp
   (require 'cl)
 #+END_SRC
+
 
 * Enable MELPA package manager
 
@@ -645,12 +652,20 @@ interested into modify.
      '(org-level-1 ((t (:foreground "spring green" :inherit nil))))
      '(org-level-2 ((t (:foreground "light blue" :inherit nil))))
      '(org-level-3 ((t (:foreground "indian red" :inherit nil))))
+
+     ;; font shell
+     '(font-lock-face
+       ((t (:foreground "white" :inherit nil :background nil))))
+
+     '(term
+       ((t (:foreground "white" :inherit nil :background nil))))
      )
   )
 )
 #+end_src 
 
-
+#+RESULTS:
+: dark/monokai
 
     Change line highlighting color for monokai. At the moment I could not
     find a nice option. But it annoys me that in org chunck it becomes
@@ -710,6 +725,10 @@ interested into modify.
 	  '(org-drawer
 	    ((t (:foreground "salmon3" :inherit nil))))
 
+	  ;; Change color of org date
+	  '(org-date
+	    ((t (:foreground "dark cyan" :inherit nil))))
+
 	  ;; magit text for committing
 	  '(git-commit-summary
 	    ((t (:foreground "black" :inherit nil))))
@@ -728,28 +747,64 @@ interested into modify.
 	    ((t (:foreground "indian red" :inherit nil))))
 	  '(diredp-dir-name
 	    ((t (:foreground "blue" :inherit nil))))
+
+	  ;; markdown face for lsp server
+	  ;; Change color of ein input cells
+	  '(markdown-code-face
+	    ((t (:background nil :inherit nil))))
+
+	  ;; Flyspell duplicate - mild error
+	  '(flyspell-duplicate
+	    ((t (:background nil :inherit nil :foreground "DarkOrange2"))))
+
+	  ;; Chnage color of global lining
+	  '(linum
+	    ((t (:background "light grey" :inherit nil))))
+
+	  ;; Change the color in the minibuffer prompt to read better
+	  '(minibuffer-prompt
+	    ((t (:background "white" :inherit nil :foreground "indian red"))))
+
+	  ;; Change the color in the minibuffer prompt to read better
+	  '(alect-block
+	    ((t (:background nil :inherit nil))))
+
+	  ;; Org link
+	  '(org-link
+	    ((t (:foreground "blue" :inherit nil))))
+
+	  ;; Org-block
+	  '(org-block
+	    ((t (:foreground "light-grey" :background "grey78" :inherit nil))))
+
+	  ;; Shell Prompt
+	  '(term
+	    ((t (:foreground "black" :inherit nil))))
+	  '(comint-highlight-prompt 
+	    ((t (:foreground "#008ED1"))))
+	  
+	  ;; Dired
+	  '(dired-directory
+	    ((t (:foreground "blue"))))
+	  '(diredp-file-suffix
+	    ((t (:foreground "black"))))
+
+
+	  ;; for python indents
+	  '(highlight-indentation-face
+	    ((t (:background "grey85"))))
+
+	  ;; css property
+	  '(css-property
+	    ((t (:foreground "dark green"))))
+
+	  ;; magit
+	  '(magit-diff-file-heading
+	    ((t (:foreground "sea green"))))
+
+	  '(magit-filename
+	    ((t (:foreground "indian red"))))
 	  )
-
-	 ;; Chnage color of global lining
-	 (set-face-background 'linum "light grey")
-
-	 ;; Change the color in the minibuffer prompt to read better
-	 (set-face-foreground 'minibuffer-prompt "indian red")
-	 (set-face-background 'minibuffer-prompt "white") 
-
-	 (set-face-background 'alect-block nil) 
-
-	 ;; Org link color
-	 ;; (set-face-foreground 'eshell-ls-directory "turquoise4")
-	 (set-face-foreground 'org-link "blue")
-	 (set-face-foreground 'org-block "light-grey")
-
-	 ;; Shell prompt
-	 (set-face-foreground 'comint-highlight-prompt "#008ED1")
-	 (set-face-foreground 'term "black")
-
-	 ;; Folder directories
-	 (set-face-foreground 'dired-directory "blue")
 	 )
       )
     #+END_SRC
@@ -772,11 +827,14 @@ interested into modify.
   ;;    '(org-block
   ;;      ((t (:background "#3E3D31" :foreground "#F8F8F0"))))
   ;;    '(ivy-subdir
-  ;;      ((t (:foreground "#ffad29" ))))  
-  ;;    )
-  ;;   )
+  ;;      ((t (:foreground "#ffad29" ))))
+  ;;  )
+  ;; )
 )
 #+end_src 
+
+#+RESULTS:
+: dark/misterioso
 
 #+begin_src emacs-lisp 
  ;; there is a weird behaviour with the org-agenda. 
@@ -790,7 +848,7 @@ interested into modify.
 *** Make them available as classes
 
 #+begin_src emacs-lisp 
-(defvar a 1 "Initial setting for the `a` global variable.")
+(defvar a 3 "Initial setting for the `a` global variable.")
 #+end_src 
 
  #+begin_src emacs-lisp 
@@ -820,6 +878,7 @@ interested into modify.
 (global-set-key (kbd "s-b") 'my-switch)
 #+end_src 
 
+
 ** Set lining globally
 
    #+BEGIN_SRC emacs-lisp
@@ -847,7 +906,11 @@ interested into modify.
 	  ((t (:inherit ace-jump-face-foreground :height 3.0)))))
        ))
 )
+
+(ace/window)
 #+END_SRC
+
+#+RESULTS:
 
 To move across windows holding the shift key
 
@@ -1069,8 +1132,6 @@ interesting content there.
  #+begin_src emacs-lisp 
  (load "dired-sidebar")
  #+end_src 
-
-
  : t
 
  Configuration
@@ -1078,19 +1139,58 @@ interesting content there.
  #+begin_src emacs-lisp 
  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-
  
- (setq dired-sidebar-subtree-line-prefix "__")
+ ;; (setq dired-sidebar-subtree-line-prefix "__")
  (setq dired-sidebar-theme 'vscode)
  (setq dired-sidebar-use-term-integration t)
  (setq dired-sidebar-use-custom-font t)
  #+end_src 
 
-Also changed the default sidebar width to 20 in the =.el= file.
+Also change the default sidebar width.
 
-#+begin_quote
-(defcustom dired-sidebar-width 20 ....
-#+end_quote
+#+begin_src emacs-lisp 
+(setq dired-sidebar-width 20)
+#+end_src 
+
+Enlarge dired-sidebar
+
+#+begin_src emacs-lisp 
+(defun enlarge_sidebar()
+  "Convert a multi-line paragraph into a single line of text."
+  (interactive)
+   (dired-sidebar-toggle-sidebar)
+   (setq dired-sidebar-width (+ 5 dired-sidebar-width))
+   (dired-sidebar-toggle-sidebar)
+  )
+
+
+(defun shrink_sidebar()
+  "Convert a multi-line paragraph into a single line of text."
+  (interactive)
+   (dired-sidebar-toggle-sidebar)
+   (setq dired-sidebar-width (- dired-sidebar-width 5))
+   (dired-sidebar-toggle-sidebar)
+  )
+
+(defun default_sidebar()
+  "Convert a multi-line paragraph into a single line of text."
+  (interactive)
+   (dired-sidebar-toggle-sidebar)  
+   (setq dired-sidebar-width 20)
+   (dired-sidebar-toggle-sidebar)   
+  )
+
+;; bind the two in dired mode
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c <") 'shrink_sidebar)
+            (local-set-key (kbd "C-c >") 'enlarge_sidebar)
+	    (local-set-key (kbd "C-c C-d") 'default_sidebar))
+	  )
+#+end_src 
+
+#+RESULTS:
+| (lambda nil (local-set-key (kbd C-c <) 'shrink_sidebar) (local-set-key (kbd C-c >) 'enlarge_sidebar) (local-set-key (kbd C-c C-d) 'default_sidebar)) | diredp-nb-marked-in-mode-name | diredp--set-up-font-locking | dired-extra-startup | (lambda nil (local-set-key (kbd C-c <) 'shrink_sidebar) (local-set-key (kbd C-c >) 'enlarge_sidebar)) | doom-modeline-set-project-modeline |
 
  #+begin_src emacs-lisp 
  (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
@@ -1177,7 +1277,7 @@ Do it again the github way.
    (global-set-key (kbd "M-\"") 'insert-pair)
    #+end_src 
 
-Q** Always split vertically
+** Always split vertically
 
 #+begin_src emacs-lisp 
 (setq split-height-threshold nil)
@@ -1660,6 +1760,23 @@ etc. with the above commands.
 
  Despite this everything the results will be piped to the REPL and you
  can keep this open and see what happens in there.
+
+
+
+
+
+
+
+* Cpp
+
+  Activate =hs-mode= when opening cpp files to navigate them quickly.
+
+#+begin_src emacs-lisp 
+(add-hook 'c-mode-common-hook 'hs-minor-mode)
+#+end_src 
+
+#+RESULTS:
+| hs-minor-mode | smart-hungry-delete-default-c-mode-common-hook |
 
 
 * Org Mode
@@ -2337,7 +2454,6 @@ Bind it to a kbd
     =Dropbox/Applicazioni/Mobileorg= folder. Just then you will be able to
     pull the agenda into the ~org-mobile-inbox-for-pull~ above. 
 
-
     The checksum are a nice way to speed up synchronization in the
     sense that just things that where not changed will be
     synchronized. The checksum is the way to see whether the documents
@@ -2453,10 +2569,16 @@ Here you mask your settings through a json
 	org-gcal-file-alist) '(("marco.hassan30@gmail.com" .  "~/dropbox/Applicazioni/MobileOrg/mobileorg.org")));
 #+end_src 
 
+#+RESULTS:
+: t
+
 #+begin_src emacs-lisp 
 (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
 (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
 #+end_src 
+
+#+RESULTS:
+| lambda | nil | (org-gcal-sync) |
 
 *** Description of org-agenda properties
 
@@ -2880,6 +3002,7 @@ direct children of this heading."
    for the next projects you can start with your time management
    techniques.
 
+
 * EIN
 
 #+begin_src emacs-lisp 
@@ -2927,39 +3050,36 @@ Enable magit interface on global mode.
 You have to have xelatex on your $PATH for that.
 
 Good - notice that this first chunck works well when you want to allow
-minted content in your files. When you want to work with citations and
-org-ref use the next chunck.
+minted content in your files. 
 
 #+begin_src emacs-lisp 
    ;; Allowing minted to highlight code in latex mode when exporting
    
-   ;; (setq org-latex-pdf-process
-   ;; 	 '("xelatex -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"
-   ;; 	   "xelatex -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"
-   ;; 	   "xelatex -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"))
+   (setq org-latex-pdf-process
+	 '("xelatex -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"
+            "bibtex %b"
+	   "xelatex -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"
+	   "xelatex -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"))
 
 
-   ;; (setq org-latex-listings 'minted)
-   ;; (setq org-latex-minted-options
-   ;; 	 '(("frame" "lines") ("linenos=true")))
+   (setq org-latex-listings 'minted)
+   (setq org-latex-minted-options
+	 '(("frame" "lines") ("linenos=true")))
 #+end_src 
 
 #+RESULTS:
 | frame        | lines |
 | linenos=true |       |
 
-
-Write a function at a later stage that deals with both.
-
 #+begin_src emacs-lisp 
 ;; For working with org-ref and having correct export.
-(setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+;; (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
 #+end_src 
 
 Then compile the latex with =C-c C-c= command.
 
 ** Citation in Org-mode
-
+ 
    Note that since a bit in newer versions of org-mode you do not have
    anymore contributed packages. I needed ox-bibtex in there. I also
    could not find it in /epkgs/. So I downloaded it manually and moved
@@ -2976,38 +3096,60 @@ Then compile the latex with =C-c C-c= command.
 #+RESULTS:
 : bibtex-completion
 
+There is some issue with helm-bibtex, this was a dependency of
+org-ref. I uninstalled both and now I solved the issue. A new bibtex
+version was installed that seems to integrate correctly now.
+
 Needed as well =bibtex2html=. Can be installed with brew.
 
 #+begin_src emacs-lisp 
 ;; use the quelpa mirror because of that
  (use-package org-ref
-   :quelpa (org-ref :fetcher github :repo "emacsmirror/org-ref"))
+   :ensure t
+   :quelpa (org-ref :fetcher github :repo "emacsmirror/org-ref")
+   :bind (
+          ("C-x s-c" . org-ref-helm-insert-cite-link)
+          ("C-x s-o" . org-ref-open-url-at-point)
+         )
+)
 #+end_src 
 
 #+RESULTS:
-
+: org-ref-open-url-at-point
 
 
 #+begin_src emacs-lisp 
-(setq reftex-default-bibliography '("/Users/marcohassan/Desktop/Thesis/literature/references.bib"))
+(setq reftex-default-bibliography '("/Users/marcohassan/Desktop/Bayesian_Net_Thesis/literature/references.bib"))
 
 ;; see org-ref for use of these variables
-(setq  org-ref-bibliography-notes "~/Desktop/Thesis/literature/notes.org"
-org-ref-default-bibliography '("~/Desktop/Thesis/literature/references.bib")
-      org-ref-pdf-directory "~/Desktop/Thesis/literature/bibtex-pdfs/")
+(setq  org-ref-bibliography-notes "~/Desktop/Bayesian_Net_Thesis/literature/notes.org"
+       org-ref-default-bibliography '("~/Desktop/Bayesian_Net_Thesis/literature/references.bib")
+       org-ref-pdf-directory "~/Desktop/Thesis/Bayesian_Net_Thesis/bibtex-pdfs/")
 #+end_src 
 
 #+RESULTS:
-: ~/Desktop/Thesis/literature/bibtex-pdfs/
+: ~/Desktop/Thesis/Bayesian_Net_Thesis/bibtex-pdfs/
 
 In general it is working like a charm. I just have to change some
 bindings. Find the functionalities of it [[https://www.youtube.com/watch?v=2t925KRBbFc][here]]. 
+
+I love =org-ref= it is an outstanding package. Note that for some
+reason every time I open a file after reopening emacs the file does
+not check the link with the bibliography. I have to manually call
+the =org-ref-insert-bibliography-link=. This is annoying. Try to solve
+this issue at some point. Also some functions are missing. Such as
+this very labels tags. After calling a function such as
+=org-ref-insert-ref-link= they appear. Weird behaviour. Something is
+for sure broken. A pity that this library is not well maintained. It
+is a bomb but it refers and leverage old libraries. [[label:issue_link_at_startup]]
 
 Note that at this stage I am was not able to download the papers
 directly. I will fix it at some point later if I manage. [[label:issue_pdf_downlaod]]
 
 
 * Projectile
+
+  This can be used to search within a project in all files etc.
 
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
@@ -3016,12 +3158,27 @@ directly. I will fix it at some point later if I manage. [[label:issue_pdf_downl
 
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (setq projectile-require-project-root nil)
 #+END_SRC
+
+#+RESULTS:
 
 #+begin_src emacs-lisp 
  (global-set-key (kbd "C-x s-r") 'projectile-next-project-buffer)
  (global-set-key (kbd "C-x s-l") 'projectile-previous-project-buffer)
 #+end_src 
+
+#+RESULTS:
+: projectile-previous-project-buffer
+
+  Install =ag= to search with it in projectile
+
+#+begin_src emacs-lisp 
+(use-package ag
+  :ensure t)
+#+end_src 
+
+#+RESULTS:
 
 ** Org Projectile
 
@@ -3034,7 +3191,8 @@ the correct location and finally to use the =C-c n p= shortcut below.
 
 #+begin_src emacs-lisp 
 (use-package org-projectile
-  :bind (("C-c n p" . org-projectile-project-todo-completing-read))
+  :bind (("C-c n p" . org-projectile-project-todo-completing-read)
+         ("C-c n c" . org-projectile-capture-for-current-project))
   :config
   (progn
     (setq org-projectile-projects-file
@@ -3043,6 +3201,9 @@ the correct location and finally to use the =C-c n p= shortcut below.
     (push (org-projectile-project-todo-entry) org-capture-templates))
   :ensure t)
 #+end_src 
+
+#+RESULTS:
+: org-projectile-capture-for-current-project
 
 
 * Typescript
@@ -3208,22 +3369,36 @@ command.
 
 * Language Server
 
-
 ** Config
 
- In order to use the python language server you have to install it via
+ *Necessary dependencies:*
+
+ *For Python:* In order to use the python language server you have to install it via
  pip first =pip3 install python-language-server=.
+
+ *For Cpp:* Need clangd in your =PATH=. Install it on Mac via ~brew install llvm~.
+
 
  #+begin_src emacs-lisp 
 (use-package lsp-mode
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (python-mode . lsp)
+
+         ;; note not using here as there is some issue. have to use
+         ;; clangd compiler but I am using g++ for the project. takes
+         ;; to long to fix all of this.  
+
+         ;; (c-mode . lsp) (c++-mode
+         ;; . lsp)
+
          ;; if you want which-key integration
          ;; (lsp-mode . lsp-enable-which-key-integration)
 	 )
   :commands lsp
   )
- #+end_src 
+ #+end_src
+
+ #+RESULTS:
 
  Some config.
 
@@ -3234,6 +3409,9 @@ command.
 ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
 (setq lsp-keymap-prefix "C-c s-l")
  #+end_src 
+
+ #+RESULTS:
+ : C-c s-l
 
  Notice that you have to toggle
  =lsp-ui-sidebar-toggle-symbols-info=. This is a very valuable thing to
@@ -3277,6 +3455,8 @@ command.
 				   (face-background 'tooltip)))))
  #+end_src 
 
+ #+RESULTS:
+ | lsp-ui-mode |
 
  To integrate further and to resolve the issue with python debugging.
 
@@ -3319,16 +3499,6 @@ command.
  Hack for =ein-python=. Transform it to python source block and then open
  the edit buffer. Like this you will have the language server. Then
  when closing it back change the header back to =ein-python=.
-
- #+begin_src emacs-lisp 
-(point)
- #+end_src 
-
- #+begin_src emacs-lisp 
-(setq p (point))
-
-(goto-char p)
- #+end_src 
 
  #+begin_src emacs-lisp 
 (defun ein_copy_packages ()
@@ -3916,11 +4086,6 @@ Shortcut to open multi term
 
  Close and reopen emacs.
 
-
-
-
-
-
 * TODO IDEAS
 
 ** Multi-term
@@ -3939,3 +4104,7 @@ Shortcut to open multi term
 ** TODO fix org-ref pdf download
 
    [[ref:issue_pdf_downlaod]]
+
+   [[ref:issue_link_at_startup]]
+
+
