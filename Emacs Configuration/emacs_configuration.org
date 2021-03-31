@@ -109,6 +109,8 @@ mentioned above.
 
    - [[https://www.ict4g.net/adolfo/notes/emacs/emacs-caldav.html][fellow1]]
 
+   - [[https://develop.spacemacs.org/layers/+emacs/org/README.html][good for org stories]]
+
 
 ** For debugging
 
@@ -3234,9 +3236,9 @@ captured in an org-capture buffer.
   (progn
      (org-projectile-per-project)
      (setq org-projectile-per-project-filepath "tasks.org")
-     (setq org-projectile-projects-file
+     (setq org-projectile-projects-file  ;; adds to all of your project such files
            "tasks.org")
-     (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+     (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files))) ;; so that you can add them all to your agenda
      (setq org-agenda-skip-unavailable-files t) ;; note the above add
 						;; a taks.org in all
 						;; of your
@@ -3245,16 +3247,14 @@ captured in an org-capture buffer.
 						;; do not have such
 						;; file with this
 						;; command
+
+    (setq org-agenda-files (delq nil (delete-dups (org-agenda-files)))) ;; deletes duplicates - whatever the reason might be
     (push (org-projectile-project-todo-entry) org-capture-templates))
   :ensure t)
 #+end_src 
 
 #+RESULTS:
 : org-projectile-capture-for-current-project
-
-Note that the =tasks.org= files are not added to the agenda
-automatically. You can do this with the following snippet.
-
 
 To check the files are set correctly call the below
 
@@ -3263,11 +3263,21 @@ To check the files are set correctly call the below
 #+end_src 
 
 #+begin_src emacs-lisp 
-(org-projectile-todo-files)
+;; (org-agenda-files)
 #+end_src 
 
 #+RESULTS:
-| ~/Desktop/emacs_config/tasks.org | ~/.emacs.d/tasks.org | ~/Desktop/ETH/Communication_Networks/transport-project/tasks.org | ~/Desktop/IBM_projects/USZ_Cancer/tasks.org | ~/Desktop/financial_info/tasks.org | ~/Dropbox/tasks.org | ~/Desktop/Bayesian_Net_Thesis/tasks.org | ~/Desktop/emacs_presentation/tasks.org | ~/Desktop/IBM_projects/USZ_Cancer/neo-assistant/frontend/tasks.org | ~/Desktop/Blog/bits-of-experience/tasks.org | ~/Desktop/IBM_projects/USZ_Cancer/neo-assistant/tasks.org | ~/Desktop/IBM_projects/USZ_Cancer/neo-assistant-backend-api/tasks.org | ~/Desktop/IBM_projects/USZ_Cancer/neo4j-interaction-service/tasks.org | ~/Desktop/Bayesian_Net_Thesis/merlin/tasks.org | ~/dropbox/tasks.org | ~/Desktop/IBM_projects/USZ_development/USZ_Medical_Decision_Support/tasks.org | ~/Desktop/Learning/AI_workflow_Coursera/tasks.org | ~/dropbox/CVs/tasks.org | ~/Box/Kanton ZH COVID19 - strictly confidential/SORMAS_docu/tasks.org | ~/Dropbox/CVs/tasks.org | ~/Desktop/IBM_projects/SchutzRettung/module-analytics/tasks.org | ~/Desktop/IBM_projects/minor_tasks/DataShield/tasks.org | ~/Desktop/TechnicalPosts/org-html-themes/tasks.org | ~/Desktop/IBM_projects/minor_tasks/DataShield/data-shield-reference-apps/tasks.org | ~/quelpa/build/w3m/tasks.org | ~/Downloads/case-study-soln/tasks.org | ~/Desktop/python_venv/coursera_capstone/lib/python3.7/site-packages/numpy/core/tasks.org | ~/Desktop/Learning/AI_workflow_Coursera/Capstone_Project/ai-workflow-capstone/tasks.org | ~/Desktop/Flask/tasks.org | ~/Desktop/Learning/Data_Science_Learning/tasks.org | ~/Desktop/Learning/AI_workflow_Coursera/workflow-template/tasks.org | ~/Desktop/Learning/AI_workflow_Coursera/workflow-template/case-study-soln/tasks.org | ~/Desktop/Learning/Data_Science_Learning/machine_learning_examples/tasks.org | ~/Desktop/IBM_projects/SchutzRettung/get-started-python/tasks.org | ~/Desktop/IBM_projects/minor_tasks/Docker_Training/tasks.org | ~/Desktop/IBM_projects/SchutzRettung/module-orchestrator/tasks.org | ~/Desktop/IBM_projects/tasks.org | ~/Desktop/Brave/marcohassan.github.io/tasks.org | ~/.emacs.d/quelpa/build/dap-mode/tasks.org | ~/Desktop/IBM_projects/minor_tasks/BlockChainTutorials/BlockchainTutorial.github.io/tasks.org | ~/.emacs.d/quelpa/build/org-yt/tasks.org | ~/Desktop/ETH/Communication_Networks/mini_internet_project/tasks.org | ~/.emacs.d/dired-sidebar/tasks.org | ~/.oh-my-zsh/tasks.org | ~/Desktop/IBM_projects/Schutzrettung/module-analytics/tasks.org | ~/.emacs.d/ox-ipynb/tasks.org | ~/Desktop/IBM_projects/minor_tasks/Blockchaintutorials/BlockchainTutorial.github.io/tasks.org | ~/Desktop/IBM_projects/minor_tasks/BlockChainTutorials/blockchainbean2/tasks.org | ~/Desktop/DevOps/tasks.org | ~/Desktop/IBM_projects/SchutzRettung/tasks.org | ~/Desktop/kubernetes_docker_training/node-bulletin-board/tasks.org | ~/Desktop/pytorch_training/Deep-Learning-with-PyTorch-Quick-Start-Guide/tasks.org | ~/Desktop/tasks.org |
+
+something causes duplciates create function for that
+
+#+begin_src emacs-lisp 
+(defun agenda_rem_duplicates()
+ (interactive)
+ (setq org-agenda-files (delq nil (delete-dups (org-agenda-files)))))
+#+end_src 
+
+#+RESULTS:
+: agenda_rem_duplicates
 
 * Typescript
 
