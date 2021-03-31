@@ -280,6 +280,8 @@ using =epkg-list-packages= function.
 	(add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
   #+END_SRC
 
+  #+RESULTS:
+
 
 * Enable Marmalade and Org ELPA package manager
 
@@ -499,6 +501,20 @@ In case you want to select as standard which buffer to kill
 (global-set-key (kbd "C-x K") 'kill-buffer)
 #+END_SRC
 
+   Recall to just kill the current buffer but not the window =s-k=.
+
+** Shrink and enlarge window
+
+   #+begin_src emacs-lisp
+(global-set-key (kbd "C-x -") 'shrink-window)
+
+(global-set-key (kbd "C-x +") 'enlarge-window)
+
+   #+end_src 
+
+   #+RESULTS:
+   : enlarge-window
+   
 ** Save cursor current position when killing the file
 
    Using save-place-mode saves the location of point for every file I
@@ -737,7 +753,7 @@ interested into modify.
 	  '(font-lock-comment-face ((t :foreground "SeaGreen4"))) 
 	  '(font-lock-builtin-face  ((t :foreground "blue"))) ;; this is the foreground for instance
 	  '(font-lock-string-face  ((t :foreground "indian red"))) ;; this is the commentary and strings. Use it for custom set faces when you know it.
-
+          '(font-lock-face       (:foreground "black" :background nil))
 	  ;; Change color of ein input cells
 	  '(ein:cell-input-area
 	    ((t (:background "snow3" :inherit nil))))
@@ -801,8 +817,11 @@ interested into modify.
 	  ;; magit
 	  '(magit-diff-file-heading
 	    ((t (:foreground "sea green"))))
-
 	  '(magit-filename
+	    ((t (:foreground "indian red"))))
+
+	  ;; markdown
+	  '(markdown-pre-face 
 	    ((t (:foreground "indian red"))))
 	  )
 	 )
@@ -2408,8 +2427,11 @@ Bind it to a kbd
 
      ;; specify to-do iterations with C-c t
      (setq org-todo-keywords
-	   '((sequence "TODO" "IN-PROGRESS" "WAITING" "ISSUE" "FIXED" "DONE")))
+	   '((sequence "TODO" "IN-PROGRESS" "WAITING" "ISSUE" "QUESTION" "DONE")))
   #+END_SRC
+
+  #+RESULTS:
+  | sequence | TODO | IN-PROGRESS | WAITING | ISSUE | QUESTION | DONE |
 
 *** Open agenda into its own buffer
 
@@ -3180,7 +3202,17 @@ directly. I will fix it at some point later if I manage. [[label:issue_pdf_downl
 
 #+RESULTS:
 
-** Org Projectile
+  Nice the projectile search is working like a charm. With =ag= it is
+  much faster than with =grep= also the output is more easy to
+  navigate. I would always go with it. 
+
+  Note that you have to better understand how to restrict the
+  search. I.e. ignore some repositories etc. Theoretically you can do
+  that inserting things to be ignored in a =.projectile= file. Up to
+  now it did not work. I think due to some conflicts with =.git*=
+  files (see here [[https://forsooth.org/posts/projectile-ignore-directories/index.html][possible reference]]). Understand better at some point if it becomes a priority.
+
+** COMMENT Org Projectile
 
 Adds the possibility to edit org todos files via capture in a default
 org file storing todos for the specific project. Essentially the same
@@ -3189,15 +3221,30 @@ as org capture at projectile level.
 In order to use it you have first to create the =tasks.org= file in
 the correct location and finally to use the =C-c n p= shortcut below.
 
+Note that actually you can choose the location of the =tasks.org=
+file. Opens a projectile-completing-read that allows the selection of
+a project heading under which to store the input that is subsequently
+captured in an org-capture buffer.
+
 #+begin_src emacs-lisp 
 (use-package org-projectile
   :bind (("C-c n p" . org-projectile-project-todo-completing-read)
          ("C-c n c" . org-projectile-capture-for-current-project))
   :config
   (progn
-    (setq org-projectile-projects-file
-          "tasks.org")
-    (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+     (org-projectile-per-project)
+     (setq org-projectile-per-project-filepath "tasks.org")
+     (setq org-projectile-projects-file
+           "tasks.org")
+     (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+     (setq org-agenda-skip-unavailable-files t) ;; note the above add
+						;; a taks.org in all
+						;; of your
+						;; projects. remove
+						;; entries where you
+						;; do not have such
+						;; file with this
+						;; command
     (push (org-projectile-project-todo-entry) org-capture-templates))
   :ensure t)
 #+end_src 
@@ -3205,6 +3252,22 @@ the correct location and finally to use the =C-c n p= shortcut below.
 #+RESULTS:
 : org-projectile-capture-for-current-project
 
+Note that the =tasks.org= files are not added to the agenda
+automatically. You can do this with the following snippet.
+
+
+To check the files are set correctly call the below
+
+#+begin_src emacs-lisp 
+;; (org-projectile-todo-files)
+#+end_src 
+
+#+begin_src emacs-lisp 
+(org-projectile-todo-files)
+#+end_src 
+
+#+RESULTS:
+| ~/Desktop/emacs_config/tasks.org | ~/.emacs.d/tasks.org | ~/Desktop/ETH/Communication_Networks/transport-project/tasks.org | ~/Desktop/IBM_projects/USZ_Cancer/tasks.org | ~/Desktop/financial_info/tasks.org | ~/Dropbox/tasks.org | ~/Desktop/Bayesian_Net_Thesis/tasks.org | ~/Desktop/emacs_presentation/tasks.org | ~/Desktop/IBM_projects/USZ_Cancer/neo-assistant/frontend/tasks.org | ~/Desktop/Blog/bits-of-experience/tasks.org | ~/Desktop/IBM_projects/USZ_Cancer/neo-assistant/tasks.org | ~/Desktop/IBM_projects/USZ_Cancer/neo-assistant-backend-api/tasks.org | ~/Desktop/IBM_projects/USZ_Cancer/neo4j-interaction-service/tasks.org | ~/Desktop/Bayesian_Net_Thesis/merlin/tasks.org | ~/dropbox/tasks.org | ~/Desktop/IBM_projects/USZ_development/USZ_Medical_Decision_Support/tasks.org | ~/Desktop/Learning/AI_workflow_Coursera/tasks.org | ~/dropbox/CVs/tasks.org | ~/Box/Kanton ZH COVID19 - strictly confidential/SORMAS_docu/tasks.org | ~/Dropbox/CVs/tasks.org | ~/Desktop/IBM_projects/SchutzRettung/module-analytics/tasks.org | ~/Desktop/IBM_projects/minor_tasks/DataShield/tasks.org | ~/Desktop/TechnicalPosts/org-html-themes/tasks.org | ~/Desktop/IBM_projects/minor_tasks/DataShield/data-shield-reference-apps/tasks.org | ~/quelpa/build/w3m/tasks.org | ~/Downloads/case-study-soln/tasks.org | ~/Desktop/python_venv/coursera_capstone/lib/python3.7/site-packages/numpy/core/tasks.org | ~/Desktop/Learning/AI_workflow_Coursera/Capstone_Project/ai-workflow-capstone/tasks.org | ~/Desktop/Flask/tasks.org | ~/Desktop/Learning/Data_Science_Learning/tasks.org | ~/Desktop/Learning/AI_workflow_Coursera/workflow-template/tasks.org | ~/Desktop/Learning/AI_workflow_Coursera/workflow-template/case-study-soln/tasks.org | ~/Desktop/Learning/Data_Science_Learning/machine_learning_examples/tasks.org | ~/Desktop/IBM_projects/SchutzRettung/get-started-python/tasks.org | ~/Desktop/IBM_projects/minor_tasks/Docker_Training/tasks.org | ~/Desktop/IBM_projects/SchutzRettung/module-orchestrator/tasks.org | ~/Desktop/IBM_projects/tasks.org | ~/Desktop/Brave/marcohassan.github.io/tasks.org | ~/.emacs.d/quelpa/build/dap-mode/tasks.org | ~/Desktop/IBM_projects/minor_tasks/BlockChainTutorials/BlockchainTutorial.github.io/tasks.org | ~/.emacs.d/quelpa/build/org-yt/tasks.org | ~/Desktop/ETH/Communication_Networks/mini_internet_project/tasks.org | ~/.emacs.d/dired-sidebar/tasks.org | ~/.oh-my-zsh/tasks.org | ~/Desktop/IBM_projects/Schutzrettung/module-analytics/tasks.org | ~/.emacs.d/ox-ipynb/tasks.org | ~/Desktop/IBM_projects/minor_tasks/Blockchaintutorials/BlockchainTutorial.github.io/tasks.org | ~/Desktop/IBM_projects/minor_tasks/BlockChainTutorials/blockchainbean2/tasks.org | ~/Desktop/DevOps/tasks.org | ~/Desktop/IBM_projects/SchutzRettung/tasks.org | ~/Desktop/kubernetes_docker_training/node-bulletin-board/tasks.org | ~/Desktop/pytorch_training/Deep-Learning-with-PyTorch-Quick-Start-Guide/tasks.org | ~/Desktop/tasks.org |
 
 * Typescript
 
@@ -4060,7 +4123,7 @@ Shortcut to open multi term
 #+end_src 
 
 
-* FIXED Consult when issues
+* Consult when you have issues
 
 ** Org archive
 
