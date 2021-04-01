@@ -101,7 +101,6 @@ mentioned above.
     [[/path/to/file.php::line][string-to-display]]
     #+end_example
 
-
 ** References
 
    These are good fellows you can check from time to time what they
@@ -111,7 +110,8 @@ mentioned above.
 
    - [[https://develop.spacemacs.org/layers/+emacs/org/README.html][good for org stories]]
 
-
+   - [[https://systemcrafters.cc/videos][omg these guys are absurd. they really managed emacs to crazy levels]]
+   
 ** For debugging
 
    You can use =toggle-debug-on-error= to see the backtrace and where
@@ -592,29 +592,31 @@ interested into modify.
     Notice that below is some general modification.
     
 #+begin_src emacs-lisp 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- ;; '(alect-title ((t (:foreground "#077707" :weight bold :height 2.0))))
- '(bold ((t (:weight bold))))
- '(cursor ((t (:background "white" :foreground "white" :inverse-video t))))
- '(flyspell-duplicate ((t (:background "gray16" :foreground "khaki3" :underline (:color foreground-color :style wave)))))
- '(flyspell-incorrect ((t (:foreground "#d81212" :underline (:color "#F92672" :style wave)))))
- '(magit-section-highlight ((t (:background nil))))
- '(magit-section-heading ((t (:inherit nil :box (:line-width 2 :color "black" :style released-button) :weight bold :height 1.5))))
- '(org-agenda-structure((t (:background nil :foreground nil))))
- '(org-agenda-date ((t (:inherit nil :background nil :foreground nil :inverse-video nil :box (:line-width 2 :color "#272822") :overline nil :slant normal :weight normal :height 1.0))))
- '(org-agenda-date-today ((t (:inherit org-agenda-date :background nil :foreground nil :inverse-video nil  :overline nil :weight bold))))
- '(org-agenda-date-weekend ((t (:foreground nil :inverse-video nil :overline nil :underline nil))))
- '(org-document-title ((t (:inherit alect-title :foreground "#F8F8F0" :weight bold :height 0.7))))
- '(org-level-1 ((t (:height 1.4))))
- '(org-level-2 ((t (:height 1.25))))
- '(org-level-3 ((t  nil ))
- '(org-meta-line ((t (:background nil :inherit nil)))))
-)
+ (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  ;; '(alect-title ((t (:foreground "#077707" :weight bold :height 2.0))))
+;;  '(bold ((t (:weight bold))))
+  '(cursor ((t (:background "white" :foreground "white" :inverse-video t))))
+;;  '(flyspell-duplicate ((t (:background "gray16" :foreground "khaki3" :underline (:color foreground-color :style wave)))))
+;;  '(flyspell-incorrect ((t (:foreground "#d81212" :underline (:color "#F92672" :style wave)))))
+;;  '(magit-section-highlight ((t (:background nil))))
+;;  '(magit-section-heading ((t (:inherit nil :box (:line-width 2 :color "black" :style released-button) :weight bold :height 1.5))))
+;;  '(org-agenda-structure((t (:background nil :foreground nil))))
+;;  '(org-agenda-date ((t (:inherit nil :background nil :foreground nil :inverse-video nil :box (:line-width 2 :color "#272822") :overline nil :slant normal :weight normal :height 1.0))))
+;;  '(org-agenda-date-today ((t (:inherit org-agenda-date :background nil :foreground nil :inverse-video nil  :overline nil :weight bold))))
+;;  '(org-agenda-date-weekend ((t (:foreground nil :inverse-video nil :overline nil :underline nil))))
+;;  '(org-document-title ((t (:inherit alect-title :foreground "#F8F8F0" :weight bold :height 0.7))))
+  '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+  '(org-level-2 ((t (:inherit outline-2 :height 1.25))))
+  '(org-level-4 ((t (:inherit outline-4 :height 0.85))))
+;;  '(org-meta-line ((t (:background nil :inherit nil)))))
+ )
 #+end_src 
+
+#+RESULTS:
 
 *** Doom Theme
 
@@ -730,7 +732,7 @@ interested into modify.
 	    ((t (:inherit nil))))
 
 	  ;; Change color of the org headers
-	  '(org-level-1 ((t (:foreground "indian red"))))
+	  '(org-level-1 ((t (:foreground "indian red" :inherit nil))))
 	  '(org-level-2 ((t (:foreground "#008ED1"))))
 	  '(org-level-3 ((t (:foreground "sea green"))))
 	  '(org-level-4 ((t (:foreground "salmon3"))))
@@ -2429,11 +2431,11 @@ Bind it to a kbd
 
      ;; specify to-do iterations with C-c t
      (setq org-todo-keywords
-	   '((sequence "TODO" "IN-PROGRESS" "WAITING" "ISSUE" "QUESTION" "DONE")))
+	   '((sequence "TODO" "IN-PROGRESS" "WAITING" "ISSUE" "DEPENDENCY_BLOCK" "QUESTION" "DONE")))
   #+END_SRC
 
   #+RESULTS:
-  | sequence | TODO | IN-PROGRESS | WAITING | ISSUE | QUESTION | DONE |
+  | sequence | TODO | IN-PROGRESS | WAITING | ISSUE | DEPENDENCY_BLOCK | QUESTION | DONE |
 
 *** Open agenda into its own buffer
 
@@ -2639,6 +2641,151 @@ Here you mask your settings through a json
   )
 #+end_src 
 
+
+*** IN-PROGRESS notifications for agenda entries
+
+    It is important for me that when I work with the org-agenda that I
+    get notifications for when things expire for this I use this
+    package: [[https://github.com/akhramov/org-wild-notifier.el][org-wild-notifier]].
+
+    #+begin_src emacs-lisp 
+;; (use-package org-wild-notifier
+;;   :ensure t)
+    #+end_src 
+
+    #+RESULTS:
+
+    So org-wild notifier did not get it to run properly so far. 
+
+    Org-alert is working smoothly. The issue is with alert. It is not
+    displaying alerts how I would wish... cannot understand where the
+    issue is.
+
+    You would then just have to enable its mode and specify every how
+    much it should check your todos. Keep [[https://www.youtube.com/watch?v=wKTKmE1wLyw][this video]] as reference.
+
+    #+begin_src emacs-lisp 
+    (use-package org-alert
+      :ensure t
+      :config
+      (setq org-alert-interval 300 ;; every 5 min run alert.
+            org-alert-notification-title "Org Alert Reminder!")
+      (org-alert-enable)
+    )
+    #+end_src 
+
+    #+RESULTS:
+    : t
+
+    Ok something in your alert is not working properly. Understand how you
+    can fix it. Maybe it has to do with this notification package that
+    is not working?
+
+    #+begin_src emacs-lisp 
+    ;; (require 'notifications)
+
+    ;; (notifications-notify :title "Achtung!"
+    ;;                   :body (format "You have an appointment in %d minutes" 10)
+    ;;                   :app-name "Emacs: Org"
+    ;;                   :sound-name "alarm-clock-elapsed")
+    #+end_src 
+
+    #+RESULTS:
+
+    i think you will have to go through [[https://zhongweiy.github.io/blog/2016/02/03/solve-error-emacs-not-compiled-with-dbus-support/][the following]]... in fact I get
+    the following message when running the above =Error: (dbus-error
+    "No connection to bus" :session)= so this is likely the issue. on
+    mac you do not have such thing out of the box..
+
+    So I will work with =terminal-notifier= instead. Install it via
+    brew. ~brew install terminal-notifier~
+
+    #+begin_src emacs-lisp 
+    ;; (require 'alert)
+    ;; (setq alter-default-style 'notifier)
+    #+end_src 
+
+    should open a pop-up window in modifications style... not working
+
+    #+begin_src emacs-lisp 
+    (alert "This is an alert" :severity 'high)
+    #+end_src 
+
+    Ok so alert seemed to be fucked up for macos - see [[https://github.com/jwiegley/alert/issues/47][this thread]]. 
+
+     I did it like that in the end.... not the best but it
+     works... see commented line of how it was at the beginning
+
+     #+begin_src emacs-lisp 
+     ;; try to rewrite a function 
+     (defun org-alert-check ()
+       "Check for active, due deadlines and initiate notifications."
+       (interactive)
+       (org-alert--preserve-agenda-buffer)
+       (let ((active (org-alert--filter-active (org-alert--get-headlines))))
+	 (dolist (dl (org-alert--strip-states active))
+	   (shell-command-to-string (concatenate 'string "echo " dl " | terminal-notifier -sound default"))))
+	   ;; (alert dl :title org-alert-notification-title)))
+       (org-alert--restore-agenda-buffer))
+     #+end_src 
+
+     #+RESULTS:
+     : org-alert-check
+
+    do not want to spend too much time on it. this is also an
+    alternative, you should [[https://github.com/vjeantet/alerter][install alerter]] an put it in .emacs.d then:
+
+#+begin_src emacs-lisp 
+;; add the path to .emacs.d where you installed alerter
+(setq exec-path (append exec-path '("/Users/marcohassan/.emacs.d/")))
+#+end_src 
+
+#+RESULTS:
+| /usr/local/Cellar/emacs-head@27/HEAD-dcc00bb_1/bin/ | /usr/local/opt/node@10/bin/ | /Users/marcohassan/Desktop/Program_Executables/OpenshiftCLI/ | /usr/local/texlive/2019/bin/x86_64-darwin/ | /usr/local/bin/ | /usr/local/sbin/ | /usr/local/opt/llvm/bin/ | /usr/local/bin/ | /usr/bin/ | /bin/ | /usr/sbin/ | /sbin/ | /Library/TeX/texbin/ | /Users/marcohassan/.go/bin/ | /usr/local/opt/go/libexec/bin/ | /usr/local/Cellar/emacs-head@27/HEAD-dcc00bb_1/libexec/emacs/27.1.91/x86_64-apple-darwin19.0.0/ | /Users/marcohassan/.emacs.d/ | /Users/marcohassan/.emacs.d/ | /Users/marcohassan/.emacs.d/ |
+
+#+begin_src emacs-lisp 
+;;; mmmmm not sure it is working.. keep it 1 or two days... if it does
+;;; not work cancel it.
+;;; can theoreticall also work with termminal-notifier-command if it works.
+
+(require 'appt)
+
+(setq appt-time-msg-list nil)    ;; clear existing appt list
+(setq appt-display-interval '1)  ;; warn every 5 minutes from t - appt-message-warning-time
+(setq
+  appt-message-warning-time '50  ;; send first warning 15 minutes before appointment
+  appt-display-mode-line nil     ;; don't show in the modeline
+  appt-display-format 'window)   ;; pass warnings to the designated window function
+(setq appt-disp-window-function (function ct/appt-display-native))
+
+(appt-activate 1)                ;; activate appointment notification
+; (display-time) ;; Clock in modeline
+
+(defun ct/send-notification (title msg)
+  (let ((notifier-path (executable-find "alerter")))
+       (start-process 
+           "Appointment Alert" 
+           "*Appointment Alert*" ; use `nil` to not capture output; this captures output in background
+           notifier-path 
+           "-message" msg 
+           "-title" title 
+           "-sender" "org.gnu.Emacs"
+           "-activate" "org.gnu.Emacs")))
+
+(defun ct/appt-display-native (min-to-app new-time msg)
+  (interactive)
+  (ct/send-notification 
+    (format "Appointment in %s minutes" min-to-app) ; Title
+    (format "%s" msg)))                             ; Message/detail text
+
+
+;; Agenda-to-appointent hooks
+(org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
+(run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
+(add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt) ;; update appt list on agenda view
+#+end_src 
+
+
 ** Org tangle append
 
 Should tangle then the chunck at the end of a file.
@@ -2679,229 +2826,6 @@ but `delete-file' is ignored."
 
 #+RESULTS:
 : screenshots_enter_last_img
-
-** IN-PROGRESS This might be big - TEST
-
-It works well... have simply to write a function to set the
-org-destination location one time off... And then have to adjust the
-properties... not archive_file but rather copy file... however very
-nice... with this I will have a great workflow.
-
-#+begin_src emacs-lisp 
-(setq org-destination-location "~/Desktop/test.org::* From %s")
-#+end_src 
-
-Have also the issue that at each archivation you do not cancel the
-previously archived section.
-
-But good.. Generally a solid starting point. 
-
-Then you can sort via =org-sort-entries= on time in reverse and kill
-all of the younger headers with the same title. And then order again
-based on archiving age.
-
-Notice that you should move the properties one header up.
-
-#+begin_src emacs-lisp 
-(defun org-subtree-to-file (&optional find-done)
-  "Move the current subtree to the archive.
-The archive can be a certain top-level heading in the current
-file, or in a different file.  The tree will be moved to that
-location, the subtree heading be marked DONE, and the current
-time will be added.
-
-When called with a single prefix argument FIND-DONE, find whole
-trees without any open TODO items and archive them (after getting
-confirmation from the user).  When called with a double prefix
-argument, find whole trees with timestamps before today and
-archive them (after getting confirmation from the user).  If the
-cursor is not at a headline when these commands are called, try
-all level 1 trees.  If the cursor is on a headline, only try the
-direct children of this heading."
-  (interactive "P")
-  (if (and (org-region-active-p) org-loop-over-headlines-in-active-region)
-      (let ((cl (if (eq org-loop-over-headlines-in-active-region 'start-level)
-		    'region-start-level 'region))
-	    org-loop-over-headlines-in-active-region)
-	(org-map-entries
-	 `(progn (setq org-map-continue-from (progn (org-back-to-heading) (point)))
-		 (org-archive-subtree ,find-done))
-	 org-loop-over-headlines-in-active-region
-	 cl (if (org-invisible-p) (org-end-of-subtree nil t))))
-    (cond
-     ((equal find-done '(4))  (org-archive-all-done))
-     ((equal find-done '(16)) (org-archive-all-old))
-     (t
-      ;; Save all relevant TODO keyword-related variables.
-      (let* ((tr-org-todo-keywords-1 org-todo-keywords-1)
-	     (tr-org-todo-kwd-alist org-todo-kwd-alist)
-	     (tr-org-done-keywords org-done-keywords)
-	     (tr-org-todo-regexp org-todo-regexp)
-	     (tr-org-todo-line-regexp org-todo-line-regexp)
-	     (tr-org-odd-levels-only org-odd-levels-only)
-	     (this-buffer (current-buffer))
-	     (time (format-time-string
-		    (substring (cdr org-time-stamp-formats) 1 -1)))
-	     (file (abbreviate-file-name
-		    (or (buffer-file-name (buffer-base-buffer))
-			(error "No file associated to buffer"))))
-	     (location (org-archive--compute-location
-			(or (org-entry-get nil "TANGLE" 'inherit)
-			    org-destination-location))) ;; simply replaced org-archive-location witth org-destination-location
-	     (afile (car location))
-	     (heading (cdr location))
-	     (infile-p (equal file (abbreviate-file-name (or afile ""))))
-	     (newfile-p (and (org-string-nw-p afile)
-			     (not (file-exists-p afile))))
-	     (buffer (cond ((not (org-string-nw-p afile)) this-buffer)
-			   ((find-buffer-visiting afile))
-			   ((find-file-noselect afile))
-			   (t (error "Cannot access file \"%s\"" afile))))
-	     level datetree-date datetree-subheading-p)
-	(when (string-match "\\`datetree/" heading)
-	  ;; Replace with ***, to represent the 3 levels of headings the
-	  ;; datetree has.
-	  (setq heading (replace-regexp-in-string "\\`datetree/" "***" heading))
-	  (setq datetree-subheading-p (> (length heading) 3))
-	  (setq datetree-date (org-date-to-gregorian
-			       (or (org-entry-get nil "CLOSED" t) time))))
-	(if (and (> (length heading) 0)
-		 (string-match "^\\*+" heading))
-	    (setq level (match-end 0))
-	  (setq heading nil level 0))
-	(save-excursion
-	  (org-back-to-heading t)
-	  ;; Get context information that will be lost by moving the
-	  ;; tree.  See `org-archive-save-context-info'.
-	  (let* ((all-tags (org-get-tags))
-		 (local-tags
-		  (cl-remove-if (lambda (tag)
-				  (get-text-property 0 'inherited tag))
-				all-tags))
-		 (inherited-tags
-		  (cl-remove-if-not (lambda (tag)
-				      (get-text-property 0 'inherited tag))
-				    all-tags))
-		 (context
-		  `((category . ,(org-get-category nil 'force-refresh))
-		    (file . ,file)
-		    (itags . ,(mapconcat #'identity inherited-tags " "))
-		    (ltags . ,(mapconcat #'identity local-tags " "))
-		    (olpath . ,(mapconcat #'identity
-					  (org-get-outline-path)
-					  "/"))
-		    (time . ,(concat (concat "<" time) ">"))
-		    (todo . ,(org-entry-get (point) "TODO")))))
-	    ;; We first only copy, in case something goes wrong
-	    ;; we need to protect `this-command', to avoid kill-region sets it,
-	    ;; which would lead to duplication of subtrees
-	    (let (this-command) (org-copy-subtree 1 nil t))
-	    (set-buffer buffer)
-	    ;; Enforce Org mode for the archive buffer
-	    (if (not (derived-mode-p 'org-mode))
-		;; Force the mode for future visits.
-		(let ((org-insert-mode-line-in-empty-file t)
-		      (org-inhibit-startup t))
-		  (call-interactively 'org-mode)))
-	    (when (and newfile-p org-archive-file-header-format)
-	      (goto-char (point-max))
-	      (insert (format org-archive-file-header-format
-			      (buffer-file-name this-buffer))))
-	    (when datetree-date
-	      (require 'org-datetree)
-	      (org-datetree-find-date-create datetree-date)
-	      (org-narrow-to-subtree))
-	    ;; Force the TODO keywords of the original buffer
-	    (let ((org-todo-line-regexp tr-org-todo-line-regexp)
-		  (org-todo-keywords-1 tr-org-todo-keywords-1)
-		  (org-todo-kwd-alist tr-org-todo-kwd-alist)
-		  (org-done-keywords tr-org-done-keywords)
-		  (org-todo-regexp tr-org-todo-regexp)
-		  (org-todo-line-regexp tr-org-todo-line-regexp)
-		  (org-odd-levels-only
-		   (if (local-variable-p 'org-odd-levels-only (current-buffer))
-		       org-odd-levels-only
-		     tr-org-odd-levels-only)))
-	      (goto-char (point-min))
-	      (org-show-all '(headings blocks))
-	      (if (and heading (not (and datetree-date (not datetree-subheading-p))))
-		  (progn
-		    (if (re-search-forward
-			 (concat "^" (regexp-quote heading)
-				 "\\([ \t]+:\\(" org-tag-re ":\\)+\\)?[ \t]*$")
-			 nil t)
-			(goto-char (match-end 0))
-		      ;; Heading not found, just insert it at the end
-		      (goto-char (point-max))
-		      (or (bolp) (insert "\n"))
-		      ;; datetrees don't need too much spacing
-		      (insert (if datetree-date "" "\n") heading "\n")
-		      (end-of-line 0))
-		    ;; Make the subtree visible
-		    (outline-show-subtree)
-		    (if org-archive-reversed-order
-			(progn
-			  (org-back-to-heading t)
-			  (outline-next-heading))
-		      (org-end-of-subtree t))
-		    (skip-chars-backward " \t\r\n")
-		    (and (looking-at "[ \t\r\n]*")
-			 ;; datetree archives don't need so much spacing.
-			 (replace-match (if datetree-date "\n" "\n\n"))))
-		;; No specific heading, just go to end of file, or to the
-		;; beginning, depending on `org-archive-reversed-order'.
-		(if org-archive-reversed-order
-		    (progn
-		      (goto-char (point-min))
-		      (unless (org-at-heading-p) (outline-next-heading)))
-		  (goto-char (point-max))
-		  ;; Subtree narrowing can let the buffer end on
-		  ;; a headline.  `org-paste-subtree' then deletes it.
-		  ;; To prevent this, make sure visible part of buffer
-		  ;; always terminates on a new line, while limiting
-		  ;; number of blank lines in a date tree.
-		  (unless (and datetree-date (bolp)) (insert "\n"))))
-	      ;; Paste
-	      (org-paste-subtree (org-get-valid-level level (and heading 1)))
-	      ;; Shall we append inherited tags?
-	      (and inherited-tags
-		   (or (and (eq org-archive-subtree-add-inherited-tags 'infile)
-			    infile-p)
-		       (eq org-archive-subtree-add-inherited-tags t))
-		   (org-set-tags all-tags))
-
-	      ;; Add the context info.
-	      (dolist (item org-archive-save-context-info)
-		(let ((value (cdr (assq item context))))
-		  (when (org-string-nw-p value)
-		    (org-entry-put
-		     (point)
-		     (concat "TANGLE_" (upcase (symbol-name item)))
-		     value))))
-	      (widen))))
-	;; Here we are back in the original buffer.  Everything seems
-	;; to have worked.  So now run hooks, cut the tree and finish
-	;; up.
-	(run-hooks 'org-archive-hook)
-	(let (this-command) (org-cut-subtree))
-	(when (featurep 'org-inlinetask)
-	  (org-inlinetask-remove-END-maybe))
-	(setq org-markers-to-move nil)
-	(when org-provide-todo-statistics
-	  (save-excursion
-	    ;; Go to parent, even if no children exist.
-	    (org-up-heading-safe)
-	    ;; Update cookie of parent.
-	    (org-update-statistics-cookies nil)))
-	(message "Subtree archived %s"
-		 (if (eq this-buffer buffer)
-		     (concat "under heading: " heading)
-		   (concat "in file: " (abbreviate-file-name afile)))))))
-    (org-reveal)
-    (if (looking-at "^[ \t]*$")
-	(outline-next-visible-heading 1))))
-#+end_src 
-
 
 
 * Time management and Pomodoro Technique
@@ -3014,12 +2938,15 @@ direct children of this heading."
  #+begin_src emacs-lisp 
 (use-package org-pomodoro
   :ensure t
-  :config
-  (setq alert-user-configuration (quote ((((:category . "org-pomodoro")) libnotify nil))))
+  ;; :config
+  ;; (setq alert-user-configuration (quote ((((:category . "org-pomodoro")) libnotify nil))))
    :bind (("C-c C-x s-o" . org-pomodoro)
 	  ("C-c C-x s-e" . org-pomodoro-extend-last-clock))
 )
  #+End_src 
+
+ #+RESULTS:
+ : org-pomodoro-extend-last-clock
 
    Let's give it a go for the next task then. Now I have no time to
    wait other 25min. to see the behaviour. The milestone was set and
@@ -4179,5 +4106,6 @@ Shortcut to open multi term
    [[ref:issue_pdf_downlaod]]
 
    [[ref:issue_link_at_startup]]
+
 
 
