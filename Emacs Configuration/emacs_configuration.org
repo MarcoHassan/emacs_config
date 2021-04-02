@@ -118,7 +118,7 @@ mentioned above.
    your emacs functions fails.
 
    You can watch [[https://www.youtube.com/watch?v=odkYXXYOxpo][this crash course]].
-   
+
 
 * For Mac Specific Issues
 
@@ -2437,21 +2437,6 @@ Bind it to a kbd
   #+RESULTS:
   | sequence | TODO | IN-PROGRESS | WAITING | ISSUE | DEPENDENCY_BLOCK | QUESTION | DONE |
 
-*** Open agenda into its own buffer
-
- #+BEGIN_SRC emacs-lisp
- (defun air-pop-to-org-agenda (split)
-   "Visit the org agenda, in the current window or a SPLIT."
-   (interactive "P")
-   (org-agenda-list)
-   (when (not split)
-     (delete-other-windows)))
-
- (define-key global-map (kbd "C-c t a") 'air-pop-to-org-agenda)
- ;; advanced syntax. with C-u C-c t a you open the agenda in the other
- ;; window without deleting it.
- #+END_SRC
-
 *** Task Manager and Org Agenda
 
     Org mode has the customizable variable org-agenda-files. The files
@@ -2484,7 +2469,6 @@ Bind it to a kbd
     sense that just things that where not changed will be
     synchronized. The checksum is the way to see whether the documents
     were synchronized or not.
-
 
     #+begin_src emacs-lisp 
     ;; (defcustom org-mobile-checksum-binary "/usr/bin/shasum"
@@ -2557,11 +2541,14 @@ Open org agenda restrict it and open to do.
  #+begin_src emacs-lisp 
  (setq org-capture-templates
       (quote (("t" "todo" entry (file "~/Dropbox/Applicazioni/MobileOrg/capture.org")
-	     "* TODO %?\n%U\n%a\n") ;; if you want to clock in time --- :clock-in t :clock-resume t)
+	     "* TODO %?\n%U\n%a\n:PROPERTIES:\n:WILD_NOTIFIER_NOTIFY_BEFORE: 30 10 5\n:END:") ;; if you want to clock in time --- :clock-in t :clock-resume t)
 	      ("n" "note" entry (file "~/Dropbox/Applicazioni/MobileOrg/capture.org")
 	     "* %? :NOTE:\n%U\n%a\n") ;; if you want to clock in time --- :clock-in t :clock-resume t)
 	    )))
  #+end_src 
+
+ #+RESULTS:
+ | t | todo | entry | (file ~/Dropbox/Applicazioni/MobileOrg/capture.org) | * TODO %? |
 
 *** Sychronization with Google Calendar
 
@@ -2632,30 +2619,38 @@ Here you mask your settings through a json
 
 *** Calfw
 
+  That is nice I think that with it your agenda view is done. Note
+  that functions are mapped to =cfw:...=
 
 #+begin_src emacs-lisp 
-(use-package calfw)
+(use-package calfw
+ :ensure t)
 
 (use-package calfw-org
   :after calfw
   )
 #+end_src 
 
+#+RESULTS:
+
+ #+BEGIN_SRC emacs-lisp
+ (defun air-to-org-cfw-agenda (split)
+   "Visit the org agenda, in the current window or a SPLIT."
+   (interactive "P")
+   (cfw:open-org-calendar))
+
+ (define-key global-map (kbd "C-c t a") 'air-to-org-cfw-agenda)
+ ;; advanced syntax. with C-u C-c t a you open the agenda in the other
+ ;; window without deleting it.
+ #+END_SRC
+
+ #+RESULTS:
+ : air-to-org-cfw-agenda
+
+
+
 
 *** IN-PROGRESS notifications for agenda entries
-
-    It is important for me that when I work with the org-agenda that I
-    get notifications for when things expire for this I use this
-    package: [[https://github.com/akhramov/org-wild-notifier.el][org-wild-notifier]].
-
-    #+begin_src emacs-lisp 
-;; (use-package org-wild-notifier
-;;   :ensure t)
-    #+end_src 
-
-    #+RESULTS:
-
-    So org-wild notifier did not get it to run properly so far. 
 
     Org-alert is working smoothly. The issue is with alert. It is not
     displaying alerts how I would wish... cannot understand where the
@@ -2670,48 +2665,13 @@ Here you mask your settings through a json
       :config
       (setq org-alert-interval 300 ;; every 5 min run alert.
             org-alert-notification-title "Org Alert Reminder!")
-      (org-alert-enable)
+      ;; (org-alert-enable)
+      :bind (("C-c t c" . org-alert-check))
     )
     #+end_src 
 
     #+RESULTS:
-    : t
-
-    Ok something in your alert is not working properly. Understand how you
-    can fix it. Maybe it has to do with this notification package that
-    is not working?
-
-    #+begin_src emacs-lisp 
-    ;; (require 'notifications)
-
-    ;; (notifications-notify :title "Achtung!"
-    ;;                   :body (format "You have an appointment in %d minutes" 10)
-    ;;                   :app-name "Emacs: Org"
-    ;;                   :sound-name "alarm-clock-elapsed")
-    #+end_src 
-
-    #+RESULTS:
-
-    i think you will have to go through [[https://zhongweiy.github.io/blog/2016/02/03/solve-error-emacs-not-compiled-with-dbus-support/][the following]]... in fact I get
-    the following message when running the above =Error: (dbus-error
-    "No connection to bus" :session)= so this is likely the issue. on
-    mac you do not have such thing out of the box..
-
-    So I will work with =terminal-notifier= instead. Install it via
-    brew. ~brew install terminal-notifier~
-
-    #+begin_src emacs-lisp 
-    ;; (require 'alert)
-    ;; (setq alter-default-style 'notifier)
-    #+end_src 
-
-    should open a pop-up window in modifications style... not working
-
-    #+begin_src emacs-lisp 
-    (alert "This is an alert" :severity 'high)
-    #+end_src 
-
-    Ok so alert seemed to be fucked up for macos - see [[https://github.com/jwiegley/alert/issues/47][this thread]]. 
+    : org-alert-check
 
      I did it like that in the end.... not the best but it
      works... see commented line of how it was at the beginning
@@ -2724,7 +2684,7 @@ Here you mask your settings through a json
        (org-alert--preserve-agenda-buffer)
        (let ((active (org-alert--filter-active (org-alert--get-headlines))))
 	 (dolist (dl (org-alert--strip-states active))
-	   (shell-command-to-string (concatenate 'string "echo " dl " | terminal-notifier -sound default"))))
+	   (shell-command-to-string (concatenate 'string "echo " dl " | terminal-notifier -title Emacs_Reminder -sound default  -appIcon http://upload.wikimedia.org/wikipedia/commons/5/59/Emacs_512.png"))))
 	   ;; (alert dl :title org-alert-notification-title)))
        (org-alert--restore-agenda-buffer))
      #+end_src 
@@ -2732,58 +2692,49 @@ Here you mask your settings through a json
      #+RESULTS:
      : org-alert-check
 
-    do not want to spend too much time on it. this is also an
-    alternative, you should [[https://github.com/vjeantet/alerter][install alerter]] an put it in .emacs.d then:
+     Org-alert works properly the issue is that it does not allow you
+     to get reminders just after your event is sufficiently close in
+     time. I.e. it notifies you of the todos of the entire day and
+     that is a bit too much.
 
-#+begin_src emacs-lisp 
-;; add the path to .emacs.d where you installed alerter
-(setq exec-path (append exec-path '("/Users/marcohassan/.emacs.d/")))
-#+end_src 
+     In this sense org-wild-notifier helps as it ships with a default
+     notification at 10 min. So it notifies you 10 min before the
+     event. You can also change it setting different arguments for the
+     =org-wild-notifier-alert-time=. 
 
-#+RESULTS:
-| /usr/local/Cellar/emacs-head@27/HEAD-dcc00bb_1/bin/ | /usr/local/opt/node@10/bin/ | /Users/marcohassan/Desktop/Program_Executables/OpenshiftCLI/ | /usr/local/texlive/2019/bin/x86_64-darwin/ | /usr/local/bin/ | /usr/local/sbin/ | /usr/local/opt/llvm/bin/ | /usr/local/bin/ | /usr/bin/ | /bin/ | /usr/sbin/ | /sbin/ | /Library/TeX/texbin/ | /Users/marcohassan/.go/bin/ | /usr/local/opt/go/libexec/bin/ | /usr/local/Cellar/emacs-head@27/HEAD-dcc00bb_1/libexec/emacs/27.1.91/x86_64-apple-darwin19.0.0/ | /Users/marcohassan/.emacs.d/ | /Users/marcohassan/.emacs.d/ | /Users/marcohassan/.emacs.d/ |
+     Moreover when specifying a todo you can also set the option of
+     when it should remind you the todo, in the following way:
 
-#+begin_src emacs-lisp 
-;;; mmmmm not sure it is working.. keep it 1 or two days... if it does
-;;; not work cancel it.
-;;; can theoreticall also work with termminal-notifier-command if it works.
+     #+begin_example
+     :PROPERTIES:
+     :WILD_NOTIFIER_NOTIFY_BEFORE: 80 60 55 43 33 32 31 30 29 27 26 25 24 5
+     :END:
+     #+end_example
 
-(require 'appt)
+     You can then modify your default capture template to include such
+     a default. This is in fact what I did above in the
+     =org-capture-templates=.
 
-(setq appt-time-msg-list nil)    ;; clear existing appt list
-(setq appt-display-interval '1)  ;; warn every 5 minutes from t - appt-message-warning-time
-(setq
-  appt-message-warning-time '50  ;; send first warning 15 minutes before appointment
-  appt-display-mode-line nil     ;; don't show in the modeline
-  appt-display-format 'window)   ;; pass warnings to the designated window function
-(setq appt-disp-window-function (function ct/appt-display-native))
+    #+begin_src emacs-lisp 
+    (use-package org-wild-notifier
+      :ensure t)
+    #+end_src 
 
-(appt-activate 1)                ;; activate appointment notification
-; (display-time) ;; Clock in modeline
+    #+RESULTS:
 
-(defun ct/send-notification (title msg)
-  (let ((notifier-path (executable-find "alerter")))
-       (start-process 
-           "Appointment Alert" 
-           "*Appointment Alert*" ; use `nil` to not capture output; this captures output in background
-           notifier-path 
-           "-message" msg 
-           "-title" title 
-           "-sender" "org.gnu.Emacs"
-           "-activate" "org.gnu.Emacs")))
+    Again have to use your workaround alert as this is not really working.
 
-(defun ct/appt-display-native (min-to-app new-time msg)
-  (interactive)
-  (ct/send-notification 
-    (format "Appointment in %s minutes" min-to-app) ; Title
-    (format "%s" msg)))                             ; Message/detail text
+    #+begin_src emacs-lisp 
+    (defun org-wild-notifier--notify (event-msg)
+      "Notify about an event using `alert' library.
+    EVENT-MSG is a string representation of the event."
+      (shell-command-to-string (concatenate 'string "echo " event-msg " | terminal-notifier -title Emacs_Reminder -sound default  -appIcon http://upload.wikimedia.org/wikipedia/commons/5/59/Emacs_512.png")))
+      ;; (alert event-msg :title org-wild-notifier-notification-title :severity org-wild-notifier--alert-severity))
+    #+end_src 
 
+    #+RESULTS:
+    : org-wild-notifier--notify
 
-;; Agenda-to-appointent hooks
-(org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
-(run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
-(add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt) ;; update appt list on agenda view
-#+end_src 
 
 
 ** Org tangle append
@@ -3155,6 +3106,7 @@ file. Opens a projectile-completing-read that allows the selection of
 a project heading under which to store the input that is subsequently
 captured in an org-capture buffer.
 
+
 #+begin_src emacs-lisp 
 (use-package org-projectile
   :bind (("C-c n p" . org-projectile-project-todo-completing-read)
@@ -3205,6 +3157,7 @@ something causes duplciates create function for that
 
 #+RESULTS:
 : agenda_rem_duplicates
+
 
 * Typescript
 
@@ -4107,5 +4060,51 @@ Shortcut to open multi term
 
    [[ref:issue_link_at_startup]]
 
+** TODO fix alert
+
+    Alert is quite a fundamental package. Fix it at some point.
+
+    Ok something in your alert is not working properly. Understand how you
+    can fix it. Maybe it has to do with this notification package that
+    is not working?
+
+    #+begin_src emacs-lisp 
+    ;; (require 'notifications)
+
+    ;; (notifications-notify :title "Achtung!"
+    ;;                   :body (format "You have an appointment in %d minutes" 10)
+    ;;                   :app-name "Emacs: Org"
+    ;;                   :sound-name "alarm-clock-elapsed")
+    #+end_src 
+
+    #+RESULTS:
+
+
+    i think you will have to go through [[https://zhongweiy.github.io/blog/2016/02/03/solve-error-emacs-not-compiled-with-dbus-support/][the following]]... in fact I get
+    the following message when running the above =Error: (dbus-error
+    "No connection to bus" :session)= so this is likely the issue. on
+    mac you do not have such thing out of the box..
+
+    So I will work with =terminal-notifier= instead. Install it via
+    brew. ~brew install terminal-notifier~
+
+    #+begin_src emacs-lisp 
+    ;; (require 'alert)
+    ;; (setq alter-default-style 'notifier)
+    #+end_src 
+
+    should open a pop-up window in modifications style... not working
+
+    #+begin_src emacs-lisp 
+    (alert "This is an alert" :severity 'high)
+    #+end_src 
+
+    Ok so alert seemed to be fucked up for macos - see [[https://github.com/jwiegley/alert/issues/47][this thread]]. 
+
+
+** TODO Check alerter
+
+    do not want to spend too much time on it. [[https://christiantietze.de/posts/2019/12/emacs-notifications/][this]] is also an
+    alternative, you should [[https://github.com/vjeantet/alerter][install alerter]] an put it in .emacs.d then:
 
 
