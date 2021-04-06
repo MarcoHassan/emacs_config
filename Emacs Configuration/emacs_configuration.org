@@ -288,13 +288,15 @@ using =epkg-list-packages= function.
 * Enable Marmalade and Org ELPA package manager
 
 Org ELPA
+
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 #+END_SRC
 
-Marmalade
+Marmelade
+
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'package-archives '("marmalade" .  "http://marmalade-repo.org/packages/"))
+  ;; (add-to-list 'package-archives '("marmalade" .  "http://marmalade-repo.org/packages/"))
 #+END_SRC
 
 
@@ -2673,6 +2675,9 @@ Here you mask your settings through a json
     #+RESULTS:
     : org-alert-check
 
+     Weird, after emacs reboot did not work out of the box. Had to
+     eval-buffer org-alert.el and run following block
+
      I did it like that in the end.... not the best but it
      works... see commented line of how it was at the beginning
 
@@ -2904,6 +2909,94 @@ but `delete-file' is ignored."
    for the next projects you can start with your time management
    techniques.
 
+** Org-Trello
+   :LOGBOOK:
+   CLOCK: [2021-04-02 Fri 16:31]--[2021-04-02 Fri 16:56] =>  0:25
+   :END:
+
+   #+begin_src emacs-lisp 
+(use-package org-trello
+  :ensure t)
+   #+end_src    
+
+   #+RESULTS:
+
+   The authors say not to use org-trello mode on each buffer as it
+   limits the org mode capabilities as it is actually an org-mode
+   wrapper.
+
+#+begin_src emacs-lisp 
+;; they advice to set it in such a way.
+
+;; (custom-set-variables '(org-trello-files '("/path/to/file0" "/path/to/file1")))
+#+end_src 
+
+   Then basically you have to use the
+   =org-trello/install-key-and-token= command. There you will pass
+   your mail for your trello account and then just copy api and tokens
+   through your browser.
+
+   Note: This command, if accepted, results in a file stored only in
+   your disk in ~/.emacs.d/.trello/.el</kbd> (this path may vary
+   depending on **user-emacs-directory**).
+
+   I push my .emacs.d. So I added this to the gitignore.
+
+   Then basically there are commands to sync to a =board=. Create a
+   new =board=. Sync a =card=, archive a =card= etc.
+
+   With =C-t= on headers you toggle among the available categories on
+   your trello board. Instead of classical TODO you would have the
+   category such that your header is assigned correctly.
+   
+
+   Ok it is working smoothly. The issue is that it is just one
+   way. I.e. you can just deal with the cards you create. Not with the
+   one others created and assigned to you. 
+
+   Moreover the capabilities are still limited. Try to check in a bit
+   to see if it was updated. 
+
+   Good the last step would be to synchronize 
+
+** Timers
+
+   I downloaded [[https://github.com/dakra/tea-timer.el][tea-timer]] manually via git. 
+
+#+begin_src emacs-lisp 
+ (add-to-list 'load-path "/Users/marcohassan/.emacs.d/tea-timer.el/")
+
+ (load "tea-timer")
+#+end_src 
+
+#+RESULTS:
+: t
+
+ #+begin_src emacs-lisp 
+(defun tea-timer-tea-ready ()
+  "Display tea ready message and reset timer."
+  (shell-command-to-string (concatenate 'string "echo " tea-timer-message " | terminal-notifier -title Tea-Timer -sound default  -appIcon https://img.icons8.com/ios/452/tea--v1.png"))
+  (setq tea-timer--timer nil))
+ #+end_src 
+
+ #+RESULTS:
+ : tea-timer-tea-ready
+
+ Good you can now set a timer and the terminal notifier will notify
+ you when it will be over. You can pass an argument to supply the time
+ for the timer with =C-u int tea-timer= where int is an integer with the
+ time in minutes.
+
+
+#+begin_src emacs-lisp 
+ (define-key global-map (kbd "C-c n t") 'tea-timer)
+ (define-key global-map (kbd "C-c n s") 'tea-timer-display-remaining-time)
+ (define-key global-map (kbd "C-x n c") 'tea-timer-cancel)
+#+end_src 
+
+#+RESULTS:
+: tea-timer-cancel
+
 
 * EIN
 
@@ -3126,14 +3219,20 @@ captured in an org-capture buffer.
 						;; do not have such
 						;; file with this
 						;; command
-
+    (defun agenda_rem_duplicates()
+     (interactive)
+     (setq org-agenda-files (delq nil (delete-dups (org-agenda-files)))))
     (setq org-agenda-files (delq nil (delete-dups (org-agenda-files)))) ;; deletes duplicates - whatever the reason might be
+    (setq org-projectile-capture-template "\n** TODO %?\n:PROPERTIES:\n:WILD_NOTIFIER_NOTIFY_BEFORE: 30 10 5\n:END:")
     (push (org-projectile-project-todo-entry) org-capture-templates))
   :ensure t)
 #+end_src 
 
 #+RESULTS:
 : org-projectile-capture-for-current-project
+
+Also add to projects default notifications settings.
+
 
 To check the files are set correctly call the below
 
@@ -3149,14 +3248,6 @@ To check the files are set correctly call the below
 
 something causes duplciates create function for that
 
-#+begin_src emacs-lisp 
-(defun agenda_rem_duplicates()
- (interactive)
- (setq org-agenda-files (delq nil (delete-dups (org-agenda-files)))))
-#+end_src 
-
-#+RESULTS:
-: agenda_rem_duplicates
 
 
 * Typescript
@@ -4038,6 +4129,7 @@ Shortcut to open multi term
  #+end_example
 
  Close and reopen emacs.
+
 
 * TODO IDEAS
 
