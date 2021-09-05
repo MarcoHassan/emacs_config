@@ -15,6 +15,7 @@ This is therefore a very nice and powerful feature and it suggest to
 switch to this solution. 
 
 
+
 * General sources
 
 As a general resources for generating my emacs configuration I mainly
@@ -50,7 +51,7 @@ configuration file without having to search for the directory.
 #+BEGIN_SRC emacs-lisp
     (defun hrs/visit-emacs-config ()
       (interactive)
-      (find-file "~/Desktop/emacs_config/emacs_configuration.org"))
+      (find-file "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/emacs_config/emacs_configuration.org"))
 
     (global-set-key (kbd "C-c e") 'hrs/visit-emacs-config)
 
@@ -61,30 +62,34 @@ configuration file without having to search for the directory.
 * Open Emacs with bash shell on Windows OS
 
 #+BEGIN_SRC emacs-lisp
-    (defun my-bash-on-windows-shell ()
-      (interactive)
-      (let ((explicit-shell-file-name "C:/Windows/System32/bash.exe"))
-	(cd "C:/Users/Marco Hassan/Desktop")
-	(shell)))
+  ;; (defun my-bash-on-windows-shell ()
+  ;;   (interactive)
+  ;;   (let ((explicit-shell-file-name "C:/Windows/System32/bash.exe"))
+  ;;     (cd "C:/Users/Marco Hassan/Desktop")
+  ;;     (shell)))
 
-    ;; if you want to run the above function iteractively when using emacs with M-x specify it as (interactive) at the end.
+  ;; ;; if you want to run the above function iteractively when using emacs with M-x specify it as (interactive) at the end.
 
-    (my-bash-on-windows-shell)
+  ;; (my-bash-on-windows-shell)
 
-    ;; Necessary on windows as two shell windows are somehow opened.
-    (delete-window)
+  ;; ;; Necessary on windows as two shell windows are somehow opened.
+  ;; (delete-window)
 
-    (setq-default explicit-shell-file-name "bash") ;; set default for shell as bash
+  ;; (setq-default explicit-shell-file-name "bash") ;; set default for shell as bash
 
-    ;; set default directory on start up to be the windows desktop
-    (setq default-directory "C:/Users/Marco Hassan/Desktop")    
+  ;; ;; set default directory on start up to be the windows desktop
+  ;; (setq default-directory "C:/Users/Marco Hassan/Desktop")    
 #+END_SRC
 
-** Prova confiugrare git
+** Git configuration
 
    #+BEGIN_SRC emacs-lisp
-     (setq vc-git-program "C:/Windows/System32/bash.exe")
+(add-to-list 'exec-path "C:/Dev/git/bin")
+;; (setq vc-git-program "C:/Windows/System32/bash.exe")
    #+END_SRC
+
+   #+RESULTS:
+   | C:/Dev/git/bin | /Dev/git/bin | C:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | . | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
 
    Not working. For me if you connect it to gitbash executable it will
    work. Try to do that tomorrow.
@@ -156,16 +161,13 @@ Marmalade
 #+END_SRC
 
 
-
-
-
 * Basic Customization
 
 ** Define tilde for windows OS
 
 #+BEGIN_SRC emacs-lisp
      (add-hook 'after-init-hook
-	       (lambda () (global-set-key (kbd "M-ì") "~")))
+	       (lambda () (global-set-key (kbd "M-ü") "~")))
 #+END_SRC
 ** Set global encoding 
 
@@ -295,6 +297,8 @@ Rainbow-delimiters is convenient for coloring matching parentheses.
       (use-package rainbow-delimiters) 
       (add-hook 'prog-mode-hook 'rainbow-delimiters-mode) ;; to enable it in all programming-related modes
    #+END_SRC
+
+   #+RESULTS:
 
 ** Kill current buffer and close its window
 
@@ -493,31 +497,6 @@ Change line highlighting color for monokai. At the moment I could not
 #+END_SRC
 
 ** Hungry mode
-*** Smart hungry mode
-
-    Try to use the smart-hungry-delete that sets the global keys
-    explicitly.
-
-    Download the package manually from [[https://github.com/hrehfeld/emacs-smart-hungry-delete][smart_hungry-github]]. Could not
-    find the package on MELPA.
-
- #+BEGIN_SRC emacs-lisp
-   (add-to-list 'load-path "c:/Users/Marco Hassan/.emacs.d/emacs-smart-hungry-delete/")
- #+END_SRC
-
- #+BEGIN_SRC emacs-lisp
-  (load "smart-hungry-delete")
- #+END_SRC 
-
-   Add forward hungry deletion
-
- #+BEGIN_SRC emacs-lisp
-   (smart-hungry-delete-add-default-hooks)
-   (global-set-key (kbd "C-c d") 'smart-hungry-delete-forward-char)
-   (global-set-key (kbd "C-c <backspace>") 'smart-hungry-delete-backward-char)
- #+END_SRC
-
-   Ok. Works fine. I also like the fact that it keeps a space between.
 
 ** Expand region
 
@@ -990,32 +969,6 @@ Very nice mode.
      (setq org-ellipsis " >>")
    #+END_SRC
 
-** Ob-ipyhton
-
-   To run jupyter like workflow in org mode displaying graphs, using
-   multiple languages etc. Notice at the moment I have issue. 
-
-   Package is not on MELPA, but it should. Install it manually. Then you should
-   be able to run the below and start to operate through in org-mode
-   via ob-ipython.
-
-   I downloaded the package manually in the =.emacs.d= folder. Load it
-   adding it to your load path.
-
-   #+BEGIN_SRC emacs-lisp
-     ;; Tell emacs where is your personal elisp lib dir
-     (add-to-list 'load-path "c:/Users/Marco Hassan/.emacs.d/ob-ipython/")
-
-   #+END_SRC
-
-
-   #+BEGIN_SRC emacs-lisp
-     (load "obipython")
-
-      ;;; display/update images in the buffer after I evaluate
-     (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-   #+END_SRC
-
 ** Shortcuts to insert chunk of code
 
    With the global key board shortcut you can further insert the name of
@@ -1033,6 +986,8 @@ Very nice mode.
 
    The next three chunck define shortcuts for creating chunck in
    different languages.
+
+   
 
    #+Name: write_source_lisp
    #+BEGIN_SRC emacs-lisp
@@ -1098,11 +1053,12 @@ Very nice mode.
 
 
 * Agenda
+
 *** General Config
 
    #+BEGIN_SRC emacs-lisp
      ;; Shortcut for org agenda
-     (define-key global-map "\C-ca" 'org-agenda)
+     (define-key global-map "\C-c a" 'org-agenda)
 
 
      ;; specify to-do iterations with C-c t
@@ -1119,7 +1075,7 @@ Very nice mode.
    (when (not split)
      (delete-other-windows)))
 
- (define-key global-map (kbd "C-c t a") 'air-pop-to-org-agenda)
+ (define-key global-map (kbda "C-c t a") 'air-pop-to-org-agenda)
  #+END_SRC
 
 *** Task and org-capture management
@@ -1143,7 +1099,7 @@ Very nice mode.
     #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-    (defcustom org-mobile-checksum-binary "c:/Users/Marco Hassan/Desktop/Programmi exe/checksum/fciv.exe"
+    (defcustom org-mobile-checksum-binary "C:/Users/MARCO.HASSAN/Desktop/Programmi exe/checksum/fciv.exe"
       "Executable used for computing checksums of agenda files."
       :group 'org-mobile
       :type 'string)
@@ -1237,7 +1193,7 @@ see:
 
 
 ** Magit
- 
+
 
 * Python 
 
@@ -1279,7 +1235,7 @@ step is necessary when operating through Windows OS.
   ;; note that setting `venv-location` is not necessary if you
   ;; use the default location (`~/.virtualenvs`), or if the
   ;; the environment variable `WORKON_HOME` points to the right place
-  (setq venv-location "c:/Users/Marco Hassan/Desktop/Python/virtual_envs/")
+  (setq venv-location "C:/Users/MARCO.HASSAN/Desktop/Python/virtual_envs/")
 
   ;; Add hook for còmment highlighting.
   (add-hook 'python-mode-hook 'add-custom-keyw)
@@ -1479,12 +1435,10 @@ therefore sensible to keep it here already.
 
    #+BEGIN_SRC emacs-lisp
      ;; Tell emacs where is your personal elisp lib dir
-     (add-to-list 'load-path "c:/Users/Marco Hassan/.emacs.d/ox-nikola/")
-     (add-to-list 'load-path "c:/Users/Marco Hassan/.emacs.d/ox-rst/")
+     (add-to-list 'load-path "c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/ox-nikola/")
+     (add-to-list 'load-path "c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/ox-rst/")
    #+END_SRC
 
-   #+RESULTS:
-   | c:/Users/Marco Hassan/.emacs.d/ox-rst/ | c:/Users/Marco Hassan/.emacs.d/ox-nikola/ | c:/Users/Marco Hassan/.emacs.d/ob-ipython/ | c:/Users/Marco Hassan/.emacs.d/emacs-smart-hungry-delete/ | c:/Users/Marco Hassan/.emacs.d/elpa/0blayout-1.0.2 | c:/Users/Marco Hassan/.emacs.d/elpa/ace-window-0.9.0 | c:/Users/Marco Hassan/.emacs.d/elpa/aggressive-indent-1.9.0 | c:/Users/Marco Hassan/.emacs.d/elpa/alect-themes-0.9 | c:/Users/Marco Hassan/.emacs.d/elpa/auctex-12.1.2 | c:/Users/Marco Hassan/.emacs.d/elpa/auto-complete-pcmp-0.0.2 | c:/Users/Marco Hassan/.emacs.d/elpa/auto-yasnippet-0.3.0 | c:/Users/Marco Hassan/.emacs.d/elpa/avy-0.5.0 | c:/Users/Marco Hassan/.emacs.d/elpa/beacon-1.3.4 | c:/Users/Marco Hassan/.emacs.d/elpa/cheat-sh-1.7 | c:/Users/Marco Hassan/.emacs.d/elpa/counsel-0.11.0 | c:/Users/Marco Hassan/.emacs.d/elpa/dash-functional-2.16.0 | c:/Users/Marco Hassan/.emacs.d/elpa/elpy-1.29.1 | c:/Users/Marco Hassan/.emacs.d/elpa/company-0.9.10 | c:/Users/Marco Hassan/.emacs.d/elpa/expand-region-0.11.0 | c:/Users/Marco Hassan/.emacs.d/elpa/f-0.20.0 | c:/Users/Marco Hassan/.emacs.d/elpa/find-file-in-project-5.7.4 | c:/Users/Marco Hassan/.emacs.d/elpa/flycheck-31 | c:/Users/Marco Hassan/.emacs.d/elpa/gnuplot-0.7.0 | c:/Users/Marco Hassan/.emacs.d/elpa/highlight-indentation-0.7.0 | c:/Users/Marco Hassan/.emacs.d/elpa/htmlize-1.54 | c:/Users/Marco Hassan/.emacs.d/elpa/hungry-delete-1.1.5 | c:/Users/Marco Hassan/.emacs.d/elpa/jedi-0.2.7 | c:/Users/Marco Hassan/.emacs.d/elpa/auto-complete-1.5.1 | c:/Users/Marco Hassan/.emacs.d/elpa/jedi-core-0.2.7 | c:/Users/Marco Hassan/.emacs.d/elpa/epc-0.1.1 | c:/Users/Marco Hassan/.emacs.d/elpa/ctable-0.1.2 | c:/Users/Marco Hassan/.emacs.d/elpa/concurrent-0.5.1 | c:/Users/Marco Hassan/.emacs.d/elpa/log4e-0.3.0 | c:/Users/Marco Hassan/.emacs.d/elpa/minions-0.3.1 | c:/Users/Marco Hassan/.emacs.d/elpa/monokai-theme-3.5.3 | c:/Users/Marco Hassan/.emacs.d/elpa/moody-0.4.1 | c:/Users/Marco Hassan/.emacs.d/elpa/org-bullets-0.2.4 | c:/Users/Marco Hassan/.emacs.d/elpa/paredit-24 | c:/Users/Marco Hassan/.emacs.d/elpa/pkg-info-0.6 | c:/Users/Marco Hassan/.emacs.d/elpa/epl-0.9 | c:/Users/Marco Hassan/.emacs.d/elpa/popup-0.5.3 | c:/Users/Marco Hassan/.emacs.d/elpa/py-autopep8-2016.1 | c:/Users/Marco Hassan/.emacs.d/elpa/python-environment-0.0.2 | c:/Users/Marco Hassan/.emacs.d/elpa/deferred-0.5.1 | c:/Users/Marco Hassan/.emacs.d/elpa/pyvenv-1.20 | c:/Users/Marco Hassan/.emacs.d/elpa/rainbow-delimiters-2.1.3 | c:/Users/Marco Hassan/.emacs.d/elpa/request-0.3.0 | c:/Users/Marco Hassan/.emacs.d/elpa/skewer-mode-1.8.0 | c:/Users/Marco Hassan/.emacs.d/elpa/js2-mode-20190219 | c:/Users/Marco Hassan/.emacs.d/elpa/simple-httpd-1.5.1 | c:/Users/Marco Hassan/.emacs.d/elpa/swiper-0.11.0 | c:/Users/Marco Hassan/.emacs.d/elpa/ivy-0.11.0 | c:/Users/Marco Hassan/.emacs.d/elpa/try-0.0.1 | c:/Users/Marco Hassan/.emacs.d/elpa/undo-tree-0.6.5 | c:/Users/Marco Hassan/.emacs.d/elpa/use-package-2.4 | c:/Users/Marco Hassan/.emacs.d/elpa/bind-key-2.4 | c:/Users/Marco Hassan/.emacs.d/elpa/virtualenvwrapper-0.2.0 | c:/Users/Marco Hassan/.emacs.d/elpa/s-1.12.0 | c:/Users/Marco Hassan/.emacs.d/elpa/dash-2.16.0 | c:/Users/Marco Hassan/.emacs.d/elpa/websocket-1.10 | c:/Users/Marco Hassan/.emacs.d/elpa/yasnippet-snippets-0.11 | c:/Users/Marco Hassan/.emacs.d/elpa/yasnippet-0.13.0 | c:/Users/Marco Hassan/.emacs.d/elpa/yaxception-0.3.3 | c:/Program Files/GNU Emacs 26.1/share/emacs/site-lisp/ess/ | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/site-lisp | c:/Program Files/GNU Emacs 26.1/share/emacs/site-lisp | c:/Program Files/GNU Emacs 26.1/share/emacs/site-lisp/auctex | c:/Program Files/GNU Emacs 26.1/share/emacs/site-lisp/ess | c:/Program Files/GNU Emacs 26.1/share/emacs/site-lisp/org | c:/Program Files/GNU Emacs 26.1/share/emacs/site-lisp/polymode | c:/Program Files/GNU Emacs 26.1/share/emacs/site-lisp/site-start.d | c:/Program Files/GNU Emacs 26.1/share/emacs/site-lisp/auctex/images | c:/Program Files/GNU Emacs 26.1/share/emacs/site-lisp/auctex/latex | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/vc | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/url | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/textmodes | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/progmodes | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/play | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/org | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/nxml | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/net | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/mh-e | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/mail | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/leim | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/language | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/international | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/image | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/gnus | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/eshell | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/erc | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/emulation | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/emacs-lisp | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/cedet | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/calendar | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/calc | c:/Program Files/GNU Emacs 26.1/share/emacs/26.1/lisp/obsolete |
 
 #+BEGIN_SRC emacs-lisp
 (require 'ox-publish) ;; built in in org mode. No need to install it.
