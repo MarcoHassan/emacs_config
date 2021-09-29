@@ -1,0 +1,925 @@
+#+TITLE: Java Programming in Emacs
+
+Note that this comes from [[https://github.com/neppramod/java_emacs/edit/master/emacs-configuration.org][here]]. Should get a nice emacs config for
+java then.
+ 
+* Introduction
+
+  This configuration file contains setup of Emacs packages for
+  Language Server Protocol (LSP). I will use ~use-package~ for package
+  management. 
+  
+
+* Setup
+
+  Since this is an org file, I am using ~org-babel-load-file~ command
+  to load this file from [[init.el]] file. Emacs loads [[init.el]] when it
+  starts. I have setup a variable called ~EMACS_DIR~ to point to
+  *.emacs.d* as the setup directory. Adjust it to match your
+  system. To speed up loading time of emacs, I have ~used
+  gc-cons-threshold~ and ~gc-cons-percentage~ variables, before and
+  after loading this configuration file. I have set
+  ~gc-cons-threshold~ value to 300 mb after startup. Adjust it to
+  comfortable value according to memory in your system. ~lsp-java~
+  package however has ~1GB~ setup as default. 
+
+
+** Setup repository in org file
+
+   In the following code block, we will initialize package
+   repositories and after that install ~use-package~. This package is
+   used to install other packages. 
+
+   #+BEGIN_SRC emacs-lisp
+	 (require 'package)
+
+	 (setq package-archives '(("melpa-stable" . "http://stable.melpa.org/packages/")
+							  ("elpa" . "https://elpa.gnu.org/packages/")
+							  ("org" . "https://orgmode.org/elpa/")
+				  ))
+
+
+	 (package-initialize)
+
+						 ; Fetch the list of packages available 
+	 (unless package-archive-contents (package-refresh-contents))
+
+						 ; Install use-package
+	 (setq package-list '(use-package))
+	 (dolist (package package-list)
+	   (unless (package-installed-p package) (package-install package)))
+
+   #+END_SRC
+
+   #+RESULTS:
+
+** Basic setup
+   Here, I add some basic emacs setup like loading the language, disabling the toolbar, setting up backup directory etc. I have added comments to each setting.
+
+   #+BEGIN_SRC emacs-lisp
+;; Disable annoying ring-bell when backspace key is pressed in certain situations
+(setq ring-bell-function 'ignore)
+
+;; Disable scrollbar and toolbar
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+
+;; Set language environment to UTF-8
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
+
+;; Longer whitespace, otherwise syntax highlighting is limited to default column
+(setq whitespace-line-column 1000) 
+
+;; Enable soft-wrap
+(global-visual-line-mode 1)
+
+;; Maintain a list of recent files opened
+(recentf-mode 1)            
+(setq recentf-max-saved-items 50)
+
+;; Move all the backup files to specific cache directory
+;; This way you won't have annoying temporary files starting with ~(tilde) in each directory
+;; Following setting will move temporary files to specific folders inside cache directory in EMACS_DIR
+
+;; (setq user-cache-directory (concat EMACS_DIR "cache"))
+;; (setq backup-directory-alist `(("." . ,(expand-file-name "backups" user-cache-directory)))
+;;       url-history-file (expand-file-name "url/history" user-cache-directory)
+;;       auto-save-list-file-prefix (expand-file-name "auto-save-list/.saves-" user-cache-directory)
+;;       projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-cache-directory))
+
+;; Org-mode issue with src block not expanding
+;; This is a fix for bug in org-mode where <s TAB does not expand SRC block
+(when (version<= "9.2" (org-version))
+  (require 'org-tempo))
+
+;; Coding specific setting
+
+;; Automatically add ending brackets and braces
+(electric-pair-mode 1)
+
+;; Make sure tab-width is 4 and not 8
+(setq-default tab-width 4)
+
+;; Highlight matching brackets and braces
+(show-paren-mode 1) 
+   #+END_SRC
+
+   #+RESULTS:
+   : t
+
+
+* Looks
+
+** Theme
+
+   *Reminder:* Check the face you are for adapting the colors by using
+   /C-u C-x =/ this is binded to =describe-faces=.
+
+   *Reminder:* Notice also that particularly interesting is the option to
+   run =M-x customize face=. There you can enter the face you aim to
+   customize, for instance the =org-level-1= variable. With enter you can
+   then see the autocompletion for the for the entered words.
+
+   You can then check  if there is any annoying default value or so.
+   You can moreover edit this directly in the tab making such boring
+   configurations quick.
+
+   *Important:* It is also possible to leverage the =M-x
+   list-faces-display= that shows all the faces use in your emacs session
+   and you can then correspondingly search there fore the face you are
+   interested into modify.
+
+*** Configurations for all themes
+
+
+    Notice this first is necessary in order to allow your modifications to the themes colours
+
+    #+begin_src emacs-lisp 
+(setq custom--inhibit-theme-enable nil)
+    #+end_src 
+
+    #+RESULTS:
+
+    Notice that below is some general modification.
+    
+    #+begin_src emacs-lisp 
+(custom-set-faces
+ ;;  ;; custom-set-faces was added by Custom.
+ ;;  ;; If you edit it by hand, you could mess it up, so be careful.
+ ;;  ;; Your init file should contain only one such instance.
+ ;;  ;; If there is more than one, they won't work right.
+ ;;  ;; '(alect-title ((t (:foreground "#077707" :weight bold :height 2.0))))
+ ;;  '(bold ((t (:weight bold))))
+ '(cursor ((t (:background "white" :foreground "white" :inverse-video t))))
+ ;;  '(flyspell-duplicate ((t (:background "gray16" :foreground "khaki3" :underline (:color foreground-color :style wave)))))
+ ;;  '(flyspell-incorrect ((t (:foreground "#d81212" :underline (:color "#F92672" :style wave)))))
+ ;;  '(magit-section-highlight ((t (:background nil))))
+ ;;  '(magit-section-heading ((t (:inherit nil :box (:line-width 2 :color "black" :style released-button) :weight bold :height 1.5))))
+ ;;  '(org-agenda-structure((t (:background nil :foreground nil))))
+ ;;  '(org-agenda-date ((t (:inherit nil :background nil :foreground nil :inverse-video nil :box (:line-width 2 :color "#272822") :overline nil :slant normal :weight normal :height 1.0))))
+ ;;  '(org-agenda-date-today ((t (:inherit org-agenda-date :background nil :foreground nil :inverse-video nil  :overline nil :weight bold))))
+ ;;  '(org-agenda-date-weekend ((t (:foreground nil :inverse-video nil :overline nil :underline nil))))
+ ;;  '(org-document-title ((t (:inherit alect-title :foreground "#F8F8F0" :weight bold :height 0.7))))
+ '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.25))))
+ '(org-level-4 ((t (:inherit outline-4 :height 0.85))))
+ ;;  '(org-meta-line ((t (:background nil :inherit nil)))))
+ )
+    #+end_src 
+
+    #+RESULTS:
+
+*** Doom Theme
+
+    #+begin_src emacs-lisp 
+(defun dark/doom ()
+  (interactive)
+  (use-age doom-themes
+    :config
+    ;; Global settings (defaults)
+    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+	  doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    (load-theme 'doom-peacock t)
+
+    ;; Enable flashing mode-line on errors
+    (doom-themes-visual-bell-config)
+
+    ;; Enable custom neotree theme (all-the-icons must be installed!)
+    ;; (doom-themes-neotree-config)
+    ;; or for treemacs users
+    ;; (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+    ;; (doom-themes-treemacs-config)
+
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config)
+    )
+  )
+    #+end_src 
+
+    #+RESULTS:
+    : dark/doom
+
+*** Load Monokai theme as standard theme
+    
+    #+begin_src emacs-lisp 
+(defun dark/monokai ()
+  (interactive)
+  (use-package monokai-theme
+    :ensure t)
+
+  (load-theme 'monokai t) ;; load the black monokai theme
+
+  (with-eval-after-load "monokai-theme"
+    (custom-theme-set-faces
+     'monokai
+     '(default ((t)))
+     '(org-block-begin-line
+       ((t (:background:"#35331D" :foreground "#75715E" ))))
+     '(org-block
+       ((t (:background "#3E3D31" :foreground "#F8F8F0"))))  
+     '(org-block-end-line
+       ((t (:background:"#35331D" :foreground "#75715E" ))))
+     '(font-lock-builtin-face
+       ((t :foreground "cornflower blue"))) ;; this is the foreground for instance
+
+     ;; Change color of the org headers
+     '(org-level-1 ((t (:foreground "spring green" :inherit nil))))
+     '(org-level-2 ((t (:foreground "light blue" :inherit nil))))
+     '(org-level-3 ((t (:foreground "indian red" :inherit nil))))
+
+     ;; font shell
+     '(font-lock-face
+       ((t (:foreground "white" :inherit nil :background nil))))
+
+     '(term
+       ((t (:foreground "white" :inherit nil :background nil))))
+     )
+    )
+  )
+    #+end_src 
+
+    #+RESULTS:
+    : dark/monokai
+
+    Change line highlighting color for monokai. At the moment I could not
+    find a nice option. But it annoys me that in org chunck it becomes
+    almost indistinguishable. Maybe one day you will find the right
+    color...
+    
+    #+BEGIN_SRC emacs-lisp
+;; (set-face-background 'hl-line "rosy brown")
+
+;; ;To keep syntax highlighting in the current line:
+
+;; (set-face-foreground 'highlight nil)
+    #+END_SRC
+
+    #+RESULTS:
+
+*** Use light theme for bright light
+
+    Define function for customizing light theme with the colors you
+    want. 
+
+    Define global function that you can call to get the brighter theme.
+
+    #+BEGIN_SRC emacs-lisp
+(defun bright/light ()
+  (interactive)
+  (use-package alect-themes
+    :ensure t)
+
+  (load-theme 'alect-light t) 
+
+  (with-eval-after-load  "alect-light-theme"
+    (custom-theme-set-faces
+     'alect-light
+     ;;'(default ((t)))
+     ;; Change the color of the org chunks.
+     '(org-block-begin-line
+       ((t (:underline "#A7A6AA" :foreground "#008ED1" :background nil))))
+     '(org-block
+       ((t (:background "snow3" :inherit nil))))  
+     '(org-block-end-line
+       ((t (:overline "#A7A6AA" :foreground "#008ED1" :background nil))))
+     '(org-quote
+       ((t (:background "snow3" :inherit nil))))
+     '(org-meta-line
+       ((t (:inherit nil))))
+
+     ;; Change color of the org headers
+     '(org-level-1 ((t (:foreground "indian red" :inherit nil))))
+     '(org-level-2 ((t (:foreground "#008ED1"))))
+     '(org-level-3 ((t (:foreground "sea green"))))
+     '(org-level-4 ((t (:foreground "salmon3"))))
+     '(org-level-5 ((t (:foreground "#9370db"))))
+     '(org-level-6 ((t (:foreground "#b8860b"))))	  
+
+     ;; Change color of org references
+     '(org-ref-cite-face
+       ((t (:foreground "#008ED1" :inherit nil))))
+
+     ;; Change color of properties tags
+     '(org-drawer
+       ((t (:foreground "salmon3" :inherit nil))))
+
+     ;; Change color of org date
+     '(org-date
+       ((t (:foreground "dark cyan" :inherit nil))))
+
+     ;; magit text for committing
+     '(git-commit-summary
+       ((t (:foreground "black" :inherit nil))))
+
+     ;; Specify the colors of strings etc...
+     '(font-lock-comment-face ((t :foreground "SeaGreen4"))) 
+     '(font-lock-builtin-face  ((t :foreground "blue"))) ;; this is the foreground for instance
+     '(font-lock-string-face  ((t :foreground "indian red"))) ;; this is the commentary and strings. Use it for custom set faces when you know it.
+     '(font-lock-face       (:foreground "black" :background nil))
+     ;; Change color of ein input cells
+     '(ein:cell-input-area
+       ((t (:background "snow3" :inherit nil))))
+
+     ;; Change color of dired - i.e. of files appearing to the left
+     '(diredp-file-name
+       ((t (:foreground "indian red" :inherit nil))))
+     '(diredp-dir-name
+       ((t (:foreground "blue" :inherit nil))))
+
+     ;; markdown face for lsp server
+     ;; Change color of ein input cells
+     '(markdown-code-face
+       ((t (:background nil :inherit nil))))
+
+     ;; Flyspell duplicate - mild error
+     '(flyspell-duplicate
+       ((t (:background nil :inherit nil :foreground "DarkOrange2"))))
+
+     ;; Chnage color of global lining
+     '(linum
+       ((t (:background "light grey" :inherit nil))))
+
+     ;; Change the color in the minibuffer prompt to read better
+     '(minibuffer-prompt
+       ((t (:background "white" :inherit nil :foreground "indian red"))))
+
+     ;; Change the color in the minibuffer prompt to read better
+     '(alect-block
+       ((t (:background nil :inherit nil))))
+
+     ;; Org link
+     '(org-link
+       ((t (:foreground "blue" :inherit nil))))
+
+     ;; Org-block
+     '(org-block
+       ((t (:foreground "light-grey" :background "grey78" :inherit nil))))
+
+     ;; Shell Prompt
+     '(term
+       ((t (:foreground "black" :inherit nil))))
+     '(comint-highlight-prompt 
+       ((t (:foreground "#008ED1"))))
+     
+     ;; Dired
+     '(dired-directory
+       ((t (:foreground "blue"))))
+     '(diredp-file-suffix
+       ((t (:foreground "black"))))
+
+
+     ;; for python indents
+     '(highlight-indentation-face
+       ((t (:background "grey85"))))
+
+     ;; css property
+     '(css-property
+       ((t (:foreground "dark green"))))
+
+     ;; magit
+     '(magit-diff-file-heading
+       ((t (:foreground "sea green"))))
+     '(magit-filename
+       ((t (:foreground "indian red"))))
+
+     ;; markdown
+     '(markdown-pre-face 
+       ((t (:foreground "indian red"))))
+     )
+    )
+  )
+    #+END_SRC
+
+    #+RESULTS:
+    : bright/light
+
+*** Misterioso
+
+    #+begin_src emacs-lisp 
+(defun dark/misterioso ()
+  (interactive)
+  (load-theme 'misterioso)
+  ;; (with-eval-after-load "misterioso-theme"
+  ;;   (custom-theme-set-faces
+  ;;    'misterioso
+  ;;    '(default ((t)))
+  ;;    (set-face-background 'linum "#2d3743")
+  ;;    (set-face-background 'hl-line "#212931")
+  ;;    '(org-block
+  ;;      ((t (:background "#3E3D31" :foreground "#F8F8F0"))))
+  ;;    '(ivy-subdir
+  ;;      ((t (:foreground "#ffad29" ))))
+  ;;  )
+  ;; )
+  )
+    #+end_src 
+
+    #+RESULTS:
+    : dark/misterioso
+
+    #+begin_src emacs-lisp 
+;; there is a weird behaviour with the org-agenda. 
+;; consider incorportaing such changes.
+
+;; '(org-agenda-date ((t (:background nil :foreground nil :inverse-video nil :box (:line-width 2 :color nil) :overline nil :slant normal :weight normal :height 1.0))))
+;; '(org-agenda-date-today ((t (:inherit org-agenda-date :foreground nil :background nil)))) 
+;; '(org-agenda-date-weekend ((t (:inherit org-agenda-date :foreground nil  :background nil))))
+    #+end_src 
+
+    #+RESULTS:
+
+*** Make them available as classes
+
+    #+begin_src emacs-lisp 
+(defvar a 3 "Initial setting for the `a` global variable.")
+    #+end_src 
+
+    #+RESULTS:
+    : a
+
+    #+begin_src emacs-lisp 
+(defun my-switch ()
+  "Doc-string for `my-switch` function."
+  (interactive)
+  (cond
+   ((= a 1)
+    (call-interactively 'dark/monokai)
+    (message "set monokai")
+    (setq a 2))
+   ((= a 2)
+    (call-interactively 'dark/doom)
+    (message "set doom")
+    (setq a 3))
+   ((= a 3)
+    (call-interactively 'dark/misterioso)
+    (message "set misterioso")
+    (setq a 4)) 
+   ((= a 4)
+    (call-interactively 'bright/light)
+    (message "set bright-light")
+    (setq a 1))) )
+    #+end_src 
+
+    #+RESULTS:
+    : my-switch
+
+    #+begin_src emacs-lisp 
+(global-set-key (kbd "C-s-b") 'my-switch)
+    #+end_src 
+
+    #+RESULTS:
+    : my-switch
+
+    #+begin_src emacs-lisp 
+(call-interactively 'dark/misterioso)
+    #+end_src 
+
+    #+RESULTS:
+    : t
+  
+** Java Directories
+
+   #+begin_src emacs-lisp 
+(setenv "JAVA_HOME"  "C:/JavaServer/jdk-11.0.12+7")
+(add-to-list 'exec-path "C:/JavaServer/jdk-11.0.12+7/bin")
+(setq lsp-java-path "c:/JavaServer/jdk-11.0.12+7/bin/java.exe")
+   #+end_src 
+
+** Disable ansi color in compilation mode
+
+   This will help eliminate weird escape sequences during compilation
+   of projects.
+
+   #+begin_src emacs-lisp
+
+(defun my/ansi-colorize-buffer ()
+  (let ((buffer-read-only nil))
+    (ansi-color-apply-on-region (point-min) (point-max))))
+
+(use-package ansi-color
+  :ensure t
+  :config
+  (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)
+  )
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+
+* Windows Specific Settings
+
+  make PC keyboard's menu app or other to type Super or Hyper, for
+  emacs running on Windows.
+
+  #+begin_src emacs-lisp 
+(setq w32-pass-apps-to-system nil)
+(setq w32-apps-modifier 'super) ; Menu/App key
+  #+end_src 
+
+  #+RESULTS:
+  : super
+
+  That is good. Like this you ultimately have your super key and do
+  not have to change the config. 
+   
+
+
+* Custom Packages
+  In this section we will install some of the packages that we will use for various project and file management.
+
+** Key-Chord
+   Key-Chord allows us to bind regular keyboard keys for various commands without having to use prefix keys such as Ctrl, Alt or Super etc.
+
+   #+begin_src emacs-lisp
+(use-package use-package-chords
+  :ensure t
+  :init 
+  :config (key-chord-mode 1)
+  (setq key-chord-two-keys-delay 0.4)
+  (setq key-chord-one-key-delay 0.5) ; default 0.2
+  )
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+   Here, we changed the delay for the consecutive key to be little higher than default. Adjust this to what you feel comfortable.
+
+** Projectile
+   Projectile helps us with easy navigation within a project. Projectile recognizes several source control managed folders e.g *git, mercurial, maven, sbt*, and a folder with empty *.projectile* file. You can use ~C-c p~ to invoke any projectile command. This is a very useful key to remember.
+
+   #+begin_src emacs-lisp
+(use-package projectile 
+  :ensure t
+  :init (projectile-mode +1)
+  :config 
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  )   
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+** Helm
+   Helm allows for easy completion of commands. Below, we will replace several of the built in functions with helm versions and add keyboard shortcuts for couple of new useful commands.
+
+   #+BEGIN_SRC emacs-lisp
+(use-package helm
+  :ensure t
+  :init 
+  (helm-mode 1)
+  (progn (setq helm-buffers-fuzzy-matching t))
+  :bind
+  (("C-c h" . helm-command-prefix))
+  (("M-x" . helm-M-x))
+  (("C-x C-f" . helm-find-files))
+  (("C-x b" . helm-buffers-list))
+  (("C-c b" . helm-bookmarks))
+  (("C-c f" . helm-recentf))   ;; Add new key to recentf
+  (("C-c g" . helm-grep-do-git-grep)))  ;; Search using grep in a git project
+   #+END_SRC
+
+   #+RESULTS:
+   : helm-grep-do-git-grep
+
+   I want to point out, couple of interesting things from above setup. Just like we added ~C-c p~ as a prefix for projectile, here we added ~C-c h~ for helm. We also enabled fuzzy matching, so that your search text don't need to be very stict. Also, I added ~C-c g~ to helm-grep-do-git-grep. I can search files with specific text within a git project (make sure to commit it first).
+
+** Helm Descbinds
+   Helm descbinds helps to easily search for keyboard shortcuts for modes that are currently active in the project. This can be helpful to discover keyboard shortcuts to various commands. Use ~C-h b~ to bring up helm-descbinds window.
+
+   #+begin_src emacs-lisp
+(use-package helm-descbinds
+  :ensure t
+  :bind ("C-h b" . helm-descbinds))
+   #+end_src
+
+   #+RESULTS:
+   : helm-descbinds
+
+   E.g. In helm-descbinds window you could type "helm" and "projectile" and see all the shortcuts assigned to various commands.
+
+** Helm swoop
+
+   Helm swoop allows to quickly search for text under cursor or new
+   text within current file. I am sure you are already using ~C-s~ and
+   ~C-r~ to search within the file. This package compliments rather
+   than replace it. You can quickly type ~js~ to search and jump to
+   the target line. To go back to where you started searching, use
+   ~jp~. You can use ~M-m~ from ~C-s~ and ~C-r~ search to start using
+   helm-swoop as described in below setting.
+
+
+** Avy Goto
+   Avy allows you to quickly jump to certain character, word or line within the file. Use ~jc~, ~jw~ or ~jl~ to quickly jump within current file. Change it to other keys, if you feel you are using this set of keys for other purposes. 
+
+   #+begin_src emacs-lisp
+(use-package avy 
+  :ensure t
+  :chords
+  ("jc" . avy-goto-char)
+  ("jw" . avy-goto-word-1)
+  ("jl" . avy-goto-line))
+   #+end_src
+
+   #+RESULTS:
+   : avy-goto-line
+
+** Which Key
+   For some prefix commands like ~C-c p~ or ~C-c h~ we want Emacs to visually guide you through the available options. Following package allows us to do that.
+   #+begin_src emacs-lisp
+(use-package which-key 
+  :ensure t 
+  :init
+  (which-key-mode)
+  )
+   #+end_src
+
+   #+RESULTS:
+
+** Run Code
+   We can use quickrun package to execute code (if it has main). E.g. If you have a java file with main method, it will run with the associated shortcut key ~C-c r~ or quickrun command. Quickrun has support for several languages.
+   #+begin_src emacs-lisp
+(use-package quickrun 
+  :ensure t
+  :bind ("C-c r" . quickrun))
+   #+end_src
+
+   #+RESULTS:
+   : quickrun
+
+
+* Add Ripgrep for searching as you usually do via grep on unix systems
+
+#+begin_src emacs-lisp 
+(use-package ripgrep
+  :ensure t
+  :defer t) ;; recall to download it trough MELPA at first
+#+end_src 
+
+#+RESULTS:
+  
+  #+BEGIN_SRC emacs-lisp
+(add-to-list 'exec-path "C:/Users/MARCO.HASSAN/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu")
+  #+END_SRC
+
+  #+RESULTS:
+  | C:/Users/MARCO.HASSAN/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | C:/Users/MARCO.HASSAN/Desktop/programs_executables/ripgrep-globset-0.4.8 | c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Dev/ispell/ispell/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Scripts | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Lib/site-packages | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | C:/Users/MARCO.HASSAN/Desktop/programs_executables/awk/bin | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
+
+
+  
+* Magit
+
+#+begin_src emacs-lisp 
+(use-package magit
+  :ensure t
+  :defer t) ;; recall to download it trough MELPA at first
+#+end_src 
+
+#+RESULTS:
+
+Enable magit interface on global mode.
+
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-x g") 'magit-status)
+#+end_src 
+
+#+RESULTS:
+: magit-status
+
+
+** Magit git exe
+   :PROPERTIES:
+   :ID:       32a70726-ef00-4372-bfb4-753610e26cbe
+   :END:
+
+   Add you git executable to the magit interface.
+
+   #+begin_src emacs-lisp 
+   (setq magit-git-executable "C:/Dev/git/bin/git")
+   #+end_src 
+
+   #+RESULTS:
+   : C:/Dev/git/bin/git
+
+   Working like a charm.
+
+
+
+
+* Maven
+  
+   #+begin_src emacs-lisp 
+   (setq magit-git-executable "C:/Users/MARCO.HASSAN/Desktop/programs_executables/apache-maven-3.8.2/bin")
+   #+end_src 
+
+   #+RESULTS:
+   : C:/Users/MARCO.HASSAN/Desktop/programs_executables/apache-maven-3.8.2/bin
+
+
+* Language Server Protocol (LSP)
+
+  With above setup done, below we will setup several packages closely related to LSP.
+
+** Company
+   Complete anything aka Company provides auto-completion. Company-capf is enabled by default when you start LSP on a project. You can also invoke ~M-x company-capf~ to enable capf (completion at point function).
+   #+begin_src emacs-lisp
+(use-package company :ensure t)
+   #+end_src
+
+   #+RESULTS:
+
+** Yasnippet
+   Yasnippet is a template system for Emacs. It allows you to type abbreviation and complete the associated text.
+
+   #+begin_src emacs-lisp
+(use-package yasnippet :config (yas-global-mode))
+(use-package yasnippet-snippets :ensure t)
+   #+end_src
+
+   #+RESULTS:
+
+   E.g. In java mode, if you type ~pr~ and hit ~<TAB>~ it should complete
+   to ~System.out.println("text");~ 
+
+   To create a new snippet you can use ~yas-new-snippet~ command.  
+
+
+** FlyCheck
+
+   FlyCheck checks for errors in code at run-time.
+
+   #+begin_src emacs-lisp
+(use-package flycheck :ensure t :init (global-flycheck-mode))
+   #+end_src
+
+   #+RESULTS:
+
+
+** Install LSP Package
+
+   Let's install the main package for lsp. Here we will integrate lsp
+   with which-key. This way, when we type the prefix key ~C-c l~ we get
+   additional help for compliting the command.   
+   
+
+   #+begin_src emacs-lisp
+     (use-package lsp-mode
+       :ensure t
+       :hook (
+	      (lsp-mode . lsp-enable-which-key-integration)
+	      (java-mode . lsp-deferred)
+	      )
+       :init (setq 
+	      lsp-keymap-prefix "C-c C-x l"              ; this is for which-key integration documentation, need to use lsp-mode-map
+	      lsp-enable-file-watchers nil
+	      read-process-output-max (* 1024 1024)  ; 1 mb
+	      lsp-completion-provider :capf
+	      lsp-idle-delay 0.900
+	      )
+       :config 
+       (setq lsp-intelephense-multi-root nil) ; don't scan unnecessary projects
+       (with-eval-after-load 'lsp-intelephense
+	 (setf (lsp--client-multi-root (gethash 'iph lsp-clients)) nil))
+       (define-key lsp-mode-map (kbd "C-c C-x l") lsp-command-map)
+       )
+   #+end_src
+
+   #+RESULTS:
+   | lsp-deferred |
+
+   You can start LSP server in a java project by using ~C-c C-x l s
+   s~. Once you type ~C-c C-x l~ ~which-key~ package should guide you
+   through rest of the options. In above setting I have added some
+   memory management settings as suggested in [[https://emacs-lsp.github.io/lsp-mode/page/performance/][this guide]]. Change them
+   to higher numbers, if you find *lsp-mode* sluggish in your
+   computer.
+
+   #+begin_src emacs-lisp 
+(setq lsp-enable-symbol-highlighting nil)
+   #+end_src 
+
+   #+RESULTS:
+
+
+** LSP UI
+   LSP UI is used in various packages that require UI elements in LSP. E.g ~lsp-ui-flycheck-list~ opens a windows where you can see various coding errors while you code. You can use ~C-c l T~ to toggle several UI elements. We have also remapped some of the xref-find functions, so that we can easily jump around between symbols using ~M-.~, ~M-,~ and ~M-?~ keys.
+
+   #+begin_src emacs-lisp
+(use-package lsp-ui
+  :ensure t
+  :after (lsp-mode)
+  :bind (:map lsp-ui-mode-map
+              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+              ([remap xref-find-references] . lsp-ui-peek-find-references))
+  :init (setq lsp-ui-doc-delay 1.5
+	      lsp-ui-doc-position 'bottom
+	      lsp-ui-doc-max-width 100
+	      ))
+   #+end_src
+
+   #+RESULTS:
+
+   Go through this [[https://github.com/emacs-lsp/lsp-ui/blob/master/lsp-ui-doc.el][link]]  to see what other parameters are provided.
+
+
+** Helm LSP
+
+   Helm-lsp provides various functionality to work with the code. E.g Code actions like adding *getter, setter, toString*, refactoring etc. You can use ~helm-lsp-workspace-symbol~ to find various symbols (classes) within your workspace.
+
+   LSP's built in symbol explorer uses ~xref-find-apropos~ to provide symbol navigation. Below we will replace that with helm version. After that you can use ~C-c l g a~ to find workspace symbols in a more intuitive way.
+
+   #+begin_src emacs-lisp
+(use-package helm-lsp
+  :ensure t
+  :after (lsp-mode)
+  :commands (helm-lsp-workspace-symbol)
+  :init (define-key lsp-mode-map [remap xref-find-apropos] #'helm-lsp-workspace-symbol))
+   #+end_src
+
+   #+RESULTS:
+   : helm-lsp-workspace-symbol
+
+
+** LSP Java
+
+   This is the package that handles server installation and session
+   management. 
+
+   #+begin_src  emacs-lisp
+(use-package lsp-java 
+  :ensure t
+  :config (add-hook 'java-mode-hook 'lsp))
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+
+** Dap Mode
+   Emacs Debug Adapter Protocol aka DAP Mode allows us to debug your program. Below we will integrate ~dap-mode~ with ~dap-hydra~. ~Dap-hydra~ shows keys you can use to enable various options and jump through code at runtime. After we install dap-mode we will also install ~dap-java~.
+
+   #+begin_src emacs-lisp
+	 (use-package dap-mode
+	   :ensure t
+	   :after (lsp-mode)
+	   :functions dap-hydra/nil
+	   :config
+	   (dap-auto-configure-mode)
+	   :bind (:map lsp-mode-map
+				   ("<f5>" . dap-debug)
+				   ("M-<f5>" . dap-hydra))
+	   :hook ((dap-mode . dap-ui-mode)
+		  (dap-session-created . (lambda (&_rest) (dap-hydra)))
+		  (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+
+	 (use-package dap-java :ensure nil)
+   #+end_src
+
+   #+RESULTS:
+   : t
+   
+
+** Dap for debugging on Remote Server
+
+   This is what I need to do as the Java applications I am working on are working on remote servers.
+
+   In order to do that you have to add the following specific parameters.
+
+   #+begin_src emacs-lisp 
+	 (dap-register-debug-template
+	 "localhost:8000"
+	 (list :type "java"
+		   :request "attach"
+		   :hostName "localhost"
+		   :port 8000))
+   #+end_src 
+
+   #+RESULTS:
+   | localhost:8000                          | :name | localhost:8000         | :type    | java           | :request | attach | :hostName | localhost | :port | 8000      |              |             |              |           |             |        |              |     |              |     |              |     |            |     |
+   | Java Attach                             | :name | Java Attach            | :type    | java           | :request | attach | :hostName | localhost | :port | nil       |              |             |              |           |             |        |              |     |              |     |              |     |            |     |
+   | Java Run Configuration (compile/attach) | :type | java                   | :request | compile_attach | :args    |        | :cwd      | nil       | :host | localhost | :request     | launch      | :modulePaths | []        | :classPaths | nil    | :name        | Run | :projectName | nil | :mainClass   | nil |            |     |
+   | Java Run Configuration                  | :name | Java Run Configuration | :type    | java           | :request | launch | :args     |           | :cwd  | nil       | :stopOnEntry | :json-false | :host        | localhost | :request    | launch | :modulePaths | []  | :classPaths  | nil | :projectName | nil | :mainClass | nil |
+   
+** Treemacs
+   Treemacs provides UI elements used for LSP UI. Let's install lsp-treemacs and its dependency treemacs. We will also Assign ~M-9~ to show error list.
+   #+begin_src emacs-lisp
+(use-package lsp-treemacs
+  :after (lsp-mode treemacs)
+  :ensure t
+  :commands lsp-treemacs-errors-list
+  :bind (:map lsp-mode-map
+              ("M-9" . lsp-treemacs-errors-list)))
+
+(use-package treemacs
+  :ensure t
+  :commands (treemacs)
+  :after (lsp-mode))
+   #+end_src
+
+   #+RESULTS:
+
+
+* Conclusion
+  Go through [[https://github.com/emacs-lsp/lsp-java#supported-commands][Supported commands]] section of lsp-java github page to see commands provided in lsp-mode. Most of these commands are available under lsp's ~C-c l~ option. I hope this configuration file was useful.
