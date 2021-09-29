@@ -1,9 +1,13 @@
-*.html
+*html
 
-*.pdf
+*pdf
 
-*.el
+*el
 
-*.tex
+*tex
+
+*\~
+
+mac_config.org
 
 _minted-emacs_configuration
