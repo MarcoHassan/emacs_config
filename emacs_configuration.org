@@ -14,6 +14,10 @@ calling emacs in that partition everything integrates well.
 This is therefore a very nice and powerful feature and it suggest to
 switch to this solution.
 
+Note that in financial institutions this is not a viable option. There
+you are blocked by WSL considerations. You can as well simply download
+the binary of the file.
+
 ** Reload this configuration file
 
 Instead of closing and opening emacs back and forth when editing this
@@ -143,6 +147,7 @@ Another nice guy to follow is [[https://alhassy.github.io/init/][this one]].
    You will get an interactive search of all of the existing variables
    and you can work through it. 
 
+
 * Profiling Emacs at Start up
 
   So far I never had particular issues with the boot time of my
@@ -205,6 +210,8 @@ Another nice guy to follow is [[https://alhassy.github.io/init/][this one]].
    #+end_src 
 
    #+RESULTS:
+   
+
    
 * Increase cache allowed and avoid garbage collection at start up
 
@@ -296,6 +303,7 @@ configuration file without having to search for the directory.
 #+END_SRC
 
 #+RESULTS:
+
 
 * Enable Marmalade and Org ELPA package manager
 
@@ -471,7 +479,7 @@ Imagemagick is missing.
   #+RESULTS:
   | 600 |
 
-** Define tilde for windows OS
+** Define shortcuts for particular characters
 
 #+BEGIN_SRC emacs-lisp
      (add-hook 'after-init-hook
@@ -480,6 +488,14 @@ Imagemagick is missing.
 
 #+RESULTS:
 | (lambda nil (global-set-key (kbd M-ü) ~)) | color-highlight | (lambda nil (global-set-key (kbd M-ì) ~)) | w32-check-shell-configuration | tramp-register-archive-file-name-handler | table--make-cell-map |
+
+#+begin_src emacs-lisp 
+     (add-hook 'after-init-hook
+	       (lambda () (global-set-key (kbd "C-M-<") "\\")))
+#+END_SRC
+
+#+RESULTS:
+| (lambda nil (global-set-key (kbd C-M-<) \)) | color-highlight | (lambda nil (global-set-key (kbd M-Ã¼) ~)) | w32-check-shell-configuration | tramp-register-archive-file-name-handler | magit-maybe-define-global-key-bindings | table--make-cell-map |
 
 ** Set global encoding 
 
@@ -1151,9 +1167,9 @@ nil :strike-through t)
 "adds a few special keywords"
 (font-lock-add-keywords
 nil
-'(("ct \\(.+\\)" 1 'font-lock-comment-strike prepend)
-("r \\(.+\\)" 1 'font-lock-comment-todo prepend)
-("g \\(.+\\)" 1 'font-lock-comment-important prepend)
+'(("commentStrike \\(.+\\)" 1 'font-lock-comment-strike prepend)
+  ("commentRed \\(.+\\)" 1 'font-lock-comment-todo prepend)
+  ("commentGreen \\(.+\\)" 1 'font-lock-comment-important prepend)
 )
 ))
 #+END_SRC
@@ -1904,9 +1920,16 @@ Hunspell dictionaries and there is no manual configuration needed.
 Just specify the global language that should be used when using the
 dictionary.
 
+#+begin_src emacs-lisp 
+(setq exec-path (append exec-path '("C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin")))
+#+end_src 
+
+#+RESULTS:
+| c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Dev/ispell/ispell/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Scripts | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Lib/site-packages | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | C:/Users/MARCO.HASSAN/Desktop/programs_executables/awk/bin | C:/Dev/azure_data_studio/bin | C:/Users/MARCO.HASSAN/Desktop/test_emacs_doom/.emacs.d/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | C:/Users/MARCO.HASSAN/Desktop/programs_executables/fd_program | C:/Dev/git/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/apache-maven-3.8.2/bin | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | /Users/marcohassan/.nvm/versions/node/v8.9.0/bin/ | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin |
+
 #+Name: Ispell 
 #+BEGIN_SRC emacs-lisp 
-    (setq ispell-dictionary "english")
+ (setq ispell-dictionary "english")
 #+END_SRC
 
 #+RESULTS: Ispell
@@ -1915,41 +1938,40 @@ dictionary.
 
 * Latex 
 
-Some configuration for Latex. Still to be improved.
+#+begin_src emacs-lisp 
+(setq exec-path (append exec-path '("C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64")))
+#+end_src 
 
-#+Name: Latex
-#+BEGIN_SRC emacs-lisp
-  ;;(setq reftex-plug-into-AUCTeX t)
-
-  ;;(use-package latex)
-
-  ;; Automatically activate latex mode
-  ;;(autoload 'LaTex-mode "LaTex-mode" "LaTex Mode." t)
-
-  ;; Automatically activate flyspell mode - failed.
-  ;;(use-package flyspell
-    ;;:config
-    ;;(add-hook 'LaTex-mode-hook '(flyspell-mode)))
+#+RESULTS:
+| c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Scripts | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Lib/site-packages | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | C:/Users/MARCO.HASSAN/Desktop/programs_executables/awk/bin | C:/Dev/azure_data_studio/bin | C:/Users/MARCO.HASSAN/Desktop/test_emacs_doom/.emacs.d/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | C:/Users/MARCO.HASSAN/Desktop/programs_executables/fd_program | C:/Dev/git/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/apache-maven-3.8.2/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/Microsoft VS Code/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | /Users/marcohassan/.nvm/versions/node/v8.9.0/bin/ | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 |
 
 
-    ;;(add-hook 'LaTeX-mode-hook '(flyspell-mode t))
-    ;; If you use AUCTeX
-    ;;(load "auctex.el" nil t t)`
-    ;;(add-hook 'LaTeX-mode-hook 'flyspell-mode)
-    ;;(load "preview-latex.el" nil t t)
-    ;;(setq TeX-auto-save t)
-    ;;(setq TeX-parse-self t)
-    ;;(setq-default TeX-master nil)
-#+END_SRC
+#+begin_src emacs-lisp 
+(add-to-list 'org-latex-packages-alist '("" "listingsutf8"))
+(add-to-list 'org-latex-packages-alist '("" "minted"))
+#+end_src 
 
-#+RESULTS: Latex
+#+RESULTS:
+|   | listingsutf8 |
+|   | minted       |
 
-** TODO finish latex config 
-   SCHEDULED: <2019-05-23 gio>
-   :PROPERTIES:
-   :ID:       336943c6-2bd7-46e7-b072-5ed8f48786a0
-   :END:
-   
+#+begin_src emacs-lisp 
+ ;; Allowing minted to highlight code in latex mode when exporting
+ (setq org-latex-pdf-process
+	 '("xelatex -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"
+          "bibtex %b"
+	   "xelatex -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"
+	   "xelatex -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"))
+
+
+ (setq org-latex-listings 'minted)
+ (setq org-latex-minted-options
+	 '(("frame" "lines") ("linenos=true")))
+#+end_src 
+
+#+RESULTS:
+| frame        | lines |
+| linenos=true |       |
 
 * Snippets
 
@@ -2036,7 +2058,7 @@ as you will be prompted just with org buffers when changing buffers.
 #+begin_src emacs-lisp 
 (defun nikola_img_url()
   (interactive)
-  (search-backward "/images")
+  (search-backward "../../images")
   (setq p2 (point))
   (search-backward "file")
   (delete-region p2 (point))
@@ -2052,12 +2074,10 @@ Enter the last screenshot taken and moved to the =Blog/images= folder.
 #+begin_src emacs-lisp 
 (defun nikola_enter_last_img()
   (interactive)
-  (insert "\n#+begin_export html\n <img src=\"../../images/")
-  (insert (shell-command-to-string "cd ~/Desktop/Blog/images/; ls -lt |awk 'FNR == 2 {print $NF}'"))
-  (save-excursion
-    (insert "\" class=\"center\">\n#+end_export\n")
-  )
-)
+  (insert (concat "\n#+begin_export html\n <img src=\"../../images/"
+	(concat (car kill-ring) "\" class=\"center\">\n#+end_export\n"))
+	)
+    )
 #+end_src 
 
 #+RESULTS:
@@ -2090,12 +2110,12 @@ Enter the last screenshot taken and moved to the =Blog/images= folder.
 #+begin_src emacs-lisp 
 (eval-after-load 'org' 
   (define-key org-mode-map
-    (kbd "C-c M-i") 'nikola_img_url)
+    (kbd "C-c M-i") 'nikola_enter_last_img)
   )
 #+end_src 
 
 #+RESULTS:
-: nikola_img_url
+: nikola_enter_last_img
 
 #+begin_src emacs-lisp 
 (defun nikola_move_ein_image()
@@ -2488,7 +2508,7 @@ Map all the nice execution functions for org babel chuncks.
 
    #+begin_src emacs-lisp 
    (setq org-plantuml-jar-path
-	 (expand-file-name "~/.emacs.d/plantuml.jar"))
+	 (expand-file-name "c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/plantuml.jar"))
    #+end_src 
 
    #+RESULTS:
@@ -2551,7 +2571,6 @@ Bind it to a kbd
 #+end_src 
 
 #+RESULTS:
-
 
 ** Layout
 
@@ -2660,7 +2679,7 @@ Bind it to a kbd
    ;; (latex . t)
    ;; (js . t)
    (java . t)
-   ;; (plantuml . t) ;; for UML diagrams
+   (plantuml . t) ;; for UML diagrams
    ))
 
 ;; Don't ask before executing code in the chunck.
@@ -2717,7 +2736,6 @@ but `delete-file' is ignored."
 #+RESULTS:
 | org-babel-tangle-append-setup | (lambda nil (local-set-key (kbd C-c 3) #+BEGIN_SRC python |
 
-
 ** Org results toggle hide shortcut
 
 #+begin_src emacs-lisp 
@@ -2743,7 +2761,6 @@ but `delete-file' is ignored."
 #+RESULTS:
 : screenshots_enter_last_img
 
-
 ** Agenda
 
 *** General Config
@@ -2754,11 +2771,11 @@ but `delete-file' is ignored."
 
      ;; specify to-do iterations with C-c t
      (setq org-todo-keywords
-	   '((sequence "TODO" "IN-PROGRESS" "WAITING" "ISSUE" "DEPENDENCY_BLOCK" "QUESTION" "DONE")))
+	   '((sequence "TODO" "IN-PROGRESS" "WAITING" "TO-BE-INTEGRATED" "ISSUE" "DEPENDENCY_BLOCK" "QUESTION" "DONE")))
    #+END_SRC
 
    #+RESULTS:
-   | sequence | TODO | IN-PROGRESS | WAITING | ISSUE | DEPENDENCY_BLOCK | QUESTION | DONE |
+   | sequence | TODO | IN-PROGRESS | WAITING | TO-BE-INTEGRATED | ISSUE | DEPENDENCY_BLOCK | QUESTION | DONE |
 
 *** Open agenda into its own buffer
  #+BEGIN_SRC emacs-lisp
@@ -2904,6 +2921,7 @@ but `delete-file' is ignored."
     #+RESULTS:
     | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Agenda/capture.org |
 
+
 *** IN-PROGRESS notifications for agenda entries
 
     Org-alert is working smoothly. The issue is with alert. It is not
@@ -3029,6 +3047,37 @@ Need OpenSSL to use encryption.
 #+RESULTS:
 : hrs/open-index-file
 
+** Org store link
+
+   This is important cause in such a way you can easily make
+   cross-sectional and cross-files links that you can then use for
+   navigating your knowledge base. 
+
+   #+begin_src emacs-lisp 
+     (add-hook 'org-mode-hook
+	       (lambda () (local-set-key (kbd "C-c l") 'org-store-link)))
+   #+END_SRC
+
+   #+RESULTS:
+   | (lambda nil (local-set-key (kbd C-c l) 'org-store-link)) | org-babel-tangle-append-setup | (lambda nil (local-set-key (kbd C-c 3) #+BEGIN_SRC python |
+
+** Org view tags 
+
+   #+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook
+	  (lambda () (local-set-key (kbd "C-c C-x t") 'org-tags-view)))
+   #+END_SRC
+
+   #+RESULTS:
+   | (lambda nil (local-set-key (kbd C-c C-x g) 'org-tags-view)) | (lambda nil (local-set-key (kbd C-c C-x t) 'org-tags-view-command)) | (lambda nil (local-set-key (kbd C-c C-x t) 'org-tags-view)) | (lambda nil (local-set-key (kbd C-c C-x t) '(org-tags-view))) | (lambda nil (local-set-key (kbd C-c l) 'org-store-link)) | org-babel-tangle-append-setup | (lambda nil (local-set-key (kbd C-c 3) #+BEGIN_SRC python |
+
+
+
+
+
+
+
+
 
 
 * Functions for Blog
@@ -3087,7 +3136,7 @@ last image.
     (eshell-return-to-prompt)
     (insert "cd 'c:/Users/MARCO.HASSAN/Pictures/Saved Pictures/'; ls -lt | awk 'FNR == 2 {a=match($0, $9); print substr($0,a)}'")
     (eshell-send-input)
-    (search-backward "Screenshot")
+    (search-forward "Screenshot")
     (beginning-of-line)
     (kill-line)
     )
@@ -3131,6 +3180,24 @@ last image.
 #+RESULTS:
 : blog/move_last_screenshot_to_blog
 
+#+BEGIN_SRC emacs-lisp 
+(eval-after-load 'org' (progn 
+			 (define-key org-mode-map
+			   (kbd "C-c C-x m") 'blog/move_last_screenshot_to_blog)
+			 (define-key org-mode-map
+			   (kbd "C-c C-x s") 'screenshots_enter_last_img)                         
+			 ))
+#+END_SRC
+
+#+RESULTS:
+: screenshots_enter_last_img
+
+#+begin_src emacs-lisp 
+(define-key global-map (kbd "C-c n n") 'name_last_pic)
+#+end_src 
+
+#+RESULTS:
+: name_last_pic
 
 ** Push all of the images videos and pdfs to your blog
 
@@ -3140,7 +3207,7 @@ last image.
   (interactive)
   (with-current-buffer "*eshell*"
     (eshell-return-to-prompt)
-    (insert "git checkout gh-pages; cp -r ../pdfs .; cp ../images/* ./images; cp -r ../videos .; git add .; git commit -m 'add pdfs and videos'; git push; git checkout windows_OS")
+    (insert "cd 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Blog/bits-of-experience'; git checkout gh-pages; cp -r ../pdfs .; cp ../images/* ./images; cp -r ../videos .; git add .; git commit -m 'add pdfs and videos'; git push; git checkout windows_OS")
     (eshell-send-input)
     )
   )
@@ -3148,6 +3215,31 @@ last image.
 
 #+RESULTS:
 : blog/push_resources_to_blog
+
+** TO-BE-INTEGRATED create index on your org-files
+
+   So the thing is that despite the fact that you can navigate the
+   notes on your org-mode in a very nice way, the format of your
+   nikola blog does not add an index to your post. This is suboptimal
+   cause at some point my notes become too large to be easily
+   navigable.
+
+   So you could check at your notes directly on your org-notes in your
+   emacs. I noted that this is not the best way for me to work and
+   that I usually prefer the rendering of the notes available online. 
+
+   So it would be cool to write some lisp function that creates that
+   automatically at some point. 
+
+   In the meanwhile use the following way of generating them.
+
+   Generate them for each node with children. Do that via emacs-macros
+   in the following way:
+
+   - next line. =org-store-link=. =C-c c-u= (go on higher level in the
+     hierarchy). =C-c c-n= go to the next sub-header. Go to line
+     before. =org-insert-last-store-link=. =C-o= go to that baby. 
+
 
 * Time management and Pomodoro Technique
   :LOGBOOK:
@@ -3504,7 +3596,7 @@ step is necessary when operating through Windows OS.
 #+END_SRC
 
 #+RESULTS: Python Mode and virtual environment activation.
-| add-custom-keyw | elpy-mode | doom-modeline-env-setup-python |
+| yasnippet-snippets--fixed-indent | add-custom-keyw | elpy-mode | doom-modeline-env-setup-python |
 
 Good. After installing ipyhton thorugh pip everything is working
 smoothly. Remember to run pip on DOS and not on emacs shell as at the
@@ -3519,6 +3611,7 @@ partition.
 
    #+RESULTS:
    | C:/Dev/git/bin | c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Dev/ispell/ispell/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Scripts | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
+
 
 * Java
 
@@ -3581,6 +3674,7 @@ specific dialogue.
 
 #+RESULTS:
 : loopback
+
 
 * Deal with conflicting key bindings
 
@@ -4688,6 +4782,16 @@ Shortcut to open eshell
   #+END_SRC
 
 
+* Add Graphviz
+
+  #+BEGIN_SRC emacs-lisp
+(add-to-list 'exec-path "C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin")
+  #+END_SRC
+
+  #+RESULTS:
+  | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Dev/ispell/ispell/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Scripts | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Lib/site-packages | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | C:/Users/MARCO.HASSAN/Desktop/programs_executables/awk/bin | C:/Dev/azure_data_studio/bin | C:/Users/MARCO.HASSAN/Desktop/test_emacs_doom/.emacs.d/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | C:/Users/MARCO.HASSAN/Desktop/programs_executables/fd_program | C:/Dev/git/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/apache-maven-3.8.2/bin | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | /Users/marcohassan/.nvm/versions/node/v8.9.0/bin/ | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin |
+
+
 * Select theme at start up
 
 #+begin_src emacs-lisp 
@@ -4742,12 +4846,6 @@ Shortcut to open eshell
 ***** IN-PROGRESS Understand about blogging with github.io pages
       :PROPERTIES:
       :ID:       6b801caf-2ba2-4844-a760-e35f8f7f341a
-      :END:
-
-***** include calendar piping and understand calendar scheduling.  :calendar:
-      SCHEDULED: <2019-05-30 gio>
-      :PROPERTIES:
-      :ID:       393bbfbe-7791-49db-8d5a-ec8191c8f0ad
       :END:
 
 ***** Check at company-iron c++ and company-pyhton jedi integration.
