@@ -1,13 +1,16 @@
+# Side effects files
 *html
-
 *pdf
-
 *el
-
 *tex
-
 *\~
+*.elc
 
+# Not relevant config
 mac_config.org
 
+# Some unimportatnt Mac Conversion
 _minted-emacs_configuration
+
+# Not relevant repo
+emacsConfig
