@@ -212,7 +212,25 @@ Another nice guy to follow is [[https://alhassy.github.io/init/][this one]].
    #+RESULTS:
    
 
+
+
+
+* Set up environment Variables on Windows
+
+  Consider if you want to rewrite here or in another file apposidly
+  created all of the user variables you manually created on your
+  windows machine.
+
+  In this sense if you will transition to another laptop all of the
+  variables will already be properly set up.
+
+  Mask them and do not keep your path exposed here. Rather reference
+  another file.
+  
+** TODO configure environment variables.
+   SCHEDULED: <2021-11-23 Di. 09:00>
    
+
 * Increase cache allowed and avoid garbage collection at start up
 
 #+BEGIN_SRC emacs-lisp
@@ -1939,11 +1957,11 @@ dictionary.
 * Latex 
 
 #+begin_src emacs-lisp 
-(setq exec-path (append exec-path '("C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64")))
+(setq exec-path (append exec-path '("C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/")))
 #+end_src 
 
 #+RESULTS:
-| c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Scripts | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Lib/site-packages | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | C:/Users/MARCO.HASSAN/Desktop/programs_executables/awk/bin | C:/Dev/azure_data_studio/bin | C:/Users/MARCO.HASSAN/Desktop/test_emacs_doom/.emacs.d/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | C:/Users/MARCO.HASSAN/Desktop/programs_executables/fd_program | C:/Dev/git/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/apache-maven-3.8.2/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/Microsoft VS Code/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | /Users/marcohassan/.nvm/versions/node/v8.9.0/bin/ | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 |
+| c:/Users/MARCO.HASSAN/Desktop/virtual_envs/lac_feed_nadine/Scripts | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Scripts | c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32 | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32/Scripts | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32/Lib/site-packages | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | C:/Users/MARCO.HASSAN/Desktop/programs_executables/awk/bin | C:/Dev/azure_data_studio/bin | C:/Users/MARCO.HASSAN/Desktop/test_emacs_doom/.emacs.d/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | C:/Users/MARCO.HASSAN/Desktop/programs_executables/fd_program | C:/Dev/git/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/apache-maven-3.8.2/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/Microsoft VS Code/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | /Users/marcohassan/.nvm/versions/node/v8.9.0/bin/ | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ |
 
 
 #+begin_src emacs-lisp 
@@ -1958,10 +1976,10 @@ dictionary.
 #+begin_src emacs-lisp 
  ;; Allowing minted to highlight code in latex mode when exporting
  (setq org-latex-pdf-process
-	 '("xelatex -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"
+	 '("xelatex.exe -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"
           "bibtex %b"
-	   "xelatex -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"
-	   "xelatex -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"))
+	   "xelatex.exe -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"
+	   "xelatex.exe -8bit -shell-escape  -interaction nonstopmode -output-directory %o %f"))
 
 
  (setq org-latex-listings 'minted)
@@ -3589,14 +3607,14 @@ step is necessary when operating through Windows OS.
   ;; note that setting `venv-location` is not necessary if you
   ;; use the default location (`~/.virtualenvs`), or if the
   ;; the environment variable `WORKON_HOME` points to the right place
-  (setq venv-location "C:/Users/MARCO.HASSAN/Desktop/Python/virtual_envs/")
+  (setq venv-location "C:/Users/MARCO.HASSAN/Desktop/virtual_envs/")
 
   ;; Add hook for còmment highlighting.
   (add-hook 'python-mode-hook 'add-custom-keyw)
 #+END_SRC
 
 #+RESULTS: Python Mode and virtual environment activation.
-| yasnippet-snippets--fixed-indent | add-custom-keyw | elpy-mode | doom-modeline-env-setup-python |
+| add-custom-keyw | elpy-mode | doom-modeline-env-setup-python |
 
 Good. After installing ipyhton thorugh pip everything is working
 smoothly. Remember to run pip on DOS and not on emacs shell as at the
@@ -3606,11 +3624,9 @@ partition.
 ** Pip add pip to the eshell path
 
    #+begin_src emacs-lisp 
-(add-to-list 'exec-path "C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Scripts")
+;; Have a variable for it in the variables
+;; (add-to-list 'exec-path "C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Scripts")
    #+end_src 
-
-   #+RESULTS:
-   | C:/Dev/git/bin | c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Dev/ispell/ispell/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | C:/Users/MARCO.HASSAN/Desktop/programs_executables/python/Scripts | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
 
 
 * Java
@@ -3703,8 +3719,6 @@ therefore sensible to keep it here already.
 #+END_SRC
 
 #+RESULTS:
-
-
 
 * EIN
 
@@ -4621,6 +4635,26 @@ To use it you have to use the following syntax then. You have to use
 
 * Shell Configs
 
+** Shell
+
+   Configure your shell to work with bash. This you get when you
+   download git for windows. Either in the portable version or not.
+
+
+#+begin_src emacs-lisp 
+(setq explicit-shell-file-name "c:/Dev/git/bin/bash.exe")
+#+end_src 
+
+#+RESULTS:
+: c:/Dev/git/bin/bash.exe
+
+    This fixes some issues, cause for some reason the default program
+    that the shell was initializing was not really getting the
+    variables on your path. 
+
+    So some programs calls for instance =org-latex-pdf-process= were
+    not really getting the processes they should run. 
+
 ** Eshell 
 
  Fancy Prompt
@@ -4721,6 +4755,7 @@ Shortcut to open eshell
    shells. In comparison if you continue with ='= you will jump across
    all of the existing shells.
    
+
 ** Decide shell to open at start-up
 
  #+begin_src emacs-lisp 
@@ -4823,6 +4858,9 @@ Shortcut to open eshell
    /Notice:/ When an emacs server is running, closing the last Emacs
    instance will leave the server running.
 
+
+
+   
 
 
 * TO DO
