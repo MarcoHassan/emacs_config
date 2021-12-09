@@ -3864,37 +3864,37 @@ Consider [[https://github.com/nnicandro/emacs-jupyter][this package]]. Looks pro
 ** TODO understand this big function. also correct the path should you ever decide this is interesting
 
  #+BEGIN_SRC emacs-lisp
-  (auto-insert-mode)
-  (setq auto-insert-query nil)
-  (setq auto-insert-directory "~/templates/")
-  (setq auto-insert 'other)
+  ;; (auto-insert-mode)
+  ;; (setq auto-insert-query nil)
+  ;; (setq auto-insert-directory "~/templates/")
+  ;; (setq auto-insert 'other)
 
-  (defun my/autoinsert-yas-expand ()
-    "Replace text in yasnippet template."
-    (yas-expand-snippet (buffer-string) (point-min) (point-max)))
+  ;; (defun my/autoinsert-yas-expand ()
+  ;;   "Replace text in yasnippet template."
+  ;;   (yas-expand-snippet (buffer-string) (point-min) (point-max)))
 
-  (setq auto-insert-alist
-	(append
-	 '((("Blogging/org/.*\\.org$" . "org-mode") . ["nikola.org" my/autoinsert-yas-expand])
-	   (("\\.org$" . "org-mode") . ["template.org" my/autoinsert-yas-expand])
-	   ) auto-insert-alist))
+  ;; (setq auto-insert-alist
+  ;; 	(append
+  ;; 	 '((("Blogging/org/.*\\.org$" . "org-mode") . ["nikola.org" my/autoinsert-yas-expand])
+  ;; 	   (("\\.org$" . "org-mode") . ["template.org" my/autoinsert-yas-expand])
+  ;; 	   ) auto-insert-alist))
 
-  (defun auto-export-my-blog ()
-    (let* ((project-plist (cdr (assoc "blog" org-publish-project-alist)))
-	   (project-dir (expand-file-name
-			 (plist-get project-plist :base-directory))))
-      (save-excursion
-	(if (string= project-dir (file-name-directory buffer-file-name))
-	    (org-publish-current-file)))))
+  ;; (defun auto-export-my-blog ()
+  ;;   (let* ((project-plist (cdr (assoc "blog" org-publish-project-alist)))
+  ;; 	   (project-dir (expand-file-name
+  ;; 			 (plist-get project-plist :base-directory))))
+  ;;     (save-excursion
+  ;; 	(if (string= project-dir (file-name-directory buffer-file-name))
+  ;; 	    (org-publish-current-file)))))
 
-  (add-hook 'after-save-hook 'auto-export-my-blog)
+  ;; (add-hook 'after-save-hook 'auto-export-my-blog)
 
-  (add-to-list 'org-publish-project-alist
-	       '("blog" . (:base-directory "~/Desktop/Blogging/org/"
-					   :base-extension "org"
-					   :publishing-directory "~/Desktop/Python/virtual_envs/mypage/posts/"
-					   :publishing-function (org-nikola-publish-to-rst)
-					   :body-only t)))
+  ;; (add-to-list 'org-publish-project-alist
+  ;; 	       '("blog" . (:base-directory "~/Desktop/Blogging/org/"
+  ;; 					   :base-extension "org"
+  ;; 					   :publishing-directory "~/Desktop/Python/virtual_envs/mypage/posts/"
+  ;; 					   :publishing-function (org-nikola-publish-to-rst)
+  ;; 					   :body-only t)))
  #+END_SRC
 
  #+RESULTS:
@@ -3937,7 +3937,28 @@ Enable magit interface on global mode.
 
    Working like a charm.
 
-*** ISSUE performance
+   Had as well to add diffUtils as otherwise the =diff= part was not
+   there and this will be quite essential in the new experience. 
+
+#+BEGIN_SRC emacs-lisp
+(setq diff-path "C:/Dev/git/usr/bin")
+(setq exec-path
+      '(diff-path)) ;; check how the logic is different. basically you
+		    ;; are setting a variable here. if you check at
+		    ;; the variables C-h v for both diff-path and
+		    ;; exec-path you will start to understand the
+		    ;; issue.
+#+END_SRC
+
+#+RESULTS:
+| diff-path |
+
+#+BEGIN_SRC emacs-lisp
+;; (setq ediff-diff-program "c:/Dev/git/usr/bin/diff.exe")
+#+END_SRC
+
+
+*** ISSUE performance                                              :noexport:
 
     apparently emacs is full of performance issues when working with
     it. 
@@ -3953,7 +3974,15 @@ Enable magit interface on global mode.
     I make a note for that on my agenda. Come back to it at some later
     point.
 
-*** Try libgit2 as a solution in the meanwhile
+    -------------------
+
+    So much of it was related to the poor performance of the previous
+    laptop. 
+
+    Forget about it to this stage and just come back to it at a later
+    stage. 
+
+*** Try libgit2 as a solution in the meanwhile                     :noexport:
     
     It is not an emacs package. it is an entire implementation of git
     using C. Or something like that. 
@@ -4973,7 +5002,9 @@ Shortcut to open eshell
   | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32 | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32/Scripts | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32/Lib/site-packages | C:/Users/MARCO.HASSAN/Desktop/programs_executables/awk/bin | C:/Dev/azure_data_studio/bin | C:/Users/MARCO.HASSAN/Desktop/test_emacs_doom/.emacs.d/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | C:/Dev/git/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/apache-maven-3.8.2/bin | C:/Users/MARCO.HASSAN/Desktop/software-for-import-on-zurich/hunspell2/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | C:/Users/MARCO.HASSAN/Desktop/programs_executables/gradle-7.1.1/bin | C:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/hunspell/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ |
 
 
-* Add to execution Path 
+* Add to execution Path and $PATH 
+
+So note that this is 
 
 Here you add imporatant executables on your PATH.
 
@@ -4983,10 +5014,30 @@ Here you add imporatant executables on your PATH.
 
 ;; gradle 
 (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin")
+
+(add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32")
   #+END_SRC
 
   #+RESULTS:
-  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Program Files (x86)/Microsoft SQL Server/110/Tools/Binn/ | C:/Program Files/Microsoft SQL Server/110/Tools/Binn/ | C:/Program Files/Microsoft SQL Server/110/DTS/Binn/ | C:/Program Files (x86)/Microsoft SQL Server/110/Tools/Binn/ManagementStudio/ | C:/Program Files (x86)/Microsoft SQL Server/110/DTS/Binn/ | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | C:/Dev/azure_data_studio/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/fd_program | C:/Dev/git/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/apache-maven-3.8.2/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/Microsoft VS Code/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | /Users/marcohassan/.nvm/versions/node/v8.9.0/bin/ |
+  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | diff-path |
+
+  Ok so this is what you should do... and then remove all of the
+  exec-path stuff. 
+
+#+BEGIN_SRC emacs-lisp
+(getenv "PATH")
+#+END_SRC
+
+#+RESULTS:
+: C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\1E\Client\Extensibility\NomadBranch;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Emacs\bin;C:\JavaServer\jdk-11.0.12+7\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32\Scripts;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32\Lib\site-packages;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\awk\bin;C:\Dev\azure_data_studio\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\test_emacs_doom\.emacs.d\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\ripgrep-13.0.0-x86_64-pc-windows-gnu;C:\Dev\git\bin;C:\Dev\git\usr\bin;C:\Dev\apache-maven-3.8.2\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\software-for-import-on-zurich\hunspell2\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\software-for-import-on-zurich\Graphviz\bin;C:\Users\MARCO.HASSAN\AppData\Local\Programs\MiKTeX\miktex\bin\x64\;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\gradle-7.1.1\bin;C:\Users\marco.hassan\AppData\Local\Microsoft\WindowsApps;
+
+#+BEGIN_SRC emacs-lisp
+
+;; (setenv "PATH" (concat (getenv "PATH") ":/sw/bin"))
+
+;; (setq "PATH" ("c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin:")) ;; 'C:/JavaServer/jdk-11.0.12+7/bin':'C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin':'C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu':'C:/Dev/git/bin':'C:/Dev/apache-maven-3.8.2/bin':'C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin':'C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/':'C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin'"))
+#+END_SRC
+
 
 ** TODO understand if you want to refactor the entire path stuff in here. 
    SCHEDULED: <2021-12-20 Mo. 09:00>
@@ -4997,6 +5048,14 @@ Here you add imporatant executables on your PATH.
    one shot. 
 
    do it at some point. 
+
+** TODO important todo.. have finally understood the reason of the issues
+
+   check at [[https://emacs.stackexchange.com/questions/43761/correct-way-to-set-exec-path][this entry]] - refactor when you have time and keep order.
+
+   consider then [[https://www.emacswiki.org/emacs/ExecPath][this function]].
+
+   check also [[https://emacs.stackexchange.com/questions/461/configuration-of-eshell-running-programs-from-directories-in-path-env-variable][this]] might be useful
 
 
 * Select theme at start up
