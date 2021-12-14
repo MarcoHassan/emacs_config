@@ -1737,6 +1737,32 @@ Would need =epkg= access to see how it is called.
 
 
 
+* Elmacro
+
+  This is a very nice feature if it works as it allows yourself to
+  define a macro, work with it and then automatically convert it to
+  some piece of elisp code. 
+
+  I.e. to have a piece of function for it. You understand that this is
+  very interesting as you already had to translate yourself a couple
+  of times macros into functions. 
+
+  Given the clear fact that you are not an expert of lisp having such
+  a function will be helpful. It is obvious that this is a function
+  such that you have to understand how well it implements the corner
+  cases and works. 
+
+#+BEGIN_SRC emacs-lisp
+(use-package elmacro
+  :ensure t
+  :config (elmacro-mode))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+
+
 * Swiper for incremental search
 
 Swiper allows you to easily leverage regular expressions. By entering
@@ -1935,6 +1961,8 @@ keeps your other directories clear from them.
 #+RESULTS:
 : ((. . ~/.saves))
 
+** TODO should also include the # files and the tilde ones... these are also cluttering the code and annoying you
+
 
 * Set Ispell Dictionary
 
@@ -2063,7 +2091,6 @@ Open a shell in administrator mode and issue ~pip install Pygments~.
 
 Compile your LaTeX document.
    #+end_src
-
 
 
 * Snippets
@@ -3183,6 +3210,15 @@ Need OpenSSL to use encryption.
 
   This can be done by running eshell calling lisp functions. 
 
+  
+  [[*Copy local pictures from Blog to the bits-of-experience folder][Copy local pictures from Blog to the bits-of-experience folder]]
+
+  [[*Screenshot Management for Blog and Org-mode][Screenshot Management for Blog and Org-mode]]
+
+  [[*Push all of the images videos and pdfs to your blog][Push all of the images videos and pdfs to your blog]]
+
+  [[*create index on your org-files][create index on your org-files]]
+
 ** Copy local pictures from Blog to the bits-of-experience folder
 
    #+begin_src emacs-lisp 
@@ -3210,7 +3246,7 @@ last image.
   #+END_SRC
 
   #+RESULTS:
-  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | C:/Dev/git/bin | c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Dev/ispell/ispell/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/python | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/python/Scripts | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | /Users/marcohassan/.nvm/versions/node/v8.9.0/bin/ |
+  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/WINDOWS/system32 | c:/WINDOWS | c:/WINDOWS/System32/Wbem | c:/WINDOWS/System32/WindowsPowerShell/v1.0 | c:/WINDOWS/System32/OpenSSH | c:/Program Files/1E/Client/Extensibility/NomadBranch | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | c:/JavaServer/jdk-11.0.12+7/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Dev/azure_data_studio/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Dev/git/bin | c:/Dev/git/usr/bin | c:/Dev/apache-maven-3.8.2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/software-for-import-on-zurich/hunspell2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
 
   Ok with the below you have the desired workflow. You have to call
   the two functions separately. I tried to combine the two into a
@@ -3227,7 +3263,7 @@ last image.
   (interactive)
   (with-current-buffer "*eshell*"
     (eshell-return-to-prompt)
-    (insert "cd 'c:/Users/MARCO.HASSAN/Pictures/Saved Pictures/'; ls -lt | awk 'FNR == 2 {a=match($0, $9); print substr($0,a)}'")
+    (insert "cd 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Pictures/Saved Pictures/'; ls -lt | awk 'FNR == 2 {a=match($0, $9); print substr($0,a)}'")
     (eshell-send-input)
     (search-forward "Screenshot")
     (beginning-of-line)
@@ -3245,7 +3281,7 @@ last image.
    Recall to execute name_last_pic before executing the function."
   (interactive)
   (insert 
-   (concat "[[file:c:/Users/MARCO.HASSAN/Pictures/Saved Pictures/"
+   (concat "[[file:c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Pictures/Saved Pictures/"
 	   (concat (car kill-ring) "]]")
 	   )
    )
@@ -3261,7 +3297,7 @@ last image.
   (interactive)
   (with-current-buffer "*eshell*"
     (eshell-return-to-prompt)
-    (insert (concat "mv 'c:/Users/MARCO.HASSAN/Pictures/Saved Pictures/"
+    (insert (concat "mv 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Pictures/Saved Pictures/"
 	(concat (car kill-ring) "' 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Blog/images/'")
 	)
     )
@@ -3332,6 +3368,88 @@ last image.
    - next line. =org-store-link=. =C-c c-u= (go on higher level in the
      hierarchy). =C-c c-n= go to the next sub-header. Go to line
      before. =org-insert-last-store-link=. =C-o= go to that baby. 
+
+   Followed more less the steps above. Result with elmacro
+
+   #+BEGIN_SRC emacs-lisp
+(defun indexing ()
+  (interactive)
+  (setq last-command-event 108)
+  (org-store-link nil 1)
+  (setq last-command-event 21)
+  (outline-up-heading 1)
+  (setq last-command-event 14)
+  (org-next-visible-heading 1)
+  (setq last-command-event 15)
+  (org-open-line 1)
+  (setq last-command-event 15)
+  (file-notify-handle-event
+   `(file-notify
+     (92761828 added ".#-emacsTd44OY")
+     file-notify--callback-w32notify))
+  (setq last-command-event 15)
+  (file-notify-handle-event
+   `(file-notify
+     (92761828 modified ".#-emacsTd44OY")
+     file-notify--callback-w32notify))
+  (setq last-command-event 15)
+  (file-notify-handle-event
+   `(file-notify
+     (92761828 renamed-from ".#-emacsTd44OY")
+     file-notify--callback-w32notify))
+  (setq last-command-event 15)
+  (file-notify-handle-event
+   `(file-notify
+     (92761828 renamed-to ".#emacs_configuration.org")
+     file-notify--callback-w32notify))
+  (setq last-command-event 'tab)
+  (indent-for-tab-command nil)
+  (setq last-command-event 'tab)
+  (org-cycle nil)
+  (setq last-command-event 134217836)
+  (org-insert-last-stored-link 1)
+  (setq last-command-event 16)
+  (previous-line 1 1)
+  (setq last-command-event 5)
+  (org-end-of-line 1)
+  (setq last-command-event 2)
+  (backward-char 1)
+  (setq last-command-event 15)
+  (org-open-at-point nil)
+  (setq last-command-event 14)
+  (next-line 1 1)
+  (setq last-command-event 'f4)
+  (kmacro-end-or-call-macro nil)
+  (setq last-command-event 108)
+  (org-store-link nil 1)
+  (setq last-command-event 21)
+  (outline-up-heading 1)
+  (setq last-command-event 14)
+  (org-next-visible-heading 1)
+  (setq last-command-event 15)
+  (org-open-line 1)
+  (setq last-command-event 'tab)
+  (indent-for-tab-command nil)
+  (setq last-command-event 'tab)
+  (org-cycle nil)
+  (setq last-command-event 134217836)
+  (org-insert-last-stored-link 1)
+  (setq last-command-event 16)
+  (previous-line 1 1)
+  (setq last-command-event 5)
+  (org-end-of-line 1)
+  (setq last-command-event 2)
+  (backward-char 1)
+  (setq last-command-event 15)
+  (org-open-at-point nil)
+  (setq last-command-event 14)
+  (next-line 1 1)
+  (setq last-command-event 14))
+
+#+END_SRC
+
+#+RESULTS:
+: indexing
 
 
 * Time management and Pomodoro Technique
@@ -3842,7 +3960,7 @@ Consider [[https://github.com/nnicandro/emacs-jupyter][this package]]. Looks pro
    #+END_SRC
 
    #+RESULTS:
-   | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/ox-rst/ | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/ox-nikola/ | C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/tea-timer.el/ | C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/scimax-ob/ | C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/dired-hacks | C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/dired-sidebar | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/ag-0.48 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/aggressive-indent-1.9.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/alect-themes-0.9 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/auto-complete-nxml-0.5.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/auto-yasnippet-0.3.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/bash-completion-2.1.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/beacon-1.3.4 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/calfw-1.6 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/calfw-org-1.6 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/company-box-20190311.1845 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/company-quickhelp-2.3.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/counsel-0.13.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/dired+-20191206.32 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/doom-modeline-3.0.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/doom-themes-2.1.6 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/all-the-icons-4.0.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/ein-0.16.2.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/auto-complete-1.5.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/elpy-1.32.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/company-0.9.12 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/epkg-3.2.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/closql-1.0.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/emacsql-sqlite-3.0.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/emacsql-3.0.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/ess-18.10.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/esup-0.7.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/exec-path-from-shell-1.12 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/expand-region-0.11.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/find-file-in-project-5.7.10 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/flycheck-31 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/flymake-haml-0.8 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/flymake-json-0.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/flymake-easy-0.10 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/gnuplot-0.7.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/heaven-and-hell-20190713.1830 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/helm-descbinds-20190501.935 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/helm-lsp-0.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/highlight-indentation-0.7.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/htmlize-1.55 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/js-comint-1.2.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/json-mode-1.7.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/json-navigator-0.1.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/hierarchy-0.7.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/json-reformat-0.0.6 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/json-snatcher-1.0.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/julia-mode-0.4 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/lsp-java-20210806.1842 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/dap-mode-20200418.659 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/bui-20181218.2041 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/lsp-treemacs-20210904.2039 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/lsp-ui-20210904.2037 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/lsp-mode-20210909.100 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/magit-2.90.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/git-commit-2.90.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/ghub-3.3.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/magit-popup-2.13.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/markdown-mode-2.3 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/memoize-1.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/minions-0.3.4 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/monokai-theme-3.5.3 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/moody-0.6.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/multi-eshell-0.0.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/multi-term-1.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/neotree-0.5.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/org-alert-0.1.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/org-bullets-0.2.4 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/org-gcal-0.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/org-pomodoro-2.1.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/org-projectile-1.1.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/org-category-capture-1.1.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/org-ref-1.1.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/helm-bibtex-2.0.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/biblio-0.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/biblio-core-0.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/helm-3.7.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/helm-core-3.7.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/org-super-agenda-1.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/org-trello-0.8.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/org-wild-notifier-0.4.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/dash-functional-2.17.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/alert-1.3 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/log4e-0.3.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/gntp-0.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/org-yt-20180527.245 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/paredit-24 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/parsebib-2.4.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/pdf-tools-0.90 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/polymode-0.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/pomodoro-20210111.2034 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/popup-0.5.3 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/pos-tip-0.4.6 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/powerline-2.4 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/projectile-2.1.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/pkg-info-0.6 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/epl-0.9 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/py-autopep8-2016.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/pyvenv-1.21 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/quelpa-use-package-20200308.2009 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/quelpa-20200329.919 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/quickrun-2.3.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/rainbow-delimiters-2.1.4 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/request-deferred-0.3.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/request-0.3.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/deferred-0.5.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/shell-switcher-1.0.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/shrink-path-0.3.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/skewer-mode-1.8.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/js2-mode-20190219 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/simple-httpd-1.5.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/spinner-1.7.3 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/swiper-0.13.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/ivy-0.13.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/tablist-1.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/transpose-frame-0.2.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/treemacs-20200421.1737 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/ht-2.3 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/hydra-20200306.1013 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/lv-0.15.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/pfuture-20200113.720 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/ace-window-0.9.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/avy-0.5.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/f-0.20.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/treepy-0.1.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/try-0.0.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/ts-0.2 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/typescript-mode-0.3 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/undo-tree-0.7.4 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/use-package-chords-20181024.2322 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/bind-chord-20171204.2010 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/key-chord-0.6 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/use-package-2.4 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/bind-key-2.4 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/virtualenvwrapper-0.2.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/s-1.12.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/dash-20210826.1149 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/w3-20130826.16 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/w3m-20200326.2245 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/websocket-1.12 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/which-key-3.4.0 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/with-editor-2.9.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/async-1.9.4 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/yafolding-0.4.1 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/yaml-mode-0.0.14 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/yasnippet-snippets-20210908.1044 | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/elpa/yasnippet-0.14.0 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/site-lisp | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/site-lisp | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/vc | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/url | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/textmodes | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/progmodes | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/play | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/org | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/nxml | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/net | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/mh-e | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/mail | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/leim | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/language | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/international | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/image | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/gnus | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/eshell | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/erc | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/emulation | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/emacs-lisp | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/cedet | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/calendar | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/calc | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/obsolete |
+   | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/ox-rst/ | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/ox-nikola/ | C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/tea-timer.el/ | C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/scimax-ob/ | C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/dired-hacks | C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/dired-sidebar | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/ag-0.48 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/aggressive-indent-1.10.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/auto-complete-nxml-0.5.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/auto-complete-1.5.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/auto-yasnippet-0.3.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/beacon-1.3.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/calfw-1.6 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/calfw-org-1.6 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/counsel-0.13.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/doom-modeline-3.2.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/doom-themes-2.1.6 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/all-the-icons-5.0.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/elpy-1.35.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/company-0.9.13 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/epkg-3.3.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/closql-1.2.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/emacsql-sqlite-3.0.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/emacsql-3.0.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/ess-18.10.2 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/expand-region-0.11.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/flycheck-31 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/flymake-json-0.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/flymake-easy-0.10 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/gnuplot-0.8.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/helm-lsp-0.2 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/helm-3.8.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/helm-core-3.8.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/highlight-indentation-0.7.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/htmlize-1.56 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/json-mode-1.8.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/json-navigator-0.1.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/hierarchy-0.7.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/json-snatcher-1.0.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/julia-mode-0.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/lsp-java-3.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/dap-mode-0.7 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/bui-1.2.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/lsp-treemacs-0.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/lsp-ui-8.0.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/lsp-mode-8.0.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/magit-3.3.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/git-commit-3.3.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/magit-section-3.3.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/markdown-mode-2.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/org-alert-0.1.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/org-bullets-0.2.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/org-pomodoro-2.1.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/org-wild-notifier-0.4.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/dash-functional-2.19.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/async-1.9.5 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/alert-1.3 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/log4e-0.3.3 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/gntp-0.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/org-yt-20180527.245 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/paredit-24 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/pkg-info-0.6 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/epl-0.9 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/pomodoro-20210225.2118 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/popup-0.5.8 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/powerline-2.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/projectile-2.5.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/pyvenv-1.21 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/quelpa-use-package-20201022.946 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/quelpa-20210329.839 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/quickrun-2.3.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/rainbow-delimiters-2.1.5 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/request-0.3.2 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/ripgrep-0.4.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/shell-switcher-1.0.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/shrink-path-0.3.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/f-0.20.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/spinner-1.7.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/swiper-0.13.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/ivy-0.13.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/transient-0.3.7 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/transpose-frame-0.2.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/treemacs-2.9.5 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/cfrs-1.5.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/posframe-1.1.2 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/ht-2.3 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/hydra-0.15.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/lv-0.15.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/pfuture-1.9 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/ace-window-0.10.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/avy-0.5.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/try-0.0.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/undo-tree-0.7.5 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/use-package-2.4.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/bind-key-2.4.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/virtualenvwrapper-0.2.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/s-1.12.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/dash-2.19.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/vscode-icon-20201214.2327 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/which-key-3.5.3 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/with-editor-3.0.5 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/yafolding-0.4.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/yaml-mode-0.0.15 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/yasnippet-0.14.0 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/site-lisp | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/site-lisp | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/vc | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/url | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/textmodes | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/progmodes | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/play | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/org | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/nxml | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/net | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/mh-e | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/mail | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/leim | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/language | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/international | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/image | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/gnus | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/eshell | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/erc | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/emulation | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/emacs-lisp | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/cedet | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/calendar | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/calc | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/obsolete |
 
 #+BEGIN_SRC emacs-lisp
 (require 'ox-publish) ;; built in in org mode. No need to install it.
@@ -4815,7 +4933,90 @@ To use it you have to use the following syntax then. You have to use
  #+RESULTS:
 
 
-* Shell Configs
+* Add Ripgrep
+
+  This is used for searching as you usually do via grep on unix
+  systems. 
+
+  You can then use the search via ripgrep in projectile to search for
+  specific implementations in your projects when lsp is failing for
+  some reason.
+
+#+begin_src emacs-lisp 
+(use-package ripgrep
+  :ensure t
+  :defer t) ;; recall to download it trough MELPA at first
+#+end_src 
+
+#+RESULTS:
+  
+  #+BEGIN_SRC emacs-lisp
+(add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu")
+  #+END_SRC
+
+  #+RESULTS:
+  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32 | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32/Scripts | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32/Lib/site-packages | C:/Users/MARCO.HASSAN/Desktop/programs_executables/awk/bin | C:/Dev/azure_data_studio/bin | C:/Users/MARCO.HASSAN/Desktop/test_emacs_doom/.emacs.d/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | C:/Dev/git/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/apache-maven-3.8.2/bin | C:/Users/MARCO.HASSAN/Desktop/software-for-import-on-zurich/hunspell2/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | C:/Users/MARCO.HASSAN/Desktop/programs_executables/gradle-7.1.1/bin | C:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/hunspell/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ |
+
+
+* Add to execution Path and $PATH 
+
+So note that this is 
+
+Here you add imporatant executables on your PATH.
+
+  #+BEGIN_SRC emacs-lisp
+;; Graphviz - in order to make the plantuml charts
+(add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin")
+
+;; gradle 
+(add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin")
+
+(add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32")
+  #+END_SRC
+
+  #+RESULTS:
+  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | diff-path |
+
+  Ok so this is what you should do... and then remove all of the
+  exec-path stuff. 
+
+#+BEGIN_SRC emacs-lisp
+(getenv "PATH")
+#+END_SRC
+
+#+RESULTS:
+: C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\1E\Client\Extensibility\NomadBranch;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Emacs\bin;C:\JavaServer\jdk-11.0.12+7\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32\Scripts;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32\Lib\site-packages;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\awk\bin;C:\Dev\azure_data_studio\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\test_emacs_doom\.emacs.d\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\ripgrep-13.0.0-x86_64-pc-windows-gnu;C:\Dev\git\bin;C:\Dev\git\usr\bin;C:\Dev\apache-maven-3.8.2\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\software-for-import-on-zurich\hunspell2\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\software-for-import-on-zurich\Graphviz\bin;C:\Users\MARCO.HASSAN\AppData\Local\Programs\MiKTeX\miktex\bin\x64\;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\gradle-7.1.1\bin;C:\Users\marco.hassan\AppData\Local\Microsoft\WindowsApps;
+
+#+BEGIN_SRC emacs-lisp
+
+;; (setenv "PATH" (concat (getenv "PATH") ":/sw/bin"))
+
+;; (setq "PATH" ("c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin:")) ;; 'C:/JavaServer/jdk-11.0.12+7/bin':'C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin':'C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu':'C:/Dev/git/bin':'C:/Dev/apache-maven-3.8.2/bin':'C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin':'C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/':'C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin'"))
+#+END_SRC
+
+
+** TODO understand if you want to refactor the entire path stuff in here. 
+   SCHEDULED: <2021-12-20 Mo. 09:00>
+
+   like this you would have a single source of truth. 
+
+   and you would see the entire executable programs that you need on
+   one shot. 
+
+   do it at some point. 
+
+** TODO important todo.. have finally understood the reason of the issues
+
+   check at [[https://emacs.stackexchange.com/questions/43761/correct-way-to-set-exec-path][this entry]] - refactor when you have time and keep order.
+
+   consider then [[https://www.emacswiki.org/emacs/ExecPath][this function]].
+
+   check also [[https://emacs.stackexchange.com/questions/461/configuration-of-eshell-running-programs-from-directories-in-path-env-variable][this]] might be useful
+
+
+
+   * Shell Configs
+
 
 ** Shell
 
@@ -4836,6 +5037,10 @@ To use it you have to use the following syntax then. You have to use
 
     So some programs calls for instance =org-latex-pdf-process= were
     not really getting the processes they should run. 
+
+    
+    
+
 
 ** Eshell 
 
@@ -4977,87 +5182,7 @@ Shortcut to open eshell
  : switch-to-most-recent-terminal
 
 
-* Add Ripgrep
-
-  This is used for searching as you usually do via grep on unix
-  systems. 
-
-  You can then use the search via ripgrep in projectile to search for
-  specific implementations in your projects when lsp is failing for
-  some reason.
-
-#+begin_src emacs-lisp 
-(use-package ripgrep
-  :ensure t
-  :defer t) ;; recall to download it trough MELPA at first
-#+end_src 
-
-#+RESULTS:
-  
-  #+BEGIN_SRC emacs-lisp
-(add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu")
-  #+END_SRC
-
-  #+RESULTS:
-  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32 | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32/Scripts | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32/Lib/site-packages | C:/Users/MARCO.HASSAN/Desktop/programs_executables/awk/bin | C:/Dev/azure_data_studio/bin | C:/Users/MARCO.HASSAN/Desktop/test_emacs_doom/.emacs.d/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | C:/Dev/git/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/apache-maven-3.8.2/bin | C:/Users/MARCO.HASSAN/Desktop/software-for-import-on-zurich/hunspell2/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | C:/Users/MARCO.HASSAN/Desktop/programs_executables/gradle-7.1.1/bin | C:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/hunspell/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ |
-
-
-* Add to execution Path and $PATH 
-
-So note that this is 
-
-Here you add imporatant executables on your PATH.
-
-  #+BEGIN_SRC emacs-lisp
-;; Graphviz - in order to make the plantuml charts
-(add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin")
-
-;; gradle 
-(add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin")
-
-(add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32")
-  #+END_SRC
-
-  #+RESULTS:
-  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | diff-path |
-
-  Ok so this is what you should do... and then remove all of the
-  exec-path stuff. 
-
-#+BEGIN_SRC emacs-lisp
-(getenv "PATH")
-#+END_SRC
-
-#+RESULTS:
-: C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\1E\Client\Extensibility\NomadBranch;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Emacs\bin;C:\JavaServer\jdk-11.0.12+7\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32\Scripts;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32\Lib\site-packages;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\awk\bin;C:\Dev\azure_data_studio\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\test_emacs_doom\.emacs.d\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\ripgrep-13.0.0-x86_64-pc-windows-gnu;C:\Dev\git\bin;C:\Dev\git\usr\bin;C:\Dev\apache-maven-3.8.2\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\software-for-import-on-zurich\hunspell2\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\software-for-import-on-zurich\Graphviz\bin;C:\Users\MARCO.HASSAN\AppData\Local\Programs\MiKTeX\miktex\bin\x64\;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\gradle-7.1.1\bin;C:\Users\marco.hassan\AppData\Local\Microsoft\WindowsApps;
-
-#+BEGIN_SRC emacs-lisp
-
-;; (setenv "PATH" (concat (getenv "PATH") ":/sw/bin"))
-
-;; (setq "PATH" ("c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin:")) ;; 'C:/JavaServer/jdk-11.0.12+7/bin':'C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin':'C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu':'C:/Dev/git/bin':'C:/Dev/apache-maven-3.8.2/bin':'C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin':'C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/':'C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin'"))
-#+END_SRC
-
-
-** TODO understand if you want to refactor the entire path stuff in here. 
-   SCHEDULED: <2021-12-20 Mo. 09:00>
-
-   like this you would have a single source of truth. 
-
-   and you would see the entire executable programs that you need on
-   one shot. 
-
-   do it at some point. 
-
-** TODO important todo.. have finally understood the reason of the issues
-
-   check at [[https://emacs.stackexchange.com/questions/43761/correct-way-to-set-exec-path][this entry]] - refactor when you have time and keep order.
-
-   consider then [[https://www.emacswiki.org/emacs/ExecPath][this function]].
-
-   check also [[https://emacs.stackexchange.com/questions/461/configuration-of-eshell-running-programs-from-directories-in-path-env-variable][this]] might be useful
-
-
+   
 * Select theme at start up
 
 #+begin_src emacs-lisp 
