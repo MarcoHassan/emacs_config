@@ -18,6 +18,7 @@ Note that in financial institutions this is not a viable option. There
 you are blocked by WSL considerations. You can as well simply download
 the binary of the file.
 
+
 ** Reload this configuration file
 
 Instead of closing and opening emacs back and forth when editing this
@@ -168,7 +169,7 @@ Another nice guy to follow is [[https://alhassy.github.io/init/][this one]].
   displayed the profiling information. There is no need to bootstrap
   the entire system.
 
-
+  
 * Windows Specific Settings
 
   make PC keyboard's menu app or other to type Super or Hyper, for
@@ -185,12 +186,21 @@ Another nice guy to follow is [[https://alhassy.github.io/init/][this one]].
   That is good. Like this you ultimately have your super key and do
   not have to change the config.
 
-** ISSUE On dead slow performance in windows.
+  
+** On GNU software
+
+   So I discovered I was using a lot of GNU software in my previous
+   experience under the hood.
+
+   So on windows you can get most of it via - [[https://www.cygwin.com/][cygwin]]. 
+
+** DONE On dead slow performance in windows.
+   CLOSED: [2021-12-16 Do. 13:49]
 
    I am still trying to set it up correctly. Due to some annoying
    issues the performance on windows is dead slow. I will try to
    implement such of the methods mentioned here to see if that
-   problems fade away.
+   problems fade away. 
 
    A particularly helpful tip can be the one of setting recentf off. I
    am seeing this a lot around and I never encountered it on my unix
@@ -210,6 +220,13 @@ Another nice guy to follow is [[https://alhassy.github.io/init/][this one]].
    #+end_src 
 
    #+RESULTS:
+
+   --------------------------
+
+   Update: the dead slow performance was highly related to the crappy
+   laptop I was given at first.
+
+   Now on the new laptop emacs works fine so that was not the issue.
    
 
 * Set up environment Variables on Windows
@@ -2628,13 +2645,11 @@ Map all the nice execution functions for org babel chuncks.
 
    #+begin_src emacs-lisp 
    (setq org-plantuml-jar-path
-	 (expand-file-name "c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/plantuml.jar"))
+	 (expand-file-name "C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/plantuml.jar"))
    #+end_src 
 
    #+RESULTS:
-   : c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/plantuml.jar
-
-*** TODO install graphviz
+   : C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/plantuml.jar
 
 ** Org-Blocks Display temporarily line numbers
 
@@ -3198,8 +3213,6 @@ Need OpenSSL to use encryption.
 
 
 
-
-
 * Functions for Blog
 
   Note that due to the fact that there is no support for bash on my
@@ -3227,7 +3240,7 @@ Need OpenSSL to use encryption.
   (interactive)
   (with-current-buffer "*eshell*"
     (eshell-return-to-prompt)
-    (insert "cd 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Blog/bits-of-experience'; git checkout windows_OS; cp -r ../pdfs ./output/pdfs; cp ../images/* ./output/images; cp -r ../videos ./output/videos")
+    (insert "cd 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Blog/bits-of-experience'; git checkout windows_OS; cp -r ../pdfs ./output/pdfs; cp ../images/* ./output/images; cp -r ../videos/* ./output/videos")
     (eshell-send-input)
     )
   )
@@ -3345,6 +3358,27 @@ last image.
 #+RESULTS:
 : blog/push_resources_to_blog
 
+
+** HEIC to jpeg
+
+   This via the [[https://imagemagick.org/script/download.php#windows][magick software]]...
+
+   Ok here you have the bash script to get what you want... write it
+   to an executable shell file now. 
+
+#+BEGIN_SRC emacs-lisp
+(defun blog/HEIC_to_jpg()
+  "Adds all of the resources to the blog"
+  (interactive)
+  (with-current-buffer "*shell*"
+    (insert "for f in *.HEIC; do magick.exe $f $(basename $f .HEIC)".jpg"; done")
+    )
+  )
+#+END_SRC
+
+#+RESULTS:
+: blog/HEIC_to_jpg
+
 ** TO-BE-INTEGRATED create index on your org-files
 
    So the thing is that despite the fact that you can navigate the
@@ -3369,43 +3403,33 @@ last image.
      hierarchy). =C-c c-n= go to the next sub-header. Go to line
      before. =org-insert-last-store-link=. =C-o= go to that baby. 
 
-   Followed more less the steps above. Result with elmacro
+   Followed more less the steps above. Result with elmacro.
+
+   You use it now in the following way. Go on the section you want to
+   create the index for. Call the function. It will add the index one
+   level higher to the indeces you want to create. 
 
    #+BEGIN_SRC emacs-lisp
 (defun indexing ()
   (interactive)
+  (setq last-command-event 14)
+  (org-next-visible-heading 1)
   (setq last-command-event 108)
   (org-store-link nil 1)
   (setq last-command-event 21)
   (outline-up-heading 1)
   (setq last-command-event 14)
   (org-next-visible-heading 1)
-  (setq last-command-event 15)
-  (org-open-line 1)
-  (setq last-command-event 15)
-  (file-notify-handle-event
-   `(file-notify
-     (92761828 added ".#-emacsTd44OY")
-     file-notify--callback-w32notify))
-  (setq last-command-event 15)
-  (file-notify-handle-event
-   `(file-notify
-     (92761828 modified ".#-emacsTd44OY")
-     file-notify--callback-w32notify))
-  (setq last-command-event 15)
-  (file-notify-handle-event
-   `(file-notify
-     (92761828 renamed-from ".#-emacsTd44OY")
-     file-notify--callback-w32notify))
-  (setq last-command-event 15)
-  (file-notify-handle-event
-   `(file-notify
-     (92761828 renamed-to ".#emacs_configuration.org")
-     file-notify--callback-w32notify))
+  (setq last-command-event 16)
+  (previous-line 1 1)
   (setq last-command-event 'tab)
   (indent-for-tab-command nil)
   (setq last-command-event 'tab)
   (org-cycle nil)
+  (setq last-command-event 45)
+  (org-self-insert-command 1)
+  (setq last-command-event 32)
+  (org-self-insert-command 1)
   (setq last-command-event 134217836)
   (org-insert-last-stored-link 1)
   (setq last-command-event 16)
@@ -3416,41 +3440,22 @@ last image.
   (backward-char 1)
   (setq last-command-event 15)
   (org-open-at-point nil)
-  (setq last-command-event 14)
-  (next-line 1 1)
   (setq last-command-event 'f4)
-  (kmacro-end-or-call-macro nil)
-  (setq last-command-event 108)
-  (org-store-link nil 1)
-  (setq last-command-event 21)
-  (outline-up-heading 1)
-  (setq last-command-event 14)
-  (org-next-visible-heading 1)
-  (setq last-command-event 15)
-  (org-open-line 1)
-  (setq last-command-event 'tab)
-  (indent-for-tab-command nil)
-  (setq last-command-event 'tab)
-  (org-cycle nil)
-  (setq last-command-event 134217836)
-  (org-insert-last-stored-link 1)
-  (setq last-command-event 16)
-  (previous-line 1 1)
-  (setq last-command-event 5)
-  (org-end-of-line 1)
-  (setq last-command-event 2)
-  (backward-char 1)
-  (setq last-command-event 15)
-  (org-open-at-point nil)
-  (setq last-command-event 14)
-  (next-line 1 1)
-  (setq last-command-event 14))
+  )
 
-#+END_SRC
+   #+END_SRC
 
-#+RESULTS:
-: indexing
+   #+RESULTS:
+   : indexing
 
+   Bind the method above to a keyboard binding
+
+   #+BEGIN_SRC emacs-lisp
+(define-key global-map (kbd "C-c n i") 'indexing)
+   #+END_SRC
+
+   #+RESULTS:
+   : indexing
 
 * Time management and Pomodoro Technique
   :LOGBOOK:
@@ -4972,10 +4977,12 @@ Here you add imporatant executables on your PATH.
 (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin")
 
 (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32")
+
+(add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/")
   #+END_SRC
 
   #+RESULTS:
-  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | diff-path |
+  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/WINDOWS/system32 | c:/WINDOWS | c:/WINDOWS/System32/Wbem | c:/WINDOWS/System32/WindowsPowerShell/v1.0 | c:/WINDOWS/System32/OpenSSH | c:/Program Files/1E/Client/Extensibility/NomadBranch | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | c:/JavaServer/jdk-11.0.12+7/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Dev/azure_data_studio/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Dev/git/bin | c:/Dev/git/usr/bin | c:/Dev/apache-maven-3.8.2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/software-for-import-on-zurich/hunspell2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
 
   Ok so this is what you should do... and then remove all of the
   exec-path stuff. 
@@ -5015,7 +5022,7 @@ Here you add imporatant executables on your PATH.
 
 
 
-   * Shell Configs
+* Shell Configs
 
 
 ** Shell
