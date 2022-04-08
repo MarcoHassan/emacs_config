@@ -53,6 +53,7 @@
 - [[*Select theme at start up][Select theme at start up]]
 - [[*Test-Mode][Test-Mode]]
 
+
 * Notes and General Commands
 
 Note that this is an experimentation integrating WSL on window emacs.
@@ -2106,6 +2107,7 @@ on the long run.
 
    understand how to solve this issue.   
 
+
 * Latex 
 
 #+begin_src emacs-lisp 
@@ -2935,22 +2937,6 @@ but `delete-file' is ignored."
 #+RESULTS:
 : org-babel-hide-result-toggle
 
-** IN-PROGRESS Enter last image                                       :emacs:
-   
-#+begin_src emacs-lisp 
-(defun screenshots_enter_last_img()
-  "You should still execute the name_last_pic function
-   before. Refactor it at some point to be included here."
-  (interactive)
-  (insert (concat "[[file:C:/Users/MARCO.HASSAN/Pictures/Saved Pictures/"
-	(concat (car kill-ring) "]]")))
-
-)
-#+end_src 
-
-#+RESULTS:
-: screenshots_enter_last_img
-
 ** Agenda
 
 *** General Config
@@ -3262,13 +3248,7 @@ Need OpenSSL to use encryption.
    | (lambda nil (local-set-key (kbd C-c C-x g) 'org-tags-view)) | (lambda nil (local-set-key (kbd C-c C-x t) 'org-tags-view-command)) | (lambda nil (local-set-key (kbd C-c C-x t) 'org-tags-view)) | (lambda nil (local-set-key (kbd C-c C-x t) '(org-tags-view))) | (lambda nil (local-set-key (kbd C-c l) 'org-store-link)) | org-babel-tangle-append-setup | (lambda nil (local-set-key (kbd C-c 3) #+BEGIN_SRC python |
 
 
-
-
-
-
-
-
-* Functions for Blog
+* Screenshot Management and handling static files for Blog 
 
   Note that due to the fact that there is no support for bash on my
   Windows account my usual working flow for my blog was disrupted. 
@@ -3277,11 +3257,8 @@ Need OpenSSL to use encryption.
   into eshell. 
 
   This can be done by running eshell calling lisp functions. 
-
   
   [[*Copy local pictures from Blog to the bits-of-experience folder][Copy local pictures from Blog to the bits-of-experience folder]]
-
-  [[*Screenshot Management for Blog and Org-mode][Screenshot Management for Blog and Org-mode]]
 
   [[*Push all of the images videos and pdfs to your blog][Push all of the images videos and pdfs to your blog]]
 
@@ -3295,7 +3272,7 @@ Need OpenSSL to use encryption.
   (interactive)
   (with-current-buffer "*eshell*"
     (eshell-return-to-prompt)
-    (insert "cd 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Blog/bits-of-experience'; git checkout windows_OS; cp -r ../pdfs ./output/pdfs; cp ../images/* ./output/images; cp -r ../videos/* ./output/videos")
+    (insert "cd 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Blog/bits-of-experience'; git checkout windows_OS; cp -r ../pdfs ./output/pdfs; cp ../images/* ./output/images; cp -r ../videos/* ./output/videos;")
     (eshell-send-input)
     )
   )
@@ -3304,7 +3281,8 @@ Need OpenSSL to use encryption.
    #+RESULTS:
    : blog/move_blog_files
 
-** Screenshot Management for Blog and Org-mode
+
+** Name last picture saved
 
 Add awk to the exec-path. Will be used by eshell for inserting the
 last image. 
@@ -3344,20 +3322,14 @@ last image.
 : name_last_pic
 
 #+begin_src emacs-lisp 
-(defun screenshots_enter_last_img()
-  "Insert the last save image in org.
-   Recall to execute name_last_pic before executing the function."
-  (interactive)
-  (insert 
-   (concat "[[file:c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Pictures/Saved Pictures/"
-	   (concat (car kill-ring) "]]")
-	   )
-   )
-  )
+(define-key global-map (kbd "C-c n n") 'name_last_pic)
 #+end_src 
 
 #+RESULTS:
-: screenshots_enter_last_img
+: name_last_pic
+
+
+** Screenshot Management for Blog
 
 #+begin_src emacs-lisp 
 (defun blog/move_last_screenshot_to_blog()
@@ -3377,10 +3349,81 @@ last image.
 #+RESULTS:
 : blog/move_last_screenshot_to_blog
 
+#+begin_src emacs-lisp 
+(defun blog/move_last_screenshot_to_blog()
+  "Move the last Picture to the blog"
+  (interactive)
+  (with-current-buffer "*eshell*"
+    (eshell-return-to-prompt)
+    (insert (concat "mv 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Pictures/Saved Pictures/"
+	(concat (car kill-ring) "' 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Blog/images/'")
+	)
+    )
+    (eshell-send-input)
+    )
+  )
+#+end_src 
+
+#+RESULTS:
+: blog/move_last_screenshot_to_blog
+
+
+** Screenshot Management for technical notes
+
+   #+begin_src emacs-lisp 
+(defun screenshot/move_last_screenshot_to_techNotes()
+  "Move the last Picture to the blog"
+  (interactive)
+  (with-current-buffer "*eshell*"
+    (eshell-return-to-prompt)
+    (insert (concat "mv 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Pictures/Saved Pictures/"
+		    (concat (car kill-ring) "' 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Notes/technical_material/images/'")
+		    )
+	    )
+    (eshell-send-input)
+    )
+  )
+   #+end_src 
+
+   #+RESULTS:
+   : screenshot/move_last_screenshot_to_techNotes
+
+   Enter the screenshot that you just moved in the relevant archive.
+
+   #+begin_src emacs-lisp 
+(defun screenshot/techNotes_enter_last_img()
+  (interactive)
+  (insert (concat "\n[[file:../images/" 
+		  (concat (car kill-ring) "]]\n"))
+	  )
+  )
+   #+end_src 
+
+   #+RESULTS:
+   : screenshot/techNotes_enter_last_img
+
+
+
+** Screenshot Management for org mode - keeping screenshot in default folder
+
+#+begin_src emacs-lisp 
+(defun screenshots_enter_last_img()
+  "Insert the last save image in org.
+   Recall to execute name_last_pic before executing the function."
+  (interactive)
+  (insert 
+   (concat "[[file:c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Pictures/Saved Pictures/"
+	   (concat (car kill-ring) "]]")
+	   )
+   )
+  )
+#+end_src 
+
+#+RESULTS:
+: screenshots_enter_last_img
+
 #+BEGIN_SRC emacs-lisp 
 (eval-after-load 'org' (progn 
-			 (define-key org-mode-map
-			   (kbd "C-c C-x m") 'blog/move_last_screenshot_to_blog)
 			 (define-key org-mode-map
 			   (kbd "C-c C-x s") 'screenshots_enter_last_img)                         
 			 ))
@@ -3389,12 +3432,6 @@ last image.
 #+RESULTS:
 : screenshots_enter_last_img
 
-#+begin_src emacs-lisp 
-(define-key global-map (kbd "C-c n n") 'name_last_pic)
-#+end_src 
-
-#+RESULTS:
-: name_last_pic
 
 ** Push all of the images videos and pdfs to your blog
 
@@ -3433,6 +3470,7 @@ last image.
 
 #+RESULTS:
 : blog/HEIC_to_jpg
+
 
 ** create index on your org-files
 
@@ -3578,6 +3616,7 @@ last image.
    leave it for now. Should you want to check at them later check the
    official [[https://orgmode.org/manual/Clocking-Work-Time.html][org documentation]].
 
+
 ** Pomodoro
    :LOGBOOK:
    CLOCK: [2021-09-07 Di. 12:34]
@@ -3648,6 +3687,7 @@ last image.
    wait other 25min. to see the behaviour. The milestone was set and
    for the next projects you can start with your time management
    techniques.
+
 
 ** Org-Trello
    :LOGBOOK:
@@ -3792,10 +3832,8 @@ see:
 
   #+RESULTS:
   : quickrun
-
   
 
-   
 * R
 
 #+begin_src emacs-lisp 
@@ -3884,6 +3922,7 @@ see:
   #+END_SRC
 
   #+RESULTS: Python Mode and virtual environment activation.
+  : c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/virtual_envs/
 
   Good. After installing ipyhton thorugh pip everything is working
   smoothly. Remember to run pip on DOS and not on emacs shell as at the
@@ -3897,6 +3936,23 @@ see:
 ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/python/Scripts")
    #+end_src 
 
+** ISSUE after activating venv your interactive pyhton changes to some .exe under the .emacs.d
+
+   See =elpy-config= to check what is set and what is going on. 
+
+   Then basically you do not get all of the installed modules over
+   there. 
+
+   This is fine as usually you want to be in that virtual
+   environment. 
+
+   What is annoying is that the eshell cannot find the azure-cli
+   module that you have installed within your global python.
+
+   I mean have to dig a little bit more into it in order to properly
+   understand what is going on.
+
+   Keep it as a note for now.
 
 * Java
 
@@ -4408,9 +4464,16 @@ functions, so that we can easily jump around between symbols using
 Go through this [[https://github.com/emacs-lsp/lsp-ui/blob/master/lsp-ui-doc.el][link]]  to see what other parameters are provided.
 
 ** Helm LSP
-Helm-lsp provides various functionality to work with the code. E.g Code actions like adding *getter, setter, toString*, refactoring etc. You can use ~helm-lsp-workspace-symbol~ to find various symbols (classes) within your workspace.
 
-LSP's built in symbol explorer uses ~xref-find-apropos~ to provide symbol navigation. Below we will replace that with helm version. After that you can use ~C-c l g a~ to find workspace symbols in a more intuitive way.
+Helm-lsp provides various functionality to work with the code. E.g
+Code actions like adding *getter, setter, toString*, refactoring
+etc. You can use ~helm-lsp-workspace-symbol~ to find various symbols
+(classes) within your workspace. 
+
+LSP's built in symbol explorer uses ~xref-find-apropos~ to provide
+symbol navigation. Below we will replace that with helm version. After
+that you can use ~C-c l g a~ to find workspace symbols in a more
+intuitive way. 
 
 #+begin_src emacs-lisp
 (use-package helm-lsp
@@ -4456,10 +4519,17 @@ Let's install the main package for lsp. Here we will integrate lsp with which-ke
 #+RESULTS:
 : 0.5
 
-You can start LSP server in a java project by using ~C-c l s s~. Once you type ~C-c l~ ~which-key~ package should guide you through rest of the options. In above setting I have added some memory management settings as suggested in [[https://emacs-lsp.github.io/lsp-mode/page/performance/][this guide]]. Change them to higher numbers, if you find *lsp-mode* sluggish in your computer.
+You can start LSP server in a java project by using ~C-c l s s~. Once
+you type ~C-c l~ ~which-key~ package should guide you through rest of
+the options. In above setting I have added some memory management
+settings as suggested in [[https://emacs-lsp.github.io/lsp-mode/page/performance/][this guide]]. Change them to higher numbers, if
+you find *lsp-mode* sluggish in your computer. 
 
 ** LSP Java
-This is the package that handles server installation and session management.
+
+This is the package that handles server installation and session
+management. 
+
 #+begin_src  emacs-lisp
 (use-package lsp-java 
 :ensure t
@@ -4467,7 +4537,6 @@ This is the package that handles server installation and session management.
 #+end_src
 
 #+RESULTS:
-
 
 ** Workaround 
 
@@ -4497,7 +4566,7 @@ This is the package that handles server installation and session management.
    It is working now. Check also at the [[https://github.com/emacs-lsp/lsp-mode/discussions/3095][following discussion]] to
    understand more.
 
-   Just the single project that you open is shown there in the erros
+   Just the single project that you open is shown there in the errors
    sections now in the =lsp-ui-flycheck-list=. If you add a second one
    this is also added to the list in the sense that is managed by the
    same server connection. The only issue is that if you close the
@@ -4512,7 +4581,7 @@ This is the package that handles server installation and session management.
    to get up and running with it. 
 
 
-* OUTDATED - Language Server
+* Deprecated - Language Server
 
 ** Config
 
@@ -5056,10 +5125,12 @@ Here you add imporatant executables on your PATH.
 (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32")
 
 (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/")
+
+(add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/python.exe")
   #+END_SRC
 
   #+RESULTS:
-  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/WINDOWS/system32 | c:/WINDOWS | c:/WINDOWS/System32/Wbem | c:/WINDOWS/System32/WindowsPowerShell/v1.0 | c:/WINDOWS/System32/OpenSSH | c:/Program Files/1E/Client/Extensibility/NomadBranch | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | c:/JavaServer/jdk-11.0.12+7/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Dev/azure_data_studio/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Dev/git/bin | c:/Dev/git/usr/bin | c:/Dev/apache-maven-3.8.2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/software-for-import-on-zurich/hunspell2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
+  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/python.exe | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpy/rpc-venv//Scripts | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpy/rpc-venv/ | c:/WINDOWS/system32 | c:/WINDOWS | c:/WINDOWS/System32/Wbem | c:/WINDOWS/System32/WindowsPowerShell/v1.0 | c:/WINDOWS/System32/OpenSSH | c:/Program Files/1E/Client/Extensibility/NomadBranch | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | c:/JavaServer/jdk-11.0.12+7/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Dev/azure_data_studio/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Dev/git/bin | c:/Dev/git/usr/bin | c:/Dev/apache-maven-3.8.2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/software-for-import-on-zurich/hunspell2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
 
   Ok so this is what you should do... and then remove all of the
   exec-path stuff. 
@@ -5069,7 +5140,7 @@ Here you add imporatant executables on your PATH.
 #+END_SRC
 
 #+RESULTS:
-: C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\1E\Client\Extensibility\NomadBranch;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Emacs\bin;C:\JavaServer\jdk-11.0.12+7\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32\Scripts;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32\Lib\site-packages;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\awk\bin;C:\Dev\azure_data_studio\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\test_emacs_doom\.emacs.d\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\ripgrep-13.0.0-x86_64-pc-windows-gnu;C:\Dev\git\bin;C:\Dev\git\usr\bin;C:\Dev\apache-maven-3.8.2\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\software-for-import-on-zurich\hunspell2\bin;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\software-for-import-on-zurich\Graphviz\bin;C:\Users\MARCO.HASSAN\AppData\Local\Programs\MiKTeX\miktex\bin\x64\;C:\Users\MARCO.HASSAN\OneDrive - Zurich Insurance\Desktop\programs_executables\gradle-7.1.1\bin;C:\Users\marco.hassan\AppData\Local\Microsoft\WindowsApps;
+: C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\1E\Client\Extensibility\NomadBranch;C:\Program Files\Microsoft\Azure Functions Core Tools\;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Emacs\bin;C:\JavaServer\jdk-11.0.12+7\bin;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32\Scripts;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Desktop\programs_executables\Python38-32\Lib\site-packages;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Desktop\programs_executables\awk\bin;C:\Dev\azure_data_studio\bin;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Desktop\test_emacs_doom\.emacs.d\bin;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Desktop\programs_executables\ripgrep-13.0.0-x86_64-pc-windows-gnu;C:\Dev\git\bin;C:\Dev\git\usr\bin;C:\Dev\apache-maven-3.8.2\bin;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Desktop\programs_executables\dotnet-sdk-3.1.416-win-x64;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Desktop\software-for-import-on-zurich\hunspell2\bin;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Desktop\programs_executables\software-for-import-on-zurich\Graphviz\bin;C:\Users\marco.hassan\AppData\Local\Programs\MiKTeX\miktex\bin\x64\;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Desktop\programs_executables\gradle-7.1.1\bin;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Desktop\programs_executables\ImageMagick;C:\Users\marco.hassan\OneDrive - Zurich Insurance\Desktop\programs_executables\azureFunctions\Azure.Functions.Cli.win-x64.4.0.3971;
 
 #+BEGIN_SRC emacs-lisp
 
