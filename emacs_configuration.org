@@ -126,33 +126,6 @@ desired image.
 Nice feature to be used instead of =rm=. You can read of it at the
 [[https://github.com/andreafrancia/trash-cli][following page]].
 
-** Magit diffing
-
-Puahhh... That was a waste of time. I was trying to understand how to
-view the edits between two commits as in ~git diff <commit 1> <commit
-2>~.
-
-It turned out that to do that you can simply go in the wip log via =l
-RET l= once you are in the magit status. Then add the highlighting
-marker. Go between the range you want to select and use the common
-diff command =d=. If you are interested in checking the differences
-for a specific file then you can simply use the ~=f~ option before
-selecting the =d= one.
-
-You can then enter the file path of the file you are interested in,
-for instance =app/test/M001_tests/test_pdf.py=
-
-A particular option in this sense is also the ediffing of two
-files. This is particularly useful when you have changed something and
-want to go back to the previous version but want to double check
-quickly before what has changed/ just take some of the old features.
-
-[[https://stackoverflow.com/questions/215718/how-can-i-reset-or-revert-a-file-to-a-specific-revision][How to revert a single file in git]].
-
-To go back to a specific commit in your git history you can use ~git
-checkout <commit>~. The commit can be easily found in the wip log
-mentioned above.
-
 ** Save reference to other file
 
     The syntax is the following
@@ -1473,11 +1446,12 @@ interesting content there.
 (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
 
 ;; (setq dired-sidebar-subtree-line-prefix "__")
-(setq dired-sidebar-theme 'vscode)
+;; (setq dired-sidebar-theme 'vscode) -- use it with vscode icons if interested
 (setq dired-sidebar-use-term-integration t)
 (setq dired-sidebar-use-custom-font t)
- #+end_src 
-
+(setq dired-sidebar-should-follow-file t)
+ #+end_src
+ 
  #+RESULTS:
  : t
 
@@ -1559,11 +1533,14 @@ Enlarge dired-sidebar
 
 *** Required Vscode icons
 
+    Not used anymore. Using all the icons. Was used in other settings
+    with dired-sidebar.
+
  #+begin_src emacs-lisp 
- (use-package vscode-icon
-   :quelpa (vscode-icon :fetcher github :repo "jojojames/vscode-icon-emacs")
-   :ensure t
-   :commands (vscode-icon-for-file))
+ ;; (use-package vscode-icon
+ ;;   :quelpa (vscode-icon :fetcher github :repo "jojojames/vscode-icon-emacs")
+ ;;   :ensure t
+ ;;   :commands (vscode-icon-for-file))
  #+end_src 
 
  #+RESULTS:
