@@ -2049,17 +2049,28 @@ on the long run.
 
   So the solution is to fetch it via github directly.
 
+  So did not work - but finally flycheck 32 was released and
+  everything is working now.
+
+
   #+begin_src emacs-lisp 
  (use-package flycheck
    :quelpa (flycheck :fetcher github :repo "flycheck/flycheck"))
   #+end_src 
 
   #+RESULTS:
-  
-** TODO continue from here in the afternoon
 
-   understand how to solve this issue.   
+** python issue
 
+   When you get errors in any languages with flycheck it is a good
+   exercise to check the setup with =flycheck-verify-setup=
+
+   The issue there with pycomiple. In Windows 10 it was choosing the
+   =python.exe= version in the windowsapps that would redirect to the
+   python installation page. Horrible feature that Microsoft entered
+   their OS.
+
+   You can solve this one and for all in the following way: [[https://stackoverflow.com/questions/57485491/python-python3-executes-in-command-prompt-but-does-not-run-correctly/65520328#65520328][see here]].
 
 * Latex 
 
@@ -3140,7 +3151,6 @@ but `delete-file' is ignored."
 
      #+RESULTS:
      : org-wild-notifier--notify
-
 
 *** TODO Encryption
 
