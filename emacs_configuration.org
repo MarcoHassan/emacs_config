@@ -1531,20 +1531,6 @@ Enlarge dired-sidebar
 | all-the-icons-dired-mode | (lambda nil (local-set-key (kbd C-c <) 'shrink_sidebar) (local-set-key (kbd C-c >) 'enlarge_sidebar) (local-set-key (kbd C-c C-d) 'default_sidebar)) | doom-modeline-set-project-modeline |
 
 
-*** Required Vscode icons
-
-    Not used anymore. Using all the icons. Was used in other settings
-    with dired-sidebar.
-
- #+begin_src emacs-lisp 
- ;; (use-package vscode-icon
- ;;   :quelpa (vscode-icon :fetcher github :repo "jojojames/vscode-icon-emacs")
- ;;   :ensure t
- ;;   :commands (vscode-icon-for-file))
- #+end_src 
-
- #+RESULTS:
- 
 ** Buffers
 
    Switch to most recent visited buffer
