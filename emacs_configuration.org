@@ -3917,6 +3917,7 @@ see:
 
    Keep it as a note for now.
 
+
 * Java
 
 
@@ -4313,7 +4314,6 @@ something causes duplciates create function for that
 
 * Language Server
 
-
 ** Disable ansi color in compilation mode
 
    This will help eliminate weird escape sequences during compilation
@@ -4334,6 +4334,7 @@ something causes duplciates create function for that
 
    #+RESULTS:
    : t
+
 
 ** Dap Mode
 
@@ -4361,6 +4362,7 @@ will also install ~dap-java~.
 #+end_src
 
 #+RESULTS:
+
 
 ** Treemacs
 
@@ -4400,6 +4402,7 @@ you to resize. Otherwise work with =treemacs-decrease-width= mapped to
 Note that you can adjust the scale in your treemacs as in any other
 buffer in emacs with =C-x -= or =C-x +=.
 
+
 ** LSP UI
 
 LSP UI is used in various packages that require UI elements in
@@ -4426,6 +4429,7 @@ functions, so that we can easily jump around between symbols using
 
 Go through this [[https://github.com/emacs-lsp/lsp-ui/blob/master/lsp-ui-doc.el][link]]  to see what other parameters are provided.
 
+
 ** Helm LSP
 
 Helm-lsp provides various functionality to work with the code. E.g
@@ -4448,9 +4452,12 @@ intuitive way.
 
 #+RESULTS:
 
+
 ** Install LSP Package
 
-Let's install the main package for lsp. Here we will integrate lsp with which-key. This way, when we type the prefix key ~C-c l~ we get additional help for compliting the command. 
+Let's install the main package for lsp. Here we will integrate lsp
+with which-key. This way, when we type the prefix key ~C-c l~ we get
+additional help for compliting the command.
 
 #+begin_src emacs-lisp
 (use-package lsp-mode
@@ -4458,6 +4465,7 @@ Let's install the main package for lsp. Here we will integrate lsp with which-ke
 :hook (
    (lsp-mode . lsp-enable-which-key-integration)
    (java-mode . #'lsp-deferred)
+   (python-mode . lsp)
 )
 :config 
     (setq lsp-intelephense-multi-root nil) ; don't scan unnecessary projects
@@ -4487,6 +4495,7 @@ you type ~C-c l~ ~which-key~ package should guide you through rest of
 the options. In above setting I have added some memory management
 settings as suggested in [[https://emacs-lsp.github.io/lsp-mode/page/performance/][this guide]]. Change them to higher numbers, if
 you find *lsp-mode* sluggish in your computer. 
+
 
 ** LSP Java
 
@@ -4544,236 +4553,16 @@ management.
    to get up and running with it. 
 
 
-* Deprecated - Language Server
+** Lsp Python
 
-** Config
+   In order to use the language server protocol in python you can
+   install the server via pip.
 
- *Necessary dependencies:*
+   [[https://www.mattduck.com/lsp-python-getting-started.html#:~:text=The%20most%20popular%20LSP%20client,packages%20like%20Flycheck%20and%20Company.][This]] is a good reference. 
 
- *For Python:* In order to use the python language server you have to install it via
- pip first =pip3 install python-language-server=.
-
- *For Cpp:* Need clangd in your =PATH=. Install it on Mac via ~brew install llvm~.
-
-
- #+begin_src emacs-lisp 
-;; (use-package lsp-mode
-;;   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-;;          (python-mode . lsp)
-
-;; 	 ;; java 
-;; 	 (java-mode . #'lsp-deferred)
-
-;;          ;; if you want which-key integration
-;;          ;; (lsp-mode . lsp-enable-which-key-integration)
-;; 	 )
-  
-;;   :commands lsp
-
-;;   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;   ;; from java documentation ;;
-;;   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  
-;;   ;; from java reference
-;;   ;; :config 
-;;     ;; (setq lsp-intelephense-multi-root nil) ; don't scan unnecessary projects
-;;     ;; (with-eval-after-load 'lsp-intelephense
-;;     ;; (setf (lsp--client-multi-root (gethash 'iph lsp-clients)) nil))
-;;     ;; (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-
-;;   ;; note that you set this in the next chunck. check if you want to
-;;   ;; do it here.
-  
-;;   ;; :init (setq 
-;;   ;;   lsp-keymap-prefix "C-c l"              ; this is for which-key integration documentation, need to use lsp-mode-map
-;;   ;;   lsp-enable-file-watchers nil
-;;   ;;   read-process-output-max (* 1024 1024)  ; 1 mb
-;;   ;;   lsp-completion-provider :capf
-;;   ;;   lsp-idle-delay 0.500
-;;   ;;   )
-
-;;   :ensure t
-
-;; )
- #+end_src
-
- #+RESULTS:
-
- Some config.
-
- #+begin_src emacs-lisp 
-;; (setq lsp-prefer-capf t)
-;; (setq gc-cons-threshold 100000000)
-;; ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-;; (setq lsp-keymap-prefix "C-c s-l")
- #+end_src 
-
- #+RESULTS:
-
- Notice that you have to toggle
- =lsp-ui-sidebar-toggle-symbols-info=. This is a very valuable thing to
- do.
-
- #+begin_src emacs-lisp 
-;; (use-package lsp-ui
-;;   :custom-face
-;;   (lsp-ui-sideline-code-action ((t (:inherit warning))))
-;;   :hook (lsp-mode . lsp-ui-mode)
-;;   :init (setq lsp-ui-doc-enable t
-;; 	      lsp-ui-doc-use-webkit nil
-;; 	      lsp-ui-doc-delay 0.5
-;; 	      lsp-ui-doc-include-signature t
-;; 	      lsp-ui-doc-position 'top
-;; 	      lsp-ui-doc-border (face-foreground 'default)
-;; 	      lsp-eldoc-enable-hover nil ; Disable eldoc displays in minibuffer
-
-;; 	      lsp-ui-sideline-enable t
-;; 	      lsp-ui-sideline-show-hover nil
-;; 	      lsp-ui-sideline-show-diagnostics nil
-;; 	      lsp-ui-sideline-ignore-duplicate t
-
-;; 	      lsp-ui-imenu-enable t
-;; 	      lsp-ui-imenu-colors `(,(face-foreground 'font-lock-keyword-face)
-;; 				    ,(face-foreground 'font-lock-string-face)
-;; 				    ,(face-foreground 'font-lock-constant-face)
-;; 				    ,(face-foreground 'font-lock-variable-name-face)))
-
-;;   :config
-;;   (add-to-list 'lsp-ui-doc-frame-parameters '(right-fringe . 8))
-
-;;   ;; `C-g'to close doc
-;;   (advice-add #'keyboard-quit :before #'lsp-ui-doc-hide)
-
-;;   ;; Reset `lsp-ui-doc-background' after loading theme
-;;   (add-hook 'after-load-theme-hook
-;; 	    (lambda ()
-;; 	      (setq lsp-ui-doc-border (face-foreground 'default))
-;; 	      (set-face-background 'lsp-ui-doc-background
-;; 				   (face-background 'tooltip)))))
- #+end_src 
-
- #+RESULTS:
-
- To integrate further and to resolve the issue with python debugging.
-
- https://github.com/emacsmirror/dap-mode#installation-1
-
- #+begin_src emacs-lisp 
-;;  (use-package dap-mode
-;;    :quelpa (dap-mode :fetcher github :repo "emacsmirror/dap-mode"))
-
-;; ;; (require 'dap-python)
-
-  #+end_src 
-
-  #+RESULTS:
-
- Moreover it is possible to integrate the language server with org in
- the editing buffer of =C-'=.
-
- This was not integrated so far. You can read more about that [[https://github.com/emacs-lsp/lsp-mode/issues/377][here]].
-
- #+begin_src emacs-lisp 
-;; (defun org-babel-edit-prep:python (babel-info)
-;;   (setq-local buffer-file-name (->> babel-info caddr (alist-get :file-name)))
-;;   (setq-local lsp-buffer-uri (->> babel-info caddr (alist-get :file-name) lsp--path-to-uri))
-;;   (lsp)
-
-;;     (use-package py-autopep8
-;;       :ensure t)
-;;     (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-
-;;     (pyvenv-mode t) 
-;;     (undo-tree-mode t) 
-;;     (flycheck-mode t)
-;;     (company-mode t)
-;;     (setq venv-location "/Users/marcohassan/Desktop/python_venv")
-
-;;     ;; Add hook for còmment highlighting.
-;;     ;;(add-hook 'python-mode-hook 'add-custom-keyw)
-;;   )
- #+end_src 
-
- #+RESULTS:
-
- Hack for =ein-python=. Transform it to python source block and then open
- the edit buffer. Like this you will have the language server. Then
- when closing it back change the header back to =ein-python=.
-
- #+begin_src emacs-lisp 
-;; (defun ein_copy_packages ()
-;;  (scimax-ob-jump-to-end)
-;;  (search-backward "ein-python")
-;;  (kill-word 1)
-;;  (delete-char 1)
-;;  (next-line)
-;;  (save-excursion
-;;  (search-backward "#!START_LIB")
-;;  (next-line)
-;;  (beginning-of-line)
-;;  (setq p2 (point))
-;;  (scimax-ob-jump-to-end)
-;;  (previous-line)
-;;  (end-of-line)
-;;  (copy-region-as-kill p2 (point))))
-
-
-;; (defun ein_python ()
-;;  (interactive)
-;;  (ein_copy_packages)
-;;  (scimax-ob-jump-to-header)
-;;  (next-line)
-;;  (newline)
-;;  (yank)
-;;  (newline 2)
-;;  (org-edit-special)
-;; )
-
-;; (defun ein_python_exit ()
-;;  (interactive)
-;;  (goto-char (point-max))
-;;  (search-backward "#!END_LIB")
-;;  (end-of-line)
-;;  (setq p (point))
-;;  (goto-char (point-min))
-;;  (delete-region p (point))
-;;  (kill-line 2)
-;;  (org-edit-src-exit)
-;;  (search-backward "python")
-;;  (insert "ein-")
-;; )
-
-;; ;; map the two to shortcuts
-;; (eval-after-load 'org' (progn 
-;; 			 (define-key org-mode-map
-;; 			   (kbd "C-c s-'") 'ein_python)
-;; 			 (define-key python-mode-map
-;; 			   (kbd "C-c s-'") 'ein_python_exit)
-;; 			 ))
- #+end_src 
-
- #+RESULTS:
-
- Super nice with the tangle property. You write all of the chuncks then
- to a single file you can pass as =:tangle= argument.
-
-** Lsp Server in Org Chunks
-
-   Should you be able to leverage this in org chuncks see the
-   workaround with the #!START_LIB. Search for it in this file to
-   understand that better.
-
-** Use language server for Java
-
-   #+begin_src emacs-lisp 
-   ;; (use-package lsp-java 
-   ;; :ensure t
-   ;; :config (add-hook 'java-mode-hook 'lsp))
-   #+end_src 
-
-   #+RESULTS:
+   Note that the =python-language-server= was mantained by
+   palantir. Seems that now the default choice is =python-lsp-server=.
    
-
 * Which key
 
 #+begin_src emacs-lisp 
