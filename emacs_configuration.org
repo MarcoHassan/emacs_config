@@ -1648,9 +1648,19 @@ Enlarge dired-sidebar
                           (name . ".*java.*")
 			  ))
 
+               ("gradle" (or
+                          (name . ".*gradle.*")
+			  ))
+
+
                ("ein"    (name . "^\\*ein.*"))
 
                ("JSON"    (mode . json-mode))
+
+	       ("YAML"  (or
+			     (name . ".*.yml")
+                             ))
+
 
 	       ("magit"  (or
                              (mode . magit-mode)
@@ -1658,6 +1668,8 @@ Enlarge dired-sidebar
                              (mode . magit-process-mode)
 			     (name . "^magit.*")
                              ))
+
+
 
 	       ("tramp"
 		       (name . "^\\*tramp.*"))
@@ -1706,7 +1718,7 @@ Enlarge dired-sidebar
 #+end_src 
 
 #+RESULTS:
-| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (java (or (name . .*java.*))) | (ein (name . ^\*ein.*)) | (JSON (mode . json-mode)) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (tramp (name . ^\*tramp.*)) | (LSP (or (name . ^\*lsp.*) (name . ^\*pyls.*) (name . ^\*jdtls.*))) | (Ediffing (or (name . ^\*ediff.*) (name . ^\*Ediff.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
+| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (java (or (name . .*java.*))) | (gradle (or (name . .*gradle.*))) | (ein (name . ^\*ein.*)) | (JSON (mode . json-mode)) | (YAML (or (name . .*.yml))) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (tramp (name . ^\*tramp.*)) | (LSP (or (name . ^\*lsp.*) (name . ^\*pyls.*) (name . ^\*jdtls.*))) | (Ediffing (or (name . ^\*ediff.*) (name . ^\*Ediff.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
 
 #+begin_src emacs-lisp 
 (add-hook 'ibuffer-mode-hook
@@ -3922,7 +3934,6 @@ see:
 
    Keep it as a note for now.
 
-
 * Java
 
 
@@ -3944,7 +3955,31 @@ see:
 
   #+RESULTS:
   : c:/JavaServer/jdk-11.0.12+7/bin/java.exe
-  
+
+* Gradle 
+
+#+BEGIN_SRC emacs-lisp
+(use-package gradle-mode
+  :ensure t
+)
+#+END_SRC
+
+#+RESULTS:
+
+
+* Groovy 
+
+  This is needed as the language is used by gradle in order to specify
+  the setup. 
+
+  #+BEGIN_SRC emacs-lisp
+(use-package groovy-mode
+  :ensure t
+)
+  #+END_SRC
+
+  #+RESULTS:
+
 
 * Run Code
   We can use quickrun package to execute code (if it has main). E.g. If you have a java file with main method, it will run with the associated shortcut key ~C-c r~ or quickrun command. Quickrun has support for several languages.
@@ -4509,6 +4544,22 @@ the options. In above setting I have added some memory management
 settings as suggested in [[https://emacs-lsp.github.io/lsp-mode/page/performance/][this guide]]. Change them to higher numbers, if
 you find *lsp-mode* sluggish in your computer. 
 
+** LSP treemacs error list 
+
+   This is very cool as it will give you the errors in a more ordered
+   way that is easier to navigate. 
+
+   There a couple of issues with the Windows OS. Luckily [[https://github.com/emacs-lsp/lsp-treemacs/issues/109][a person]] just
+   solved it.
+
+   You just have to copy that anchestor method in the
+   =lsp-treemacs.el= and then evaluate the region.
+
+   Try to copy it over here and fix it at start up.
+
+*** TODO monitor this and solve it 
+    DEADLINE: <2022-05-06 Fr. 15:00>
+
 
 ** LSP Java
 
@@ -4522,6 +4573,23 @@ management.
 #+end_src
 
 #+RESULTS:
+
+*** Integration with Lombok
+
+#+BEGIN_SRC emacs-lisp
+(setq lsp-java-vmargs
+      '("-noverify" 
+	"-Xmx1G" 
+	"-XX:+UseG1GC" 
+	"-XX:+UseStringDeduplication" 
+	"-javaagent:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Java_folder/Dev/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar" 
+	"-Xbootclasspath/a:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Java_folder/Dev/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar"))
+
+#+END_SRC
+
+#+RESULTS:
+| -noverify | -Xmx1G | -XX:+UseG1GC | -XX:+UseStringDeduplication | -javaagent:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Java_folder/Dev/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar | -Xbootclasspath/a:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Java_folder/Dev/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar |
+
 
 ** Workaround 
 
@@ -4538,6 +4606,7 @@ management.
 (setq lsp-enable-symbol-highlighting nil)
    #+end_src 
    
+
 ** Multiproject Problem opens all of the projects you worked with
 
    Check at the [[https://issueexplorer.com/issue/emacs-lsp/lsp-java/320][following url]] to understand the issue.
@@ -4576,6 +4645,7 @@ management.
    Note that the =python-language-server= was mantained by
    palantir. Seems that now the default choice is =python-lsp-server=.
    
+
 * Which key
 
 #+begin_src emacs-lisp 
@@ -4940,7 +5010,6 @@ Here you add imporatant executables on your PATH.
 
 
 * Shell Configs
-
 
 ** Shell
 
