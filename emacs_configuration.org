@@ -1644,6 +1644,10 @@ Enlarge dired-sidebar
                           (name . "^\\*ob-ipython.*")
 			  ))
 
+               ("java" (or
+                          (name . ".*java.*")
+			  ))
+
                ("ein"    (name . "^\\*ein.*"))
 
                ("JSON"    (mode . json-mode))
@@ -1661,6 +1665,7 @@ Enlarge dired-sidebar
 	       ("LSP" (or
 		       (name . "^\\*lsp.*")
 		       (name . "^\\*pyls.*")
+		       (name . "^\\*jdtls.*")
 		       )
 		)
 
@@ -1701,7 +1706,7 @@ Enlarge dired-sidebar
 #+end_src 
 
 #+RESULTS:
-| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (ein (name . ^\*ein.*)) | (JSON (mode . json-mode)) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (tramp (name . ^\*tramp.*)) | (LSP (or (name . ^\*lsp.*) (name . ^\*pyls.*))) | (Ediffing (or (name . ^\*ediff.*) (name . ^\*Ediff.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
+| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (java (or (name . .*java.*))) | (ein (name . ^\*ein.*)) | (JSON (mode . json-mode)) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (tramp (name . ^\*tramp.*)) | (LSP (or (name . ^\*lsp.*) (name . ^\*pyls.*) (name . ^\*jdtls.*))) | (Ediffing (or (name . ^\*ediff.*) (name . ^\*Ediff.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
 
 #+begin_src emacs-lisp 
 (add-hook 'ibuffer-mode-hook
@@ -4345,24 +4350,32 @@ options and jump through code at runtime. After we install dap-mode we
 will also install ~dap-java~.
 
 #+begin_src emacs-lisp
-;; (use-package dap-mode
-;;   :ensure t
-;;   :after (lsp-mode)
-;;   :functions dap-hydra/nil
-;;   :config
-;;   (require 'dap-java)
-;;   :bind (:map lsp-mode-map
-;;          ("<f5>" . dap-debug)
-;;          ("M-<f5>" . dap-hydra))
-;;   :hook ((dap-mode . dap-ui-mode)
-;;     (dap-session-created . (lambda (&_rest) (dap-hydra)))
-;;     (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+(use-package dap-mode
+  :ensure t
+  :after (lsp-mode)
+  :functions dap-hydra/nil
+  :config
+  (require 'dap-java)
+  :bind (:map lsp-mode-map
+         ("<f5>" . dap-debug)
+         ("M-<f5>" . dap-hydra))
+  :hook ((dap-mode . dap-ui-mode)
+    (dap-session-created . (lambda (&_rest) (dap-hydra)))
+    (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
 
-;; (use-package dap-java :ensure nil)
+(use-package dap-java :ensure nil)
 #+end_src
 
 #+RESULTS:
 
+#+BEGIN_SRC emacs-lisp
+(dap-register-debug-template
+ "localhost:8000"
+ (list :type "java"
+  :request "attach"
+  :hostName "localhost"
+  :port 8000))
+#+END_SRC
 
 ** Treemacs
 
