@@ -4280,7 +4280,7 @@ Enable magit interface on global mode.
   files (see here [[https://forsooth.org/posts/projectile-ignore-directories/index.html][possible reference]]). Understand better at some point
   if it becomes a priority.
 
-** COMMENT Org Projectile
+** Org Projectile
 
 Adds the possibility to edit org todos files via capture in a default
 org file storing todos for the specific project. Essentially the same
@@ -4403,14 +4403,20 @@ will also install ~dap-java~.
 
 #+RESULTS:
 
-#+BEGIN_SRC emacs-lisp
+*** Templates
+
+ #+BEGIN_SRC emacs-lisp
 (dap-register-debug-template
  "localhost:8000"
  (list :type "java"
   :request "attach"
   :hostName "localhost"
   :port 8000))
-#+END_SRC
+ #+END_SRC
+
+ You can enter in the above all of the other templates for developing
+ in java. 
+
 
 ** Treemacs
 
@@ -4544,6 +4550,7 @@ the options. In above setting I have added some memory management
 settings as suggested in [[https://emacs-lsp.github.io/lsp-mode/page/performance/][this guide]]. Change them to higher numbers, if
 you find *lsp-mode* sluggish in your computer. 
 
+
 ** LSP treemacs error list 
 
    This is very cool as it will give you the errors in a more ordered
@@ -4560,6 +4567,8 @@ you find *lsp-mode* sluggish in your computer.
 *** TODO monitor this and solve it 
     DEADLINE: <2022-05-06 Fr. 15:00>
 
+** TODO Test the refactoring - important feature I had issues with. 
+   DEADLINE: <2022-05-06 Fr. 15:00>
 
 ** LSP Java
 
