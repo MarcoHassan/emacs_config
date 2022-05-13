@@ -145,6 +145,7 @@ Nice feature to be used instead of =rm=. You can read of it at the
 
    - [[https://systemcrafters.cc/videos][omg these guys are absurd. they really managed emacs to crazy levels]]
 
+   - [[http://ivanmalison.github.io/dotfiles/#orgprojectile][this as well]] 
 
 As a general resources for generating my emacs configuration I mainly
 refer to [[https://cestlaz.github.io/tags/emacs/page/6/][emacs_intro_&packages]], [[https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org][Harry Schwartz emacs config]]. Harry
@@ -175,6 +176,15 @@ Another nice guy to follow is [[https://alhassy.github.io/init/][this one]].
    You will get an interactive search of all of the existing variables
    and you can work through it. 
 
+** Jump to previous position in current buffer
+
+   Check [[http://xahlee.info/emacs/emacs/emacs_jump_to_previous_position.html#:~:text=There%20are%203%20ways%20to%20jump%20cursor%20to%20a%20previous%20position.&text=Move%20cursor%20to%20previous%20marked,to%20positions%20in%20mark%2Dring%20.&text=x%20Ctrl%20%2B%20Space%20%E3%80%91-,Move%20cursor%20to%20previous%20marked,may%20be%20in%20another%20buffer).][at the following]].
+
+   Essentially you can go to the previous position by =C-u C-<SPACE>=.
+
+   Check at the url above if you really want to customize the
+   things. Meaning for instance, how many positions should be saved
+   that you can recursively go back to with the above shortcut. 
 
 * Profiling Emacs at Start up
 
@@ -1652,7 +1662,10 @@ Enlarge dired-sidebar
                           (name . ".*gradle.*")
 			  ))
 
-
+               ("dap" (or
+                          (name . "^\\*dap.*")
+			  ))
+	       
                ("ein"    (name . "^\\*ein.*"))
 
                ("JSON"    (mode . json-mode))
@@ -1718,7 +1731,7 @@ Enlarge dired-sidebar
 #+end_src 
 
 #+RESULTS:
-| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (java (or (name . .*java.*))) | (gradle (or (name . .*gradle.*))) | (ein (name . ^\*ein.*)) | (JSON (mode . json-mode)) | (YAML (or (name . .*.yml))) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (tramp (name . ^\*tramp.*)) | (LSP (or (name . ^\*lsp.*) (name . ^\*pyls.*) (name . ^\*jdtls.*))) | (Ediffing (or (name . ^\*ediff.*) (name . ^\*Ediff.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
+| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (java (or (name . .*java.*))) | (gradle (or (name . .*gradle.*))) | (dap (or (name . ^\*dap.*))) | (ein (name . ^\*ein.*)) | (JSON (mode . json-mode)) | (YAML (or (name . .*.yml))) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (tramp (name . ^\*tramp.*)) | (LSP (or (name . ^\*lsp.*) (name . ^\*pyls.*) (name . ^\*jdtls.*))) | (Ediffing (or (name . ^\*ediff.*) (name . ^\*Ediff.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
 
 #+begin_src emacs-lisp 
 (add-hook 'ibuffer-mode-hook
@@ -2004,9 +2017,7 @@ keeps your other directories clear from them.
 
 ** TODO should also include the # files and the tilde ones... these are also cluttering the code and annoying you
 
-
 * Set Ispell Dictionary
-
 
 Since emacs 24.4+ ispell.el has built-in support for detecting
 Hunspell dictionaries and there is no manual configuration needed.
@@ -2821,8 +2832,6 @@ Bind it to a kbd
    #+RESULTS: write_source_python
    | (lambda nil (local-set-key (kbd C-c 3) #+BEGIN_SRC python |
 
-
-
 *** TODO Consider Snippets
     :PROPERTIES:
     :ID:       e30eef15-0142-443e-b189-d802875fb1a6
@@ -2846,6 +2855,7 @@ Bind it to a kbd
    ;; (R . t)
    (sql . t)
    ;; (ein . t)
+   (ipython . t)
    (python . t)
    ;; (shell . t)
    (emacs-lisp . t)
@@ -2877,7 +2887,7 @@ Add to company the ob-ipython dict.
 | org-display-inline-images |
 
 #+begin_src emacs-lisp 
-(setq org-src-preserve-indentation t)
+;; (setq org-src-preserve-indentation t)
 (setq org-src-fontify-natively t)
 (require 'ox-latex)
 (add-to-list 'org-latex-packages-alist '("" "minted"))
@@ -3002,7 +3012,7 @@ but `delete-file' is ignored."
  (setq org-capture-templates
       (quote (("t" "todo" entry (file "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Agenda/capture.org")
 	     "* TODO %?\n%U\n%a\n:PROPERTIES:\n:WILD_NOTIFIER_NOTIFY_BEFORE: 30 10 5\n:END:") ;; if you want to clock in time --- :clock-in t :clock-resume t)
-	      ("n" "note" entry (file "~/Dropbox/Applicazioni/MobileOrg/capture.org")
+	      ("n" "note" entry (file "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Agenda/capture.org")
 	     "* %? :NOTE:\n%U\n%a\n") ;; if you want to clock in time --- :clock-in t :clock-resume t)
 	    )))
  #+end_src 
@@ -4068,14 +4078,30 @@ therefore sensible to keep it here already.
 
   Nothing to configure. Apparently it was built-in.
 
+  Not working so far. As mentioned on the official webpage not working
+  under non-WSL environments.
+
 #+begin_src emacs-lisp 
+ ;; (use-package ein
+ ;;   :quelpa (ein :fetcher github :repo "dickmao/emacs-ipython-notebook"))
+
 ;; (define-key python-mode-map (kbd "C-c s-c") 'ein:edit-cell-save-and-execute)
 #+end_src 
 
 #+RESULTS:
+: t
 
 Consider [[https://github.com/nnicandro/emacs-jupyter][this package]]. Looks promising.
 
+** Use Ob-ipython in the meanwhile
+
+   #+BEGIN_SRC emacs-lisp
+ (use-package ob-ipython
+   :quelpa (ob-ipython :fetcher github :repo "gregsexton/ob-ipython")
+   :ensure t)
+    #+END_SRC
+
+    #+RESULTS:
 
 * Nikola
 
@@ -4322,7 +4348,6 @@ captured in an org-capture buffer.
 #+RESULTS:
 : org-projectile-capture-for-current-project
 
-
 #+begin_src emacs-lisp 
 (defun agenda_remove_duplicates()
  (interactive)
@@ -4405,17 +4430,82 @@ will also install ~dap-java~.
 
 *** Templates
 
- #+BEGIN_SRC emacs-lisp
+**** Localhost-development
+
+  #+BEGIN_SRC emacs-lisp
 (dap-register-debug-template
  "localhost:8000"
  (list :type "java"
   :request "attach"
   :hostName "localhost"
   :port 8000))
- #+END_SRC
+  #+END_SRC
 
- You can enter in the above all of the other templates for developing
- in java. 
+  You can enter in the above all of the other templates for developing
+  in java. 
+
+**** Localhost No debugging
+
+  #+BEGIN_SRC emacs-lisp
+(dap-register-debug-template
+ "localhostNoDebug:8000"
+ (list :type "java"
+  :request "attach"
+  :hostName "localhost"
+  :noDebug t
+  :port 8000))
+  #+END_SRC
+
+  #+RESULTS:
+  | localhostNoDebug:8000                   | :name | localhostNoDebug:8000  | :type    | java           | :request | attach | :hostName | localhost | :noDebug | t         | :port        | 8000        |              |           |             |        |              |     |              |     |              |     |            |     |
+  | localhost:8000                          | :name | localhost:8000         | :type    | java           | :request | attach | :hostName | localhost | :port    | 8000      |              |             |              |           |             |        |              |     |              |     |              |     |            |     |
+  | Java Attach                             | :name | Java Attach            | :type    | java           | :request | attach | :hostName | localhost | :port    | nil       |              |             |              |           |             |        |              |     |              |     |              |     |            |     |
+  | Java Run Configuration (compile/attach) | :type | java                   | :request | compile_attach | :args    |        | :cwd      | nil       | :host    | localhost | :request     | launch      | :modulePaths | []        | :classPaths | nil    | :name        | Run | :projectName | nil | :mainClass   | nil |            |     |
+  | Java Run Configuration                  | :name | Java Run Configuration | :type    | java           | :request | launch | :args     |           | :cwd     | nil       | :stopOnEntry | :json-false | :host        | localhost | :request    | launch | :modulePaths | []  | :classPaths  | nil | :projectName | nil | :mainClass | nil |
+
+
+*** TODO Integrate it via shortcuts - Closing debugging - cleaning up your emacs 
+    SCHEDULED: <2022-05-12 Do. .+1w>
+
+    Check at [[https://github.com/emacs-lsp/dap-mode/issues/281][this issue]]. Came here by error when searching smth
+    else. Will not read too much into it to this stage but will come
+    back at it at some later stage. 
+
+    Makes sense as well to add some binding. 
+
+#+BEGIN_SRC emacs-lisp
+(defun stop-debugging-mode ()
+  (interactive)
+  (dap-delete-all-sessions)
+  (dap-mode 0)
+  (dap-ui-mode 0)
+  (dap-ui-controls-mode 0)
+  (delete-other-windows) ;; hide all the dap UI. I might want to delete the buffers as well.
+  )
+#+END_SRC
+
+#+RESULTS:
+: stop-debugging-mode
+
+    Check as well this other function in order to open dubgging with
+    all of the relevant windows. 
+
+#+BEGIN_SRC emacs-lisp
+(defun debugging-mode ()
+  (interactive)
+  (dap-mode t)
+  (dap-ui-mode t)
+  (dap-tooltip-mode)
+  (dap-ui-controls-mode 1)
+  (dap-ui-sessions)
+  (dap-ui-locals)
+  (dap-ui-breakpoints)
+  (dap-ui-repl)
+  )
+#+END_SRC
+
+#+RESULTS:
+: debugging-mode
 
 
 ** Treemacs
@@ -4538,18 +4628,17 @@ additional help for compliting the command.
 (setq lsp-enable-file-watchers nil)
 (setq read-process-output-max (* 1024 1024))  ; 1 mb
 (setq lsp-completion-provider :capf)
-(setq lsp-idle-delay 0.900)      ; note that it must be lower than 0.2 or higher than 0.8 otherwise you get errors. 
+(setq lsp-idle-delay 0.100)      ; note that it must be lower than 0.2 or higher than 0.8 otherwise you get errors. 
 #+end_src 
 
 #+RESULTS:
-: 0.5
+: 0.1
 
 You can start LSP server in a java project by using ~C-c l s s~. Once
 you type ~C-c l~ ~which-key~ package should guide you through rest of
 the options. In above setting I have added some memory management
 settings as suggested in [[https://emacs-lsp.github.io/lsp-mode/page/performance/][this guide]]. Change them to higher numbers, if
 you find *lsp-mode* sluggish in your computer. 
-
 
 ** LSP treemacs error list 
 
@@ -4564,11 +4653,49 @@ you find *lsp-mode* sluggish in your computer.
 
    Try to copy it over here and fix it at start up.
 
-*** TODO monitor this and solve it 
-    DEADLINE: <2022-05-06 Fr. 15:00>
+#+BEGIN_SRC emacs-lisp
+(defun lsp-f-ancestor-of? (path-a-raw path-b-raw)
+  "Return t if PATH-A is an ancestor of PATH-B.
+Symlinks are not followed."
+  (let ((path-a (if (eq system-type 'windows-nt) (downcase path-a-raw) (path-a-raw)))
+	(path-b (if (eq system-type 'windows-nt) (downcase path-b-raw) (path-b-raw))))
+    
+    (unless (lsp-f-same? path-a path-b)
+      (s-prefix? (concat (lsp-f-canonical path-a) (f-path-separator))
+		 (lsp-f-canonical path-b)))))
 
-** TODO Test the refactoring - important feature I had issues with. 
-   DEADLINE: <2022-05-06 Fr. 15:00>
+(defun lsp-treemacs-errors--list-files (folder &rest _)
+  (->> (lsp-diagnostics)
+       (ht-keys)
+       (-keep
+        (lambda (file)
+          (when (and (lsp-f-ancestor-of? folder file)
+                     (lsp-treemacs-errors--diags? (lsp-diagnostics-stats-for file)))
+            (list :id file
+                  :label (format "%s %s %s"
+                                 (f-filename file)
+                                 (->> (append (lsp-diagnostics-stats-for file) ())
+                                      (-map-indexed
+                                       (lambda (index count)
+                                         (unless (zerop count)
+                                           (propertize
+                                            (number-to-string count)
+                                            'face (alist-get index lsp-treemacs-file-face-map)))))
+                                      (-filter #'identity)
+                                      (s-join "/"))
+                                 (propertize (f-dirname (f-relative file folder))
+                                             'face 'lsp-details-face))
+                  :icon (if (f-directory? file) 'dir-closed (f-ext file))
+                  :children (-partial #'lsp-treeemacs--error-list-diags folder file)
+                  :ret-action (lambda (&rest _)
+                                (interactive)
+                                (lsp-treemacs--open-file-in-mru file))))))))
+#+END_SRC
+
+#+RESULTS:
+: lsp-treemacs-errors--list-files
+
+   Working like a charm.
 
 ** LSP Java
 
@@ -4599,6 +4726,18 @@ management.
 #+RESULTS:
 | -noverify | -Xmx1G | -XX:+UseG1GC | -XX:+UseStringDeduplication | -javaagent:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Java_folder/Dev/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar | -Xbootclasspath/a:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Java_folder/Dev/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar |
 
+*** Disable formatting on type
+
+    This is annoying cause the lsp server does not really manage it
+    correctly. 
+
+    Morever it will on paper save you a bit of resources
+
+    #+BEGIN_SRC emacs-lisp
+(setq lsp-java-format-on-type-enabled nil)
+    #+END_SRC
+
+    #+RESULTS:
 
 ** Workaround 
 
@@ -5040,77 +5179,89 @@ Here you add imporatant executables on your PATH.
     So some programs calls for instance =org-latex-pdf-process= were
     not really getting the processes they should run. 
 
-    
-    
-
-
 ** Eshell 
 
- Fancy Prompt
- #+BEGIN_SRC emacs-lisp
-   (defun with-face (str &rest face-plist)
-     (propertize str 'face face-plist))
+   Fancy Prompt
+   #+BEGIN_SRC emacs-lisp
+(defun with-face (str &rest face-plist)
+  (propertize str 'face face-plist))
 
-   (defun shk-eshell-prompt ()
-     (let ((header-bg "#292929"))   
-       (concat
-	(with-face (concat (eshell/pwd) " ") :foreground "green")
-	(with-face (format-time-string "(%Y-%m-%d %H:%M) " (current-time)) :foreground "#888")
-	(with-face
-	 (or (ignore-errors (format "(%s)" (vc-responsible-backend default-directory))) ""))
-	(with-face "\n")
-	(with-face user-login-name :foreground "indian red")
-	"@"
-	(with-face "localhost" :foreground "sea green")
-	(if (= (user-uid) 0)
-	    (with-face " #" :foreground "red")
-	  " $ "))))
+(defun shk-eshell-prompt ()
+  (let ((header-bg "#292929"))   
+    (concat
+     (with-face (concat (eshell/pwd) " ") :foreground "green")
+     (with-face (format-time-string "(%Y-%m-%d %H:%M) " (current-time)) :foreground "#888")
+     (with-face
+      (or (ignore-errors (format "(%s)" (vc-responsible-backend default-directory))) ""))
+     (with-face "\n")
+     (with-face user-login-name :foreground "indian red")
+     "@"
+     (with-face "localhost" :foreground "sea green")
+     (if (= (user-uid) 0)
+	 (with-face " #" :foreground "red")
+       " $ "))))
 
-   (setq eshell-prompt-function 'shk-eshell-prompt)
-   (setq eshell-highlight-prompt nil)
- #+END_SRC
+(setq eshell-prompt-function 'shk-eshell-prompt)
+(setq eshell-highlight-prompt nil)
+   #+END_SRC
 
- #+RESULTS:
+   #+RESULTS:
 
- A built in solution for search of history commands.
+   A built in solution for search of history commands.
 
- #+BEGIN_SRC emacs-lisp
-   (add-hook 'eshell-mode-hook
-	     (lambda ()
-	       (local-set-key (kbd "C-c h")
-			      (lambda ()
-				(interactive)
-				(insert
-				 (ido-completing-read "Eshell history: "
-						      (delete-dups
-						       (ring-elements eshell-history-ring))))))
-	       ))
- #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+(add-hook 'eshell-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "C-c h")
+			   (lambda ()
+			     (interactive)
+			     (insert
+			      (ido-completing-read "Eshell history: "
+						   (delete-dups
+						    (ring-elements eshell-history-ring))))))
+	    ))
+   #+END_SRC
 
- #+RESULTS:
- | (lambda nil (local-set-key (kbd C-c h) (lambda nil (interactive) (insert (ido-completing-read Eshell history:  (delete-dups (ring-elements eshell-history-ring))))))) | tramp-eshell-directory-change | ess-r-package-activate-directory-tracker |
+   #+RESULTS:
+   | (lambda nil (local-set-key (kbd C-c h) (lambda nil (interactive) (insert (ido-completing-read Eshell history:  (delete-dups (ring-elements eshell-history-ring))))))) | tramp-eshell-directory-change | ess-r-package-activate-directory-tracker |
 
-Open a new eshell windows
+   Open a new eshell windows
 
-#+begin_src emacs-lisp 
+   #+begin_src emacs-lisp 
 (defun eshell-new()
   "Open a new instance of eshell."
   (interactive)
   (eshell 'N))
-#+end_src 
+   #+end_src 
 
-#+RESULTS:
-: eshell-new
+   #+RESULTS:
+   : eshell-new
 
-Shortcut to open eshell
+   Shortcut to open eshell
 
-#+begin_src emacs-lisp 
+   #+begin_src emacs-lisp 
 (global-set-key (kbd "C-x C-j") 'eshell-new)
-#+end_src 
+   #+end_src 
 
-#+RESULTS:
-: eshell-new
+   #+RESULTS:
+   : eshell-new
 
+*** Virtual Environments
+
+    So this is as well nice.
+
+    Had always the issue of working on the correct virtual
+    environment.
+
+    I.e. need to install python libraries there etc. and with eshell
+    when I was trying to activate the virtual environment from the
+    shell it was simply not working.
+
+    Found out eventually that everything is fine. You just need to
+    activate the environment via =venv-workon= and then eshell will
+    automatically adapt.
+
+    You can test this by running ~pip3 --version~ and see what pops out.
    
 ** Shell Switcher
 
