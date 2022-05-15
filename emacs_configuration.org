@@ -1089,6 +1089,26 @@ interested into modify.
     #+RESULTS:
     : bright/light
 
+    
+*** Solarized
+
+    #+BEGIN_SRC emacs-lisp
+
+    (defun bright/solarized ()
+      (interactive)
+      (use-package solarized-theme
+	:ensure t)
+
+      ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+      (load-theme 'solarized-light t)
+      )
+
+
+    #+END_SRC
+
+    #+RESULTS:
+    : t
+
 *** Misterioso
 
 #+begin_src emacs-lisp 
@@ -1134,26 +1154,31 @@ interested into modify.
 : a
 
  #+begin_src emacs-lisp 
-(defun my-switch ()
-"Doc-string for `my-switch` function."
-(interactive)
-  (cond
-    ((= a 1)
+  (defun my-switch ()
+    "Doc-string for `my-switch` function."
+    (interactive)
+    (cond
+     ((= a 1)
       (call-interactively 'dark/monokai)
       (message "set monokai")
       (setq a 2))
-    ((= a 2)
+     ((= a 2)
       (call-interactively 'dark/doom)
       (message "set doom")
       (setq a 3))
-    ((= a 3)
+     ((= a 3)
       (call-interactively 'dark/misterioso)
       (message "set misterioso")
       (setq a 4)) 
-    ((= a 4)
+     ((= a 4)
       (call-interactively 'bright/light)
       (message "set bright-light")
-      (setq a 1))) )
+      (setq a 5)) 
+     ((= a 5)
+      (call-interactively 'bright/solarized)
+      (message "set bright-solarized")
+      (setq a 1)))
+    )
 #+end_src 
 
 #+RESULTS:
