@@ -1147,7 +1147,7 @@ interested into modify.
 *** Make them available as classes
 
 #+begin_src emacs-lisp 
-(defvar a 3 "Initial setting for the `a` global variable.")
+(defvar a 5 "Initial setting for the `a` global variable.")
 #+end_src 
 
 #+RESULTS:
@@ -4654,10 +4654,10 @@ additional help for compliting the command.
 (setq read-process-output-max (* 1024 1024))  ; 1 mb
 (setq lsp-completion-provider :capf)
 (setq lsp-idle-delay 0.100)      ; note that it must be lower than 0.2 or higher than 0.8 otherwise you get errors. 
+;; (setq lsp-enable-indentation nil)    
 #+end_src 
 
 #+RESULTS:
-: 0.1
 
 You can start LSP server in a java project by using ~C-c l s s~. Once
 you type ~C-c l~ ~which-key~ package should guide you through rest of
@@ -4759,10 +4759,16 @@ management.
     Morever it will on paper save you a bit of resources
 
     #+BEGIN_SRC emacs-lisp
-(setq lsp-java-format-on-type-enabled nil)
+(setq lsp-java-format-enabled nil)
     #+END_SRC
 
     #+RESULTS:
+
+*** Follow a specific convention for checking at your java syntax.
+
+    You might for instance refer to the google-style: [[https://google.github.io/styleguide/javaguide.html][here]].
+
+    See [[https://www.reddit.com/r/emacs/comments/f98vug/lspjava_not_respecting_formatter_settings/][this]] how to set up in your emacs.
 
 ** Workaround 
 
