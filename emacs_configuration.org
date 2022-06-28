@@ -186,6 +186,7 @@ Another nice guy to follow is [[https://alhassy.github.io/init/][this one]].
    things. Meaning for instance, how many positions should be saved
    that you can recursively go back to with the above shortcut. 
 
+
 * Profiling Emacs at Start up
 
   So far I never had particular issues with the boot time of my
@@ -277,10 +278,41 @@ Another nice guy to follow is [[https://alhassy.github.io/init/][this one]].
 
   Mask them and do not keep your path exposed here. Rather reference
   another file.
+
   
 ** TODO configure environment variables.
    SCHEDULED: <2021-12-21 Di. 09:00>
+
+   you can do this via =setenv=
+
+   Note that there is as well the convenient way of checking at
+   environment variables in bash with =printenv= in linux. You can use
+   it in order to set all of the respective variables in here such
+   that then everything is configured in here and if you loose your
+   machine it will just be about rerunning this file.
+
+   You can *see as well the path* there so you see that you do not have
+   to make this operation manually. 
    
+
+** Isa Mode
+
+   This you set as a variable in order to develop on your local
+   machine.
+
+   The idea is then to have different application properties files
+   where you can develop.
+
+   You create them according to this variable which will be different
+   depending on the environment you are working on.
+
+   #+BEGIN_SRC emacs-lisp
+(setenv "isa_mode" "LOCALHOST")
+   #+END_SRC
+
+   #+RESULTS:
+   : LOCALHOST
+
 
 * Increase cache allowed and avoid garbage collection at start up
 
@@ -480,6 +512,7 @@ using =epkg-list-packages= function.
 
 #+RESULTS:
 : cl
+
 
 * Basic Customization
   
@@ -2042,6 +2075,7 @@ keeps your other directories clear from them.
 
 ** TODO should also include the # files and the tilde ones... these are also cluttering the code and annoying you
 
+
 * Set Ispell Dictionary
 
 Since emacs 24.4+ ispell.el has built-in support for detecting
@@ -2053,22 +2087,22 @@ Just specify the global language that should be used when using the
 dictionary.
 
 #+begin_src emacs-lisp 
-(setq exec-path (append exec-path '("c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/hunspell/bin")))
+(add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Emacs/hunspell/bin/")
 #+end_src 
 
 #+RESULTS:
-| c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Program Files (x86)/Microsoft SQL Server/110/Tools/Binn/ | C:/Program Files/Microsoft SQL Server/110/Tools/Binn/ | C:/Program Files/Microsoft SQL Server/110/DTS/Binn/ | C:/Program Files (x86)/Microsoft SQL Server/110/Tools/Binn/ManagementStudio/ | C:/Program Files (x86)/Microsoft SQL Server/110/DTS/Binn/ | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | C:/Dev/azure_data_studio/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/fd_program | C:/Dev/git/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/apache-maven-3.8.2/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/Microsoft VS Code/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | /Users/marcohassan/.nvm/versions/node/v8.9.0/bin/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/hunspell | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/hunspell/bin |
+| c:/Users/marco.hassan/OneDrive - Zurich Insurance/Emacs/hunspell/bin/ | c:/WINDOWS/system32 | c:/WINDOWS | c:/WINDOWS/System32/Wbem | c:/WINDOWS/System32/WindowsPowerShell/v1.0 | c:/WINDOWS/System32/OpenSSH | c:/Program Files/1E/Client/Extensibility/NomadBranch | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | c:/JavaServer/jdk-11.0.12+7/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Dev/azure_data_studio/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Dev/git/bin | c:/Dev/git/usr/bin | c:/Dev/apache-maven-3.8.2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/software-for-import-on-zurich/hunspell2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
 
 #+Name: Ispell 
 #+BEGIN_SRC emacs-lisp 
 (setq ispell-program-name "hunspell") ;; Dictionaries
 
 
-(setq ispell-dictionary "english")
+(setq ispell-dictionary "en_US")
 #+END_SRC
 
 #+RESULTS: Ispell
-: english
+: en_US
 
 So I think that the emacs config is strong enough. What is missing is
 the correct hunspell binary. This one you can get via scientific
@@ -2124,6 +2158,7 @@ on the long run.
    their OS.
 
    You can solve this one and for all in the following way: [[https://stackoverflow.com/questions/57485491/python-python3-executes-in-command-prompt-but-does-not-run-correctly/65520328#65520328][see here]].
+
 
 * Latex 
 
@@ -3969,6 +4004,7 @@ see:
 
    Keep it as a note for now.
 
+
 * Java
 
 
@@ -3990,6 +4026,7 @@ see:
 
   #+RESULTS:
   : c:/JavaServer/jdk-11.0.12+7/bin/java.exe
+
 
 * Gradle 
 
@@ -4128,6 +4165,7 @@ Consider [[https://github.com/nnicandro/emacs-jupyter][this package]]. Looks pro
 
     #+RESULTS:
 
+
 * Nikola
 
    #+BEGIN_SRC emacs-lisp
@@ -4252,30 +4290,6 @@ Enable magit interface on global mode.
 ;; (setq ediff-diff-program "c:/Dev/git/usr/bin/diff.exe")
 #+END_SRC
 
-
-*** ISSUE performance                                              :noexport:
-
-    apparently emacs is full of performance issues when working with
-    it. 
-
-    the issue specific to magit might the the poor implemntation of
-    forking [[https://www.reddit.com/r/emacs/comments/g4x2gz/why_the_hell_is_magit_so_slow_on_windows/fo6uwg2/][according to this thread]].
-
-    Everyone recommends working with WSL and it. I see the point for
-    that. The issue is that when working in a financial institution
-    you have tons of constraints. I think the best thing would be to
-    have docker up and running and work my way from there. 
-
-    I make a note for that on my agenda. Come back to it at some later
-    point.
-
-    -------------------
-
-    So much of it was related to the poor performance of the previous
-    laptop. 
-
-    Forget about it to this stage and just come back to it at a later
-    stage. 
 
 *** Try libgit2 as a solution in the meanwhile                     :noexport:
     
@@ -4466,6 +4480,13 @@ will also install ~dap-java~.
   :port 8000))
   #+END_SRC
 
+  #+RESULTS:
+  | localhost:8000                          | :name | localhost:8000         | :type    | java           | :request | attach | :hostName | localhost | :port    | 8000      |              |             |              |           |             |        |              |     |              |     |              |     |            |     |
+  | localhostNoDebug:8000                   | :name | localhostNoDebug:8000  | :type    | java           | :request | attach | :hostName | localhost | :noDebug | t         | :port        | 8000        |              |           |             |        |              |     |              |     |              |     |            |     |
+  | Java Attach                             | :name | Java Attach            | :type    | java           | :request | attach | :hostName | localhost | :port    | nil       |              |             |              |           |             |        |              |     |              |     |              |     |            |     |
+  | Java Run Configuration (compile/attach) | :type | java                   | :request | compile_attach | :args    |        | :cwd      | nil       | :host    | localhost | :request     | launch      | :modulePaths | []        | :classPaths | nil    | :name        | Run | :projectName | nil | :mainClass   | nil |            |     |
+  | Java Run Configuration                  | :name | Java Run Configuration | :type    | java           | :request | launch | :args     |           | :cwd     | nil       | :stopOnEntry | :json-false | :host        | localhost | :request    | launch | :modulePaths | []  | :classPaths  | nil | :projectName | nil | :mainClass | nil |
+
   You can enter in the above all of the other templates for developing
   in java. 
 
@@ -4654,7 +4675,6 @@ additional help for compliting the command.
 (setq read-process-output-max (* 1024 1024))  ; 1 mb
 (setq lsp-completion-provider :capf)
 (setq lsp-idle-delay 0.100)      ; note that it must be lower than 0.2 or higher than 0.8 otherwise you get errors. 
-;; (setq lsp-enable-indentation nil)    
 #+end_src 
 
 #+RESULTS:
@@ -4756,10 +4776,14 @@ management.
     This is annoying cause the lsp server does not really manage it
     correctly. 
 
+    I mean it changes too many stuff in the code at each addition such
+    that your version control becomes garbage. This is obviously suboptimal.
+
     Morever it will on paper save you a bit of resources
 
     #+BEGIN_SRC emacs-lisp
-(setq lsp-java-format-enabled nil)
+;; (setq lsp-java-format-enabled nil)
+;; (setq lsp-enable-indentation nil)    
     #+END_SRC
 
     #+RESULTS:
@@ -5120,7 +5144,7 @@ To use it you have to use the following syntax then. You have to use
   #+END_SRC
 
   #+RESULTS:
-  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32 | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32/Scripts | C:/Users/MARCO.HASSAN/Desktop/programs_executables/Python38-32/Lib/site-packages | C:/Users/MARCO.HASSAN/Desktop/programs_executables/awk/bin | C:/Dev/azure_data_studio/bin | C:/Users/MARCO.HASSAN/Desktop/test_emacs_doom/.emacs.d/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | C:/Dev/git/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/apache-maven-3.8.2/bin | C:/Users/MARCO.HASSAN/Desktop/software-for-import-on-zurich/hunspell2/bin | C:/Users/MARCO.HASSAN/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | C:/Users/MARCO.HASSAN/Desktop/programs_executables/gradle-7.1.1/bin | C:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/hunspell/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ |
+  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/virtual_envs/relationalOperations/Scripts | c:/WINDOWS/system32 | c:/WINDOWS | c:/WINDOWS/System32/Wbem | c:/WINDOWS/System32/WindowsPowerShell/v1.0 | c:/WINDOWS/System32/OpenSSH | c:/Program Files/1E/Client/Extensibility/NomadBranch | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | c:/JavaServer/jdk-11.0.12+7/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Dev/azure_data_studio/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Dev/git/bin | c:/Dev/git/usr/bin | c:/Dev/apache-maven-3.8.2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/software-for-import-on-zurich/hunspell2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
 
 
 * Add to execution Path and $PATH 
