@@ -1696,21 +1696,31 @@ Enlarge dired-sidebar
 (setq ibuffer-saved-filter-groups
       (quote (("default"
 
+               ("sidebar" (mode . dired-sidebar-mode))
+
 	       ("terminal"  (or
                              (mode . term-mode)
                              (mode . shell-mode)
                              (mode . eshell-mode)
                              ))	       
 
-               ("sidebar" (mode . dired-sidebar-mode))
 
-               ("org" (mode . org-mode))
+               ("org" (or
+		       (mode . org-mode)
+		       (name . "^\\*org.*")
+		       )
+		)
 
                ("python" (or
 			  (mode . python-mode)
 			  (mode . inferior-python-mode)
                           (name . "^\\*ob-ipython.*")
+                          (name . ".pypirc")
+                          (name . "tox.ini")
+                          (name . "requirements.txt")
 			  ))
+
+               ("ein"    (name . "^\\*ein.*"))
 
                ("java" (or
                           (name . ".*java.*")
@@ -1719,17 +1729,17 @@ Enlarge dired-sidebar
                ("gradle" (or
                           (name . ".*gradle.*")
 			  ))
-
-               ("dap" (or
-                          (name . "^\\*dap.*")
-			  ))
 	       
-               ("ein"    (name . "^\\*ein.*"))
+               ("HTML"    (or
+                          (name . ".*.html")
+			  )
+		)
 
                ("JSON"    (mode . json-mode))
 
 	       ("YAML"  (or
 			     (name . ".*.yml")
+			     (name . ".*.yaml")
                              ))
 
 
@@ -1751,6 +1761,10 @@ Enlarge dired-sidebar
 		       (name . "^\\*jdtls.*")
 		       )
 		)
+
+               ("dap" (or
+                          (name . "^\\*dap.*")
+			  ))
 
 	       ("Ediffing" (or
 			    (name . "^\\*ediff.*")
@@ -1789,7 +1803,7 @@ Enlarge dired-sidebar
 #+end_src 
 
 #+RESULTS:
-| default | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (sidebar (mode . dired-sidebar-mode)) | (org (mode . org-mode)) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*))) | (java (or (name . .*java.*))) | (gradle (or (name . .*gradle.*))) | (dap (or (name . ^\*dap.*))) | (ein (name . ^\*ein.*)) | (JSON (mode . json-mode)) | (YAML (or (name . .*.yml))) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (tramp (name . ^\*tramp.*)) | (LSP (or (name . ^\*lsp.*) (name . ^\*pyls.*) (name . ^\*jdtls.*))) | (Ediffing (or (name . ^\*ediff.*) (name . ^\*Ediff.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
+| default | (sidebar (mode . dired-sidebar-mode)) | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (org (or (mode . org-mode) (name . ^\*org.*))) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*) (name . .pypirc) (name . tox.ini) (name . requirements.txt))) | (ein (name . ^\*ein.*)) | (java (or (name . .*java.*))) | (gradle (or (name . .*gradle.*))) | (HTML (or (name . .*.html))) | (JSON (mode . json-mode)) | (YAML (or (name . .*.yml) (name . .*.yaml))) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (tramp (name . ^\*tramp.*)) | (LSP (or (name . ^\*lsp.*) (name . ^\*pyls.*) (name . ^\*jdtls.*))) | (dap (or (name . ^\*dap.*))) | (Ediffing (or (name . ^\*ediff.*) (name . ^\*Ediff.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
 
 #+begin_src emacs-lisp 
 (add-hook 'ibuffer-mode-hook
