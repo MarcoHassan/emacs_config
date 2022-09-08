@@ -4490,32 +4490,7 @@ will also install ~dap-java~.
   You can enter in the above all of the other templates for developing
   in java. 
 
-**** Localhost No debugging
-
-  #+BEGIN_SRC emacs-lisp
-(dap-register-debug-template
- "localhostNoDebug:8000"
- (list :type "java"
-  :request "attach"
-  :hostName "localhost"
-  :noDebug t
-  :port 8000))
-  #+END_SRC
-
-  #+RESULTS:
-  | localhostNoDebug:8000                   | :name | localhostNoDebug:8000  | :type    | java           | :request | attach | :hostName | localhost | :noDebug | t         | :port        | 8000        |              |           |             |        |              |     |              |     |              |     |            |     |
-  | localhost:8000                          | :name | localhost:8000         | :type    | java           | :request | attach | :hostName | localhost | :port    | 8000      |              |             |              |           |             |        |              |     |              |     |              |     |            |     |
-  | Java Attach                             | :name | Java Attach            | :type    | java           | :request | attach | :hostName | localhost | :port    | nil       |              |             |              |           |             |        |              |     |              |     |              |     |            |     |
-  | Java Run Configuration (compile/attach) | :type | java                   | :request | compile_attach | :args    |        | :cwd      | nil       | :host    | localhost | :request     | launch      | :modulePaths | []        | :classPaths | nil    | :name        | Run | :projectName | nil | :mainClass   | nil |            |     |
-  | Java Run Configuration                  | :name | Java Run Configuration | :type    | java           | :request | launch | :args     |           | :cwd     | nil       | :stopOnEntry | :json-false | :host        | localhost | :request    | launch | :modulePaths | []  | :classPaths  | nil | :projectName | nil | :mainClass | nil |
-
-
-*** TODO Integrate it via shortcuts - Closing debugging - cleaning up your emacs 
-    SCHEDULED: <2022-05-12 Do. .+1w>
-
-    Check at [[https://github.com/emacs-lsp/dap-mode/issues/281][this issue]]. Came here by error when searching smth
-    else. Will not read too much into it to this stage but will come
-    back at it at some later stage. 
+*** Opening and Closing Dap Debugging 
 
     Makes sense as well to add some binding. 
 
