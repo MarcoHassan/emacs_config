@@ -2173,6 +2173,23 @@ on the long run.
 
    You can solve this one and for all in the following way: [[https://stackoverflow.com/questions/57485491/python-python3-executes-in-command-prompt-but-does-not-run-correctly/65520328#65520328][see here]].
 
+** flycheck yamllint
+
+   In order to check the syntax of your =.yaml= files - especially
+   used in the pipelines you are constructing for your software.
+
+   #+BEGIN_SRC emacs-lisp
+(use-package flycheck-yamllint
+  :ensure t
+  :defer t
+  :init
+  (progn
+    (eval-after-load 'flycheck
+      '(add-hook 'flycheck-mode-hook 'flycheck-yamllint-setup))))
+   #+END_SRC
+
+   #+RESULTS:
+   | flycheck-yamllint-setup | flycheck-mode-set-explicitly | doom-modeline-update-flycheck-text | doom-modeline-update-flycheck-icon |
 
 * Latex 
 
