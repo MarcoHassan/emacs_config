@@ -3452,7 +3452,17 @@ last image.
    #+RESULTS:
    : screenshot/techNotes_enter_last_img
 
+   Make it consumable via shortcut across your application.
 
+#+begin_src emacs-lisp 
+(eval-after-load 'org' 
+  (define-key org-mode-map
+    (kbd "C-c M-t") 'screenshot/techNotes_enter_last_img)
+  )
+#+end_src 
+
+#+RESULTS:
+: screenshot/techNotes_enter_last_img
 
 ** Screenshot Management for org mode - keeping screenshot in default folder
 
@@ -3481,6 +3491,26 @@ last image.
 
 #+RESULTS:
 : screenshots_enter_last_img
+
+#+begin_src emacs-lisp 
+(defun techBlog/last_image()
+  "
+   Insert the last save image from your techblog.
+   Recall to execute name_last_pic before executing the function.
+   Will be necessary for the car kill-ring command
+  "
+  (interactive)
+  (insert 
+   (concat "[[file:../images/Saved Pictures/"
+	   (concat (car kill-ring) "]]")
+	   )
+   )
+  )
+#+end_src 
+
+#+RESULTS:
+: techBlog/last_image
+
 
 
 ** Push all of the images videos and pdfs to your blog
