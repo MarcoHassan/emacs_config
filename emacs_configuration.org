@@ -4592,41 +4592,48 @@ will also install ~dap-java~.
 
 ** Treemacs
 
-Treemacs provides UI elements used for LSP UI. Let's install
-lsp-treemacs and its dependency treemacs. We will also Assign ~M-9~ to
-show error list.
+   Treemacs provides UI elements used for LSP UI. Let's install
+   lsp-treemacs and its dependency treemacs. We will also Assign ~M-9~ to
+   show error list.
 
-#+begin_src emacs-lisp
-(use-package lsp-treemacs
-  :after (lsp-mode treemacs)
-  :ensure t
-  :commands lsp-treemacs-errors-list
-  :bind (:map lsp-mode-map
-         ("M-9" . lsp-treemacs-errors-list)))
+   #+begin_src emacs-lisp
+   (use-package lsp-treemacs
+     :after (lsp-mode treemacs)
+     :ensure t
+     :commands lsp-treemacs-errors-list
+     :bind (:map lsp-mode-map
+		 ("M-9" . lsp-treemacs-errors-list)))
 
-(use-package treemacs
-  :ensure t
-  :commands (treemacs)
-  :config 
- (add-hook 'treemacs-mode-hook
-	   (lambda ()
-	     (message "treemacs-mode-hook `%s'" (current-buffer))
-	     (text-scale-adjust -1)
-	     ))
-  (treemacs-resize-icons 20)
-  :after (lsp-mode))
-#+end_src
+   (use-package treemacs
+     :ensure t
+     :commands (treemacs)
+     :config 
+     (add-hook 'treemacs-mode-hook
+	       (lambda ()
+		 (message "treemacs-mode-hook `%s'" (current-buffer))
+		 (text-scale-adjust -1)
+		 ))
+     (treemacs-resize-icons 20)
+     :after (lsp-mode))
+   #+end_src
 
-#+RESULTS:
-: t
+   #+RESULTS:
+   : t
 
-All good to change the window size, go on the treemacs window and use
-=t w=.  Then you will unblock the fix size and it will be possible for
-you to resize. Otherwise work with =treemacs-decrease-width= mapped to
-=<=.
+   All good to change the window size, go on the treemacs window and use
+   =t w=.  Then you will unblock the fix size and it will be possible for
+   you to resize. Otherwise work with =treemacs-decrease-width= mapped to
+   =<=.
 
-Note that you can adjust the scale in your treemacs as in any other
-buffer in emacs with =C-x -= or =C-x +=.
+   Note that you can adjust the scale in your treemacs as in any other
+   buffer in emacs with =C-x -= or =C-x +=.
+
+*** Change the worktree there
+
+    If you have to change your worktree you can do that in the
+    following way by checking at [[https://marcohassan.github.io/bits-of-experience/posts/emacs-as-java-ide-via-lsp/][this one]] (go on the treemacs section
+    there).
+ 
 
 
 ** LSP UI
