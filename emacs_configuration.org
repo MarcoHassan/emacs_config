@@ -4891,6 +4891,32 @@ management.
    Note that the =python-language-server= was mantained by
    palantir. Seems that now the default choice is =python-lsp-server=.
    
+** LSP Sonarlint
+
+   You can get the idea of this in the following two locations:
+
+   1. [[https://www.sonarsource.com/products/sonarlint/][sonarlint official docu]]
+
+   2. [[https://marcohassan.github.io/bits-of-experience/posts/code-quality-management-and-monitoring/][code quality bits of experience]]
+
+   #+BEGIN_SRC emacs-lisp
+   (use-package lsp-sonarlint
+     :ensure t)
+   #+END_SRC   
+
+   #+RESULTS:
+
+   #+BEGIN_SRC emacs-lisp
+   (use-package lsp-sonarlint-java
+     :ensure t
+     :config
+     (setq lsp-sonarlint-java-enabled t)
+     )
+   #+END_SRC
+
+   #+RESULTS:
+   : t
+
 
 * Which key
 
