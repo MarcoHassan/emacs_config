@@ -2191,6 +2191,7 @@ on the long run.
    #+RESULTS:
    | flycheck-yamllint-setup | flycheck-mode-set-explicitly | doom-modeline-update-flycheck-text | doom-modeline-update-flycheck-icon |
 
+
 * Latex 
 
 #+begin_src emacs-lisp 
@@ -4881,7 +4882,7 @@ management.
    to get up and running with it. 
 
 
-** Lsp Python
+** LSP Python
 
    In order to use the language server protocol in python you can
    install the server via pip.
