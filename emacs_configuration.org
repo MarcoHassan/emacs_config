@@ -1729,6 +1729,10 @@ Enlarge dired-sidebar
                ("gradle" (or
                           (name . ".*gradle.*")
 			  ))
+
+               ("logs" (or
+                          (name . ".*.log")
+			  ))
 	       
                ("HTML"    (or
                           (name . ".*.html")
