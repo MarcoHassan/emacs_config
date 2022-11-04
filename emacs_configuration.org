@@ -232,8 +232,7 @@ Another nice guy to follow is [[https://alhassy.github.io/init/][this one]].
 
    So on windows you can get most of it via - [[https://www.cygwin.com/][cygwin]]. 
 
-** DONE On dead slow performance in windows.
-   CLOSED: [2021-12-16 Do. 13:49]
+** Solved dead slow performance in windows.
 
    I am still trying to set it up correctly. Due to some annoying
    issues the performance on windows is dead slow. I will try to
