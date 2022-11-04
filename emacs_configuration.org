@@ -4951,11 +4951,8 @@ management.
    #+RESULTS:
 
    #+BEGIN_SRC emacs-lisp
-   (use-package lsp-sonarlint-java
-     :ensure t
-     :config
-     (setq lsp-sonarlint-java-enabled t)
-     )
+   (require 'lsp-sonarlint-java)
+   (setq lsp-sonarlint-java-enabled t)
    #+END_SRC
 
    #+RESULTS:
