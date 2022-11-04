@@ -278,23 +278,7 @@ Another nice guy to follow is [[https://alhassy.github.io/init/][this one]].
 
   Mask them and do not keep your path exposed here. Rather reference
   another file.
-
-  
-** TODO configure environment variables.
-   SCHEDULED: <2021-12-21 Di. 09:00>
-
-   you can do this via =setenv=
-
-   Note that there is as well the convenient way of checking at
-   environment variables in bash with =printenv= in linux. You can use
-   it in order to set all of the respective variables in here such
-   that then everything is configured in here and if you loose your
-   machine it will just be about rerunning this file.
-
-   You can *see as well the path* there so you see that you do not have
-   to make this operation manually. 
    
-
 ** Isa Mode
 
    This you set as a variable in order to develop on your local
@@ -307,13 +291,68 @@ Another nice guy to follow is [[https://alhassy.github.io/init/][this one]].
    depending on the environment you are working on.
 
    #+BEGIN_SRC emacs-lisp
-(setenv "isa_mode" "LOCALHOST")
+   (setenv "isa_mode" "LOCALHOST")
    #+END_SRC
 
    #+RESULTS:
    : LOCALHOST
 
+** Configuration of Relevant Spring Profile
 
+   Activate the Localhost profile for working with that profile when
+   you develop on your local machine / i.e. in your dev environment. 
+   
+   #+BEGIN_SRC emacs-lisp
+   (setenv "SPRING_PROFILES_ACTIVE" "LOCALHOST")
+   #+END_SRC
+
+** Java - Libraries Config
+
+*** M2_HOME
+   
+    #+BEGIN_SRC emacs-lisp
+    (setenv "M2_HOME" "C:/Dev/apache-maven-3.8.2/")
+    #+END_SRC
+
+*** MAVEN_HOME
+   
+    #+BEGIN_SRC emacs-lisp
+    (setenv "MAVEN_HOME" "C:/Dev/apache-maven-3.8.2/")
+    #+END_SRC
+
+** Python
+   
+*** PY_HOME
+   
+    #+BEGIN_SRC emacs-lisp
+    (setenv "PY_HOME" "%USERPROFILE%/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32")
+    #+END_SRC
+
+*** PY_LIBS
+
+    #+BEGIN_SRC emacs-lisp
+    (setenv "PY_LIBS" "%USERPROFILE%/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages")
+    #+END_SRC
+
+*** PY_PIP
+
+    #+BEGIN_SRC emacs-lisp
+    (setenv "PY_PIP" "%USERPROFILE%/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts")
+    #+END_SRC
+
+** Verify your Environment 
+   SCHEDULED: <2021-12-21 Di. 09:00>
+
+   Note that there is as well the convenient way of checking at
+   environment variables in bash with =printenv= in linux. You can use
+   it in order to set all of the respective variables in here such
+   that then everything is configured in here and if you loose your
+   machine it will just be about rerunning this file.
+
+   You can *see as well the path* there so you see that you do not have
+   to make this operation manually. 
+
+    
 * Increase cache allowed and avoid garbage collection at start up
 
 #+BEGIN_SRC emacs-lisp
