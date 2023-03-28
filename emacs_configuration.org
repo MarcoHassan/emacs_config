@@ -4271,7 +4271,9 @@ Compile your LaTeX document.
   Emacs >21.4. You can find it as =epg= in the list of your packages.
 
   Note that for performing your encryption you need as some encryption
-  software. In the specific I am working with [[https://gnupg.org/download/index.html][gnupg]].
+  software. In the specific I am working with [[https://gnupg.org/download/index.html][gnupg]] - recall to
+  download it from there when switching Laptop - given that it is not
+  on One-Drive.
 
   Reference it at [[https://www.emacswiki.org/emacs/EasyPG][EasyPG]].
 
@@ -4424,34 +4426,12 @@ Compile your LaTeX document.
 
    Working like a charm.
 
-   Had as well to add diffUtils as otherwise the =diff= part was not
-   there and this will be quite essential in the new experience. 
-
    #+BEGIN_SRC emacs-lisp
-   ;; You do not really need this bit. You have it then later.  plus I
-   ;; think this is what is causing mess cause you are overriding the
-   ;; path set so far.
+   ;; Commented out - I guess that you do not really need this anymore
 
-   ;; --> Correct GUESS: was messing everything up.
+   ;; Had as well to add diffUtils as otherwise the =diff= part was not
+   ;; there and this will be quite essential in the new experience. 
 
-   ;; (setq diff-path "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/PortableGit/bin")
-
-   ;; (setq exec-path
-   ;;       '(diff-path)) 
-
-   ;; here there might be the issue. You completely override this path. 
-
-   ;; check how the logic is different. basically you
-   ;; are setting a variable here. if you check at
-   ;; the variables C-h v for both diff-path and
-   ;; exec-path you will start to understand the
-   ;; issue.
-
-   #+END_SRC
-
-   #+RESULTS:
-
-   #+BEGIN_SRC emacs-lisp
    ;; (setq ediff-diff-program "c:/Dev/git/usr/bin/diff.exe")
    #+END_SRC
 
