@@ -1634,10 +1634,10 @@
 *** Use all the icons for dired
 
     #+BEGIN_SRC emacs-lisp
-    ;; (use-package all-the-icons-dired
-    ;;   :quelpa (shell-switcher :fetcher github :repo "jtbm37/all-the-icons-dired.git")
-    ;;   :ensure t
-    ;;   )
+    (use-package all-the-icons-dired
+      :quelpa (shell-switcher :fetcher github :repo "jtbm37/all-the-icons-dired.git")
+      :ensure t
+      )
     #+END_SRC
 
     #+RESULTS:
@@ -3220,6 +3220,7 @@ Compile your LaTeX document.
     #+RESULTS:
     : air-to-org-cfw-agenda
 
+
 *** Task and org-capture management
 
     Set the org-agenda files.
@@ -3231,6 +3232,7 @@ Compile your LaTeX document.
 
     #+RESULTS:
     | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Agenda/capture.org |
+
 
 *** IN-PROGRESS notifications for agenda entries
 
@@ -3322,12 +3324,14 @@ Compile your LaTeX document.
      #+RESULTS:
      : org-wild-notifier--notify
 
+
 *** TODO Encryption
 
     Encrypt messages sent to the app and on dropbox via symmetric
     encrytion.
 
     Need OpenSSL to use encryption.
+
     #+BEGIN_SRC emacs-lisp
     ;; ;; Enable encryption
     ;; (setq org-mobile-use-encryption t)
@@ -3356,6 +3360,7 @@ Compile your LaTeX document.
     #+RESULTS:
     : hrs/open-index-file
 
+
 ** Org store link
 
    This is important cause in such a way you can easily make
@@ -3369,6 +3374,7 @@ Compile your LaTeX document.
 
    #+RESULTS:
    | (lambda nil (local-set-key (kbd C-c l) 'org-store-link)) | org-babel-tangle-append-setup | (lambda nil (local-set-key (kbd C-c 3) #+BEGIN_SRC python |
+
 
 ** Org view tags 
 
@@ -4130,26 +4136,26 @@ Compile your LaTeX document.
   Set the path to the java runtime.
 
   #+begin_src emacs-lisp 
-  (setenv "JAVA_HOME"  "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-17.0.6+10")
-  (add-to-list 'exec-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-17.0.6+10/bin")
 
-  ;; (setenv "JAVA_HOME"  "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7")
-  ;; (add-to-list 'exec-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7/bin")
+  ;; JAVA 17 ;;
+
+  ;; (setenv "JAVA_HOME"  "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-17.0.6+10")
+  ;; (add-to-list 'exec-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-17.0.6+10/bin")
+
+  ;; (setq lsp-java-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-17.0.6+10/bin/java.exe")
+
+  ;; JAVA 11 ;;
+
+  (setenv "JAVA_HOME"  "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7")
+  (add-to-list 'exec-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7/bin")
+
+  (setq lsp-java-java-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7/bin/java.exe")
+
   #+end_src 
 
   #+RESULTS:
   | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-17.0.6+10/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/PortableGit/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/unzip-5.51-1-bin/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/sqlite-tools-win32-x86-3380300/sqlite-tools-win32-x86-3380300/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/httpd-2.4.53-win64-VS16/Apache24/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/python.exe | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | diff-path |
 
-  Add the bin executables to the systems variables:
-
-  #+begin_src emacs-lisp 
-  ;; (setq lsp-java-java-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7/bin/java.exe")
-
-  (setq lsp-java-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-17.0.6+10/bin/java.exe")
-  #+END_SRC
-
-  #+RESULTS:
-  : c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7/bin/java.exe
 
   Note that each time that you change the java version it is quite
   painful. The gradle projects that you develop are supposed to work
@@ -4157,6 +4163,26 @@ Compile your LaTeX document.
 
   So each time you change Java version you should check at your
   projects and see what changes there. 
+
+
+** ISSUE solve the compiling issue with java 17
+
+   Not really understanding what is failing. 
+
+   You have this compiling issue on the classes with code 61. 
+
+   So it looks like I am running java 17 compiled class on a java
+   environment < 17.
+
+   Double checked and this; did not seem to be the case. Also tried to
+   use a lower version in the =sourceCompatibility= and
+   =targetCompatibility=.
+
+
+*** Solution go back to java 11
+
+    Try to solve the issue downloading a different lsp server or
+    understand how to integrate it with Java 11 and not with Java 17.
 
 
 * Gradle 
@@ -4223,14 +4249,29 @@ Compile your LaTeX document.
 
 * Automatic encryption
 
+  An in initial quote to make things fun - found it when downloading
+  the gpg software that is need for encrypting the stuff:
+
+  #+begin_quote
+  Wir nehmen Abschied von einem sicher geglaubten Fruend dem
+  Fernmeldegeheimnis.
+
+  (Artikel 10 Grundgesetz Maj 1949 - Dezember 2015)
+
+  So it seems that it died and that this is the way to get it back.
+  #+end_quote
+
   Inspired by Howard Abrams. He sets the option =(setq
   epa-file-select-keys 2)= for automatically encrypting the docs with
   his public key such that he will then be able to de-crypt them using
-  his private key. 
+  his private key.
 
   *Notice:* The section leverages the =easy pg= package for GnuPG
   interaction on emacs. The package should  already be installed for
   Emacs >21.4. You can find it as =epg= in the list of your packages.
+
+  Note that for performing your encryption you need as some encryption
+  software. In the specific I am working with [[https://gnupg.org/download/index.html][gnupg]].
 
   Reference it at [[https://www.emacswiki.org/emacs/EasyPG][EasyPG]].
 
@@ -4248,12 +4289,26 @@ Compile your LaTeX document.
 
   #+RESULTS:
 
+  Note that it is important to properly set up the gpg binary in order
+  for eamcs to be able to read and work with it.
+
+  You can also add it to the path as an alternative option. Anyways
+  the following is more neat and works well when working on your
+  emacs. Working like a charm.
+
+  #+begin_src emacs-lisp 
+  (custom-set-variables '(epg-gpg-program  "c:/Users/MARCO.HASSAN/AppData/Local/Programs/GnuPG/bin/gpg.exe"))
+  #+end_src 
+
+  #+RESULTS:
+
   Very nice org-mode link elaborating some other options, such as just
   encrypting some part of the document etc. [[https://orgmode.org/worg/org-tutorials/encrypting-files.html][Encrypting Org Files]].
 
   For versions of GnuPG higher than 2.1 you can set the below to set the
   password directly from emacs mini-buffer and not with the opening of a
   specific dialogue.
+
   #+BEGIN_SRC emacs-lisp
   (setq epa-pinentry-mode 'loopback)
   #+END_SRC
@@ -4331,6 +4386,7 @@ Compile your LaTeX document.
    #+end_src 
 
    #+RESULTS:
+
 
 * Magit
 
