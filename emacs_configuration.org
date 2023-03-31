@@ -570,11 +570,13 @@
   
 ** Mode Line
 
-
    Important for doom-modeline is to have =all the icons= installed and
    to run =M-x all-the-icons-install-fonts= one time.
 
    Note that for Windows [[https://www.hackercitizen.com/emacs-for-windows-10-install-all-the-icons/][this manual process]] will also be necessary.
+
+   Note that it is still not working properly. Check at [[https://github.com/domtronn/all-the-icons.el/issues/107][the following]]
+   in order to properly understand the thing.
 
    #+begin_src emacs-lisp 
    (use-package doom-modeline
@@ -608,7 +610,23 @@
 
 ** Image size
 
-   Imagemagick is missing.
+*** TODO add imagemagick to the path and see if it works then.
+
+   Imagemagick is missing. 
+
+   have also to have an emacs with imagemagick support. You should
+   have it given that it worked on your previous laptop
+
+   #+begin_src emacs-lisp 
+   (image-type-available-p 'imagemagick)
+   #+end_src 
+
+   #+RESULTS:
+
+   Not really working. Come back to it when you have time. In any case
+   it is not really a priority.
+
+   ------------------
 
    #+begin_src emacs-lisp 
    (setq org-image-actual-width nil)
@@ -1538,6 +1556,7 @@
     #+end_src 
 
     #+RESULTS:
+    : dired-sidebar-toggle-sidebar
 
     Was downloaded through git following the instruction on the [[https://github.com/jojojames/dired-sidebar][github
     repo]] in the meanwhile.
@@ -1647,7 +1666,11 @@
     #+END_SRC
 
     #+RESULTS:
-    | all-the-icons-dired-mode | (lambda nil (local-set-key (kbd C-c <) 'shrink_sidebar) (local-set-key (kbd C-c >) 'enlarge_sidebar) (local-set-key (kbd C-c C-d) 'default_sidebar)) | doom-modeline-set-project-modeline |
+    | diredp-nb-marked-in-mode-name | diredp--set-up-font-locking | dired-extra-startup | all-the-icons-dired-mode | (lambda nil (local-set-key (kbd C-c <) 'shrink_sidebar) (local-set-key (kbd C-c >) 'enlarge_sidebar) (local-set-key (kbd C-c C-d) 'default_sidebar)) | doom-modeline-set-project-modeline |
+
+    #+begin_src emacs-lisp 
+(all-the-icons-insert-icons-for 'octicon 10)  
+    #+end_src 
 
 ** Buffers
 
@@ -3726,7 +3749,7 @@ Compile your LaTeX document.
    : indexing
 
 
-* Time management and Pomodoro Technique
+* TODO Time management and Pomodoro Technique
   :LOGBOOK:
   CLOCK: [2021-02-05 Fri 12:02]--[2021-02-05 Fri 12:15] =>  0:13
   CLOCK: [2021-02-05 Fri 11:48]--[2021-02-05 Fri 12:01] =>  0:13
@@ -3734,6 +3757,11 @@ Compile your LaTeX document.
   CLOCK: [2021-02-05 Fri 11:39]--[2021-02-05 Fri 11:42] =>  0:03
   CLOCK: [2021-02-05 Fri 11:39]--[2021-02-05 Fri 11:39] =>  0:00
   :END:
+
+  -------------------
+  Set it up on the windows environment when you have time. It is not
+  just blabla.
+  -------------------
 
   This section experiments a bit with some time management
   techniques. I discovered it is not just bla bla. You can in fact
@@ -4154,8 +4182,7 @@ Compile your LaTeX document.
   #+end_src 
 
   #+RESULTS:
-  | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-17.0.6+10/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/PortableGit/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/unzip-5.51-1-bin/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/sqlite-tools-win32-x86-3380300/sqlite-tools-win32-x86-3380300/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/httpd-2.4.53-win64-VS16/Apache24/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/python.exe | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | diff-path |
-
+  : c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7/bin/java.exe
 
   Note that each time that you change the java version it is quite
   painful. The gradle projects that you develop are supposed to work
@@ -4165,7 +4192,7 @@ Compile your LaTeX document.
   projects and see what changes there. 
 
 
-** ISSUE solve the compiling issue with java 17
+** IN-PROGRESS solve the compiling issue with java 17
 
    Not really understanding what is failing. 
 
@@ -4178,11 +4205,55 @@ Compile your LaTeX document.
    use a lower version in the =sourceCompatibility= and
    =targetCompatibility=.
 
+   -----------------------------------------------------------------
 
-*** Solution go back to java 11
+   Working now on the new projects. 
+
+   Not working on the bigger one. There is some issue with the Groovy
+   bit of it.
+
+   Very weird stuff. Check at test17 project. It is working
+   there. You manage to compile without any major problem.
+
+   =30/03=: you created new repositories with gradle init. You still
+   have the compiling issue. I do not understand why this is the
+   case. Did you construct it in a wrong way in comparison to the
+   projects of before. 
+
+   So the following is happening: when you create the gradle projects
+   with the jdk version 11 on your path it works. You can compile the
+   projects.
+
+   When you instantiate the project with the jdk 17 on the path -
+   always using the same version of gradle it is not. So you have to
+   understand where all of this mess is coming from.
+
+   How is gradle really using the jdk when instantiating the project? 
+
+   You have to answer these questions in order to solve the issues you
+   are facing. 
+
+   --> Not really understanding much. As soon as you modify a
+   build.gradle file everything collapses.
+
+   -----------------------------------------------------------------
+
+
+*** IN-PROGRESS Solution go back to java 11
 
     Try to solve the issue downloading a different lsp server or
     understand how to integrate it with Java 11 and not with Java 17.
+
+    Everything is too messy with the Emacs set up. Also on the old
+    computer it took me quite a bit to understand that piece. 
+
+    It is in fact a very annoying set up.
+
+    Continue developing on Eclipse for the moment and forget about
+    emacs.
+
+    Just randomly try to delete the relevant configuration files and
+    download them again. 
 
 
 * Gradle 
@@ -4216,7 +4287,6 @@ Compile your LaTeX document.
 
    #+RESULTS:
    : projectile-test-suffix
-
    
 
 * Groovy 
@@ -4247,77 +4317,134 @@ Compile your LaTeX document.
   : quickrun
 
 
-* Automatic encryption
+* Encryption
 
-  An in initial quote to make things fun - found it when downloading
-  the gpg software that is need for encrypting the stuff:
+** Automatic encryption
 
-  #+begin_quote
-  Wir nehmen Abschied von einem sicher geglaubten Fruend dem
-  Fernmeldegeheimnis.
+   An in initial quote to make things fun - found it when downloading
+   the gpg software that is need for encrypting the stuff:
 
-  (Artikel 10 Grundgesetz Maj 1949 - Dezember 2015)
+   #+begin_quote
+   Wir nehmen Abschied von einem sicher geglaubten Fruend dem
+   Fernmeldegeheimnis.
 
-  So it seems that it died and that this is the way to get it back.
-  #+end_quote
+   (Artikel 10 Grundgesetz Maj 1949 - Dezember 2015)
 
-  Inspired by Howard Abrams. He sets the option =(setq
-  epa-file-select-keys 2)= for automatically encrypting the docs with
-  his public key such that he will then be able to de-crypt them using
-  his private key.
+   So it seems that it died and that this is the way to get it back.
+   #+end_quote
 
-  *Notice:* The section leverages the =easy pg= package for GnuPG
-  interaction on emacs. The package should  already be installed for
-  Emacs >21.4. You can find it as =epg= in the list of your packages.
+   Inspired by Howard Abrams. He sets the option =(setq
+   epa-file-select-keys 2)= for automatically encrypting the docs with
+   his public key such that he will then be able to de-crypt them using
+   his private key.
 
-  Note that for performing your encryption you need as some encryption
-  software. In the specific I am working with [[https://gnupg.org/download/index.html][gnupg]] - recall to
-  download it from there when switching Laptop - given that it is not
-  on One-Drive.
+   *Notice:* The section leverages the =easy pg= package for GnuPG
+   interaction on emacs. The package should  already be installed for
+   Emacs >21.4. You can find it as =epg= in the list of your packages.
 
-  Reference it at [[https://www.emacswiki.org/emacs/EasyPG][EasyPG]].
+   Note that for performing your encryption you need as some encryption
+   software. In the specific I am working with [[https://gnupg.org/download/index.html][gnupg]] - recall to
+   download it from there when switching Laptop - given that it is not
+   on One-Drive.
 
-  From this source about [[https://www.gnu.org/software/emacs/manual/html_node/epa/Encrypting_002fdecrypting-gpg-files.html][auto-encryption]] I could understand that a
-  similar point holds also for symmetric encryption.
+   Reference it at [[https://www.emacswiki.org/emacs/EasyPG][EasyPG]].
 
-  Setting the parameter below emacs understands directly that it
-  should work with symmetric encryption. In fact you are telling epa
-  to forget about your public-private keys so to say and therefore the
-  option remaining is the one of symmetric encryption.
+   From this source about [[https://www.gnu.org/software/emacs/manual/html_node/epa/Encrypting_002fdecrypting-gpg-files.html][auto-encryption]] I could understand that a
+   similar point holds also for symmetric encryption.
 
-  #+BEGIN_SRC emacs-lisp
-  (setq epa-file-select-keys nil) 
-  #+END_SRC
+   Setting the parameter below emacs understands directly that it
+   should work with symmetric encryption. In fact you are telling epa
+   to forget about your public-private keys so to say and therefore the
+   option remaining is the one of symmetric encryption.
 
-  #+RESULTS:
+   #+BEGIN_SRC emacs-lisp
+   (setq epa-file-select-keys nil) 
+   #+END_SRC
 
-  Note that it is important to properly set up the gpg binary in order
-  for eamcs to be able to read and work with it.
+   #+RESULTS:
 
-  You can also add it to the path as an alternative option. Anyways
-  the following is more neat and works well when working on your
-  emacs. Working like a charm.
+   Note that it is important to properly set up the gpg binary in order
+   for eamcs to be able to read and work with it.
 
-  #+begin_src emacs-lisp 
-  (custom-set-variables '(epg-gpg-program  "c:/Users/MARCO.HASSAN/AppData/Local/Programs/GnuPG/bin/gpg.exe"))
-  #+end_src 
+   You can also add it to the path as an alternative option. Anyways
+   the following is more neat and works well when working on your
+   emacs. Working like a charm.
 
-  #+RESULTS:
+   #+begin_src emacs-lisp 
+   (custom-set-variables '(epg-gpg-program  "c:/Users/MARCO.HASSAN/AppData/Local/Programs/GnuPG/bin/gpg.exe"))
+   #+end_src 
 
-  Very nice org-mode link elaborating some other options, such as just
-  encrypting some part of the document etc. [[https://orgmode.org/worg/org-tutorials/encrypting-files.html][Encrypting Org Files]].
+   #+RESULTS:
 
-  For versions of GnuPG higher than 2.1 you can set the below to set the
-  password directly from emacs mini-buffer and not with the opening of a
-  specific dialogue.
+   For versions of GnuPG higher than 2.1 you can set the below to set the
+   password directly from emacs mini-buffer and not with the opening of a
+   specific dialogue.
 
-  #+BEGIN_SRC emacs-lisp
-  (setq epa-pinentry-mode 'loopback)
-  #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+   (setq epa-pinentry-mode 'loopback)
+   #+END_SRC
 
-  #+RESULTS:
-  : loopback
+   #+RESULTS:
+   : loopback
 
+
+** Encrypting sections of org chuncks
+
+   Very nice org-mode link elaborating some other options, such as just
+   encrypting some part of the document etc. [[https://orgmode.org/worg/org-tutorials/encrypting-files.html][Encrypting Org Files]].
+
+   #+begin_src emacs-lisp 
+   (require 'org-crypt)
+   (org-crypt-use-before-save-magic)
+   (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+   ;; GPG key to use for encryption
+   ;; Either the Key ID or set to nil to use symmetric encryption.
+   (setq org-crypt-key nil)
+   #+end_src 
+
+   #+RESULTS:
+
+*** Watch out for backup files
+
+    Emacs Backup Files - a Warning.
+
+    With org-crypt, if you have autosave turned on and decrypt the
+    entries, the autosave file will contain the entries in plain
+    text. For this reason your should *disable autosave for encrypted
+    files*.
+
+
+** On an important side note 
+
+   Note that you should not rely simply on such encryption
+   mechanism. Put further shields around important information. Most
+   of all leverage on *chaos theory*.
+
+   And recall to use both codes and cryptography in tandem:
+
+   #+begin_quote
+   A third class of information theory codes are cryptographic
+   algorithms (both codes and ciphers).
+   #+end_quote
+
+
+** First Test                                                         :crypt:
+
+-----BEGIN PGP MESSAGE-----
+
+jA0ECQMCb4l8tBLzqk/u0sDpAf7IL6TWCppHbw1LJZckegU4TkIyhbQZqfWFfpgY
+IGHyA/Uf9ir9brT4m4QaT1E3KBbA9hneT11rZl0TUJs6NjRe0ptQaFVhCFzcQ7Fv
+Sack/jurzrmhRefWRKNb54ezdwJGwIPXnAAeoEBV7cXg/o3TyBJS8fx0hUJJUIXk
+/ittzSojqxh6MUUwCzvt7YCwfHZ19MJfycT65cvgGLuU3VQsbyLwkMWoxrkBrdIC
+FHSnQHUxwAwgjKbd6alXiDJKe9/VC7/WQ3NHKBRNpkpBag7tpRWXkzpIge65qiya
+krgOt1B1qksmvCUqTK75Wzjc5orodIGM2VnyMKpc1Ydm3Aob/pZ86Sb0+P3WGy23
+Fo2kV075Fcq7BImx7cl069sn2aLsu+T3XMZjMKrog4ceXZf3td11QjxyM74UUyPO
+kd+qswI3wGIc68fKkRSRUuHd1a/tQF+/wi9yM0dB80BxvDZYyH/t3ZY/0kzxL+TL
+Uy8oxDLWm/zZy8iw9BzrJMssy/lEecF/cfhNyRL65U5MkPvKS0CdbgKlIYsc9E4F
+47+ynVmrEdZY6gc=
+=FRTj
+-----END PGP MESSAGE-----
+   
 
 * Deal with conflicting key bindings
 
@@ -4349,6 +4476,10 @@ Compile your LaTeX document.
 
 
 * EIN
+
+  Note it is commented out. Not using scripting in my current
+  job. Will tackle it down should I require it at some point in some
+  new job.
 
   Nothing to configure. Apparently it was built-in.
 
@@ -4563,7 +4694,6 @@ Compile your LaTeX document.
 
 * Language Server
 
-
 ** Disable ansi color in compilation mode
 
    This will help eliminate weird escape sequences during compilation
@@ -4584,6 +4714,7 @@ Compile your LaTeX document.
 
    #+RESULTS:
    : t
+
 
 ** Install LSP Package
 
@@ -4626,6 +4757,7 @@ Compile your LaTeX document.
    the options. In above setting I have added some memory management
    settings as suggested in [[https://emacs-lsp.github.io/lsp-mode/page/performance/][this guide]]. Change them to higher numbers, if
    you find *lsp-mode* sluggish in your computer. 
+
 
 ** Dap Mode
 
@@ -4910,13 +5042,14 @@ Compile your LaTeX document.
 	    "-Xmx1G" 
 	    "-XX:+UseG1GC" 
 	    "-XX:+UseStringDeduplication" 
-	    "-javaagent:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Java_folder/Dev/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar" 
-	    "-Xbootclasspath/a:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Java_folder/Dev/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar"))
+	    "-javaagent:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar" 
+	    "-Xbootclasspath/a:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar"))
 
     #+END_SRC
 
     #+RESULTS:
-    | -noverify | -Xmx1G | -XX:+UseG1GC | -XX:+UseStringDeduplication | -javaagent:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Java_folder/Dev/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar | -Xbootclasspath/a:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Java_folder/Dev/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar |
+    | -noverify | -Xmx1G | -XX:+UseG1GC | -XX:+UseStringDeduplication | -javaagent:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar | -Xbootclasspath/a:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar |
+
 
 *** Disable formatting on type
 
@@ -5006,15 +5139,15 @@ Compile your LaTeX document.
    2. [[https://marcohassan.github.io/bits-of-experience/posts/code-quality-management-and-monitoring/][code quality bits of experience]]
 
    #+BEGIN_SRC emacs-lisp
-   (use-package lsp-sonarlint
-     :ensure t)
+   ;; (use-package lsp-sonarlint
+   ;;   :ensure t)
    #+END_SRC   
 
    #+RESULTS:
 
    #+BEGIN_SRC emacs-lisp
-   (require 'lsp-sonarlint-java)
-   (setq lsp-sonarlint-java-enabled t)
+   ;; (require 'lsp-sonarlint-java)
+   ;; (setq lsp-sonarlint-java-enabled t)
    #+END_SRC
 
    #+RESULTS:
@@ -5355,7 +5488,7 @@ Compile your LaTeX document.
   #+END_SRC
 
   #+RESULTS:
-  | c:/Program Files/Python310/ | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/PortableGit/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/unzip-5.51-1-bin/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/sqlite-tools-win32-x86-3380300/sqlite-tools-win32-x86-3380300/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/httpd-2.4.53-win64-VS16/Apache24/bin | c:/Program Files/Python310/python.exe | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | diff-path |
+  | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/unzip-5.51-1-bin/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/sqlite-tools-win32-x86-3380300/sqlite-tools-win32-x86-3380300/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/httpd-2.4.53-win64-VS16/Apache24/bin | c:/Program Files/Python310/python.exe | c:/Program Files/Python310/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-17.0.6+10/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Emacs/hunspell/bin/ | c:/Program Files/Python310 | C:/Program Files/Python310/Scripts | C:/Windows/system32 | C:/Windows | C:/Windows/System32/Wbem | C:/Windows/System32/WindowsPowerShell/v1.0/ | C:/Windows/System32/OpenSSH/ | C:/Program Files/Azure Data Studio/bin | C:/Program Files (x86)/Microsoft SQL Server/150/DTS/Binn/ | C:/Program Files/Microsoft VS Code/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/PortableGit/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-17.0.6+10/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | C:/Users/MARCO.HASSAN/AppData/Local/Programs/Gpg4win/../GnuPG/bin | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ |
 
   Ok so this is what you should do... and then remove all of the
   exec-path stuff. 
