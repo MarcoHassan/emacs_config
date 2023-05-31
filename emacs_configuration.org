@@ -1,59 +1,3 @@
-* Index
-  
-- [[*Notes and General Commands][Notes and General Commands]]
-- [[*Profiling Emacs at Start up][Profiling Emacs at Start up]]
-- [[*Windows Specific Settings][Windows Specific Settings]]
-- [[*Set up environment Variables on Windows][Set up environment Variables on Windows]]
-- [[*Increase cache allowed and avoid garbage collection at start up][Increase cache allowed and avoid garbage collection at start up]]
-- [[*Shortcut to Configuration File][Shortcut to Configuration File]]
-- [[*Git configuration][Git configuration]]
-- [[*SSH Configuration][SSH Configuration]]
-- [[*Enable MELPA package manager][Enable MELPA package manager]]
-- [[*Enable Marmalade and Org ELPA package manager][Enable Marmalade and Org ELPA package manager]]
-- [[*Ensure Use-package][Ensure Use-package]]
-- [[*Quelpa][Quelpa]]
-- [[*EmacsMirror][EmacsMirror]]
-- [[*Make sure you can use standard lisp functions and macros][Make sure you can use standard lisp functions and macros]]
-- [[*Basic Customization][Basic Customization]]
-- [[*Elmacro][Elmacro]]
-- [[*Swiper for incremental search][Swiper for incremental search]]
-- [[*Auto completion of words][Auto completion of words]]
-- [[*Redirect Back up files into a single file][Redirect Back up files into a single file]]
-- [[*Set Ispell Dictionary][Set Ispell Dictionary]]
-- [[*Flycheck][Flycheck]]
-- [[*Latex][Latex]]
-- [[*Snippets][Snippets]]
-- [[*Org Mode][Org Mode]]
-- [[*Functions for Blog][Functions for Blog]]
-- [[*Time management and Pomodoro Technique][Time management and Pomodoro Technique]]
-- [[*Tramp][Tramp]]
-- [[*Git][Git]]
-- [[*Quickrun][Quickrun]]
-- [[*R][R]]
-- [[*Python][Python]]
-- [[*Java][Java]]
-- [[*Run Code][Run Code]]
-- [[*Automatic encryption][Automatic encryption]]
-- [[*Deal with conflicting key bindings][Deal with conflicting key bindings]]
-- [[*EIN][EIN]]
-- [[*Nikola][Nikola]]
-- [[*Magit][Magit]]
-- [[*Projectile][Projectile]]
-- [[*Language Server][Language Server]]
-- [[*OUTDATED - Language Server][OUTDATED - Language Server]]
-- [[*Which key][Which key]]
-- [[*YAML][YAML]]
-- [[*Json][Json]]
-- [[*XML][XML]]
-- [[*Inline online images][Inline online images]]
-- [[*Quelpa - Dired-Plus Example][Quelpa - Dired-Plus Example]]
-- [[*Add Ripgrep][Add Ripgrep]]
-- [[*Add to execution Path and $PATH][Add to execution Path and $PATH]]
-- [[*Shell Configs][Shell Configs]]
-- [[*Select theme at start up][Select theme at start up]]
-- [[*Test-Mode][Test-Mode]]
-
-
 * Notes and General Commands
 
   Note that this is an experimentation integrating WSL on window emacs.
@@ -224,7 +168,6 @@
   That is good. Like this you ultimately have your super key and do
   not have to change the config.
 
-  
 ** On GNU software
 
    So I discovered I was using a lot of GNU software in my previous
@@ -266,6 +209,7 @@
    Now on the new laptop emacs works fine so that was not the issue.
    
 
+
 * Set up environment Variables on Windows
 
   Consider if you want to rewrite here or in another file apposidly
@@ -278,26 +222,6 @@
   Mask them and do not keep your path exposed here. Rather reference
   another file.
    
-
-** Isa Mode
-
-   This you set as a variable in order to develop on your local
-   machine.
-
-   The idea is then to have different application properties files
-   where you can develop.
-
-   You create them according to this variable which will be different
-   depending on the environment you are working on.
-
-   #+BEGIN_SRC emacs-lisp
-   (setenv "isa_mode" "LOCALHOST")
-   #+END_SRC
-
-   #+RESULTS:
-   : LOCALHOST
-
-
 ** Configuration of Relevant Spring Profile
 
    Activate the Localhost profile for working with that profile when
@@ -307,71 +231,10 @@
    (setenv "SPRING_PROFILES_ACTIVE" "LOCALHOST")
    #+END_SRC
 
-
-** Java - Libraries Config
-
-*** M2_HOME
-   
-    #+BEGIN_SRC emacs-lisp
-    (setenv "M2_HOME" "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/apache-maven-3.8.2")
-    #+END_SRC
-
-    #+RESULTS:
-    : C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/apache-maven-3.8.2
-
-*** MAVEN_HOME
-   
-    #+BEGIN_SRC emacs-lisp
-    (setenv "MAVEN_HOME" "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/apache-maven-3.8.2")
-    #+END_SRC
-
-    #+RESULTS:
-    : C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/apache-maven-3.8.2
+   #+RESULTS:
+   : LOCALHOST
 
 
-** Python
-   
-*** PY_HOME
-   
-    #+BEGIN_SRC emacs-lisp
-    (setenv "PY_HOME" "c:/Program Files/Python310/")
-    #+END_SRC
-
-    #+RESULTS:
-    : c:/Program Files/Python310/
-
-*** PY_LIBS
-
-    #+BEGIN_SRC emacs-lisp
-    (setenv "PY_LIBS" "c:/Program Files/Python310/Lib/site-packages")
-    #+END_SRC
-
-    #+RESULTS:
-    : c:/Program Files/Python310/Lib/site-packages
-
-*** PY_PIP
-
-    #+BEGIN_SRC emacs-lisp
-    (setenv "PY_PIP" "c:/Program Files/Python310/Scripts")
-    #+END_SRC
-
-    #+RESULTS:
-    : c:/Program Files/Python310/Scripts
-
-
-** Verify your Environment 
-   SCHEDULED: <2021-12-21 Di. 09:00>
-
-   Note that there is as well the convenient way of checking at
-   environment variables in bash with =printenv= in linux. You can use
-   it in order to set all of the respective variables in here such
-   that then everything is configured in here and if you loose your
-   machine it will just be about rerunning this file.
-
-   You can *see as well the path* there so you see that you do not have
-   to make this operation manually. 
-
-    
 * Increase cache allowed and avoid garbage collection at start up
 
   #+BEGIN_SRC emacs-lisp
@@ -387,7 +250,7 @@
   #+END_SRC
 
   #+RESULTS:
-  : 200000000
+  | lambda | nil | (setq gc-cons-threshold 300000000 gc-cons-percentage 0.1) |
 
   Another interesting trick is to compile byte code. This will make the
   code run faster.
@@ -412,10 +275,11 @@
 
   This section creates a shortcut key to go to this =emacs=
   configuration file without having to search for the directory.
+
   #+BEGIN_SRC emacs-lisp
   (defun hrs/visit-emacs-config ()
     (interactive)
-    (find-file "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/emacs_config/emacs_configuration.org"))
+    (find-file "C:/Users/marco/Desktop/emacs_config/emacs_configuration.org"))
 
   (global-set-key (kbd "C-c e") 'hrs/visit-emacs-config)
 
@@ -425,7 +289,6 @@
   : hrs/visit-emacs-config
 
 
-   
 * SSH Configuration
 
   Note that you can create a folder with your different ssh keys in windows.
@@ -436,7 +299,7 @@
 
   Try to do that and see how it is working.
 
-  
+
 * Enable MELPA package manager
 
   #+BEGIN_SRC emacs-lisp
@@ -463,7 +326,7 @@
   #+END_SRC
 
   #+RESULTS:
-  : ((gnu . https://elpa.gnu.org/packages/) (melpa-stable . https://stable.melpa.org/packages/) (org . https://orgmode.org/elpa/))
+  : ((marmalade . http://marmalade-repo.org/packages/) (gnu . https://elpa.gnu.org/packages/) (melpa-stable . https://stable.melpa.org/packages/) (org . https://orgmode.org/elpa/))
 
   Marmalade
   #+BEGIN_SRC emacs-lisp
@@ -511,7 +374,9 @@
 
   #+RESULTS:
 
-  Use-package 
+
+* Use-package 
+
   #+begin_src emacs-lisp 
   (unless (package-installed-p 'quelpa-use-package)
     (quelpa
@@ -534,7 +399,7 @@
   using =epkg-list-packages= function.
 
 
-* EmacsMirror
+* Emacsmirror
 
   Use epkg to check the available packages on emacsmirror
 
@@ -542,18 +407,27 @@
   ;; first download the epkg
   ;;  git clone git@github.com:emacsmirror/epkgs.git ~/.emacs.d/epkgs
 
-  (use-package epkg
-    :ensure t)
+  ;; (use-package epkg
+  ;;  :ensure t)
   #+end_src 
 
   #+RESULTS:
      
+
 ** TODO have some issues when running SQLlite needed for it.
 
    again require some software which is blocked by the org. think
    about ways to mange it.
 
    there is an open issue for it. you can read about it [[https://github.com/org-roam/org-roam/issues/397][here]].
+
+   You see that windows OS are quite annoying in some things. 
+
+   --------------------
+
+   Come back at it then when you have time. 
+
+   --------------------
 
 
 * Make sure you can use standard lisp functions and macros
@@ -566,133 +440,86 @@
   : cl
 
 
+* Enable MELPA package manager
+
+  #+BEGIN_SRC emacs-lisp
+    (require 'package)
+    (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+			(not (gnutls-available-p))))
+	   (proto (if no-ssl "http" "https")))
+      ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+      (add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+      (when (< emacs-major-version 24)
+	;; For important compatibility libraries like cl-lib
+	(add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
+    (package-initialize)
+    (custom-set-variables
+     ;; custom-set-variables was added by Custom.
+     ;; If you edit it by hand, you could mess it up, so be careful.
+     ;; Your init file should contain only one such instance.
+     ;; If there is more than one, they won't work right.
+     '(package-selected-packages
+       (quote
+	(org-bullets htmlize auctex virtualenvwrapper pyenv-mode ein py-autopep8 flycheck elpy monokai-theme))))
+    (custom-set-faces
+     ;; custom-set-faces was added by Custom.
+     ;; If you edit it by hand, you could mess it up, so be careful.
+     ;; Your init file should contain only one such instance.
+     ;; If there is more than one, they won't work right.
+     )
+  #+END_SRC
+
+  #+RESULTS:
+
+
+* Enable Marmalade and Org ELPA package manager
+
+Org ELPA
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+#+END_SRC
+
+#+RESULTS:
+: ((marmalade . http://marmalade-repo.org/packages/) (gnu . https://elpa.gnu.org/packages/) (melpa-stable . https://stable.melpa.org/packages/) (org . https://orgmode.org/elpa/))
+
+Marmalade
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'package-archives '("marmalade" .  "http://marmalade-repo.org/packages/"))
+#+END_SRC
+
+#+RESULTS:
+: ((marmalade . http://marmalade-repo.org/packages/) (gnu . https://elpa.gnu.org/packages/) (melpa-stable . https://stable.melpa.org/packages/) (org . https://orgmode.org/elpa/))
+
+
+
 * Basic Customization
-  
-** Mode Line
-
-   Important for doom-modeline is to have =all the icons= installed and
-   to run =M-x all-the-icons-install-fonts= one time.
-
-   Note that for Windows [[https://www.hackercitizen.com/emacs-for-windows-10-install-all-the-icons/][this manual process]] will also be necessary.
-
-   Note that it is still not working properly. Check at [[https://github.com/domtronn/all-the-icons.el/issues/107][the following]]
-   in order to properly understand the thing.
-
-   #+begin_src emacs-lisp 
-   (use-package doom-modeline
-     :ensure t
-     :init
-     (doom-modeline-mode 1))
-   #+end_src 
-
-   #+RESULTS:
-
-   #+begin_src emacs-lisp 
-   ;; How tall the mode-line should be. It's only respected in GUI.
-   ;; If the actual char height is larger, it respects the actual height.
-   (setq doom-modeline-height 1)
-   ;; How wide the mode-line bar should be. It's only respected in GUI.
-   (setq doom-modeline-bar-width 3)
-
-   (setq doom-modeline-lsp t)
-   (setq doom-modeline-project-detection 'project)
-   #+end_src 
-
-   #+RESULTS:
-   : project
-
-   #+begin_src emacs-lisp 
-   (use-package powerline
-     :ensure t)
-   #+end_src 
-
-   #+RESULTS:
-
-** Image size
-
-*** TODO add imagemagick to the path and see if it works then.
-
-   Imagemagick is missing. 
-
-   have also to have an emacs with imagemagick support. You should
-   have it given that it worked on your previous laptop
-
-   #+begin_src emacs-lisp 
-   (image-type-available-p 'imagemagick)
-   #+end_src 
-
-   #+RESULTS:
-
-   Not really working. Come back to it when you have time. In any case
-   it is not really a priority.
-
-   ------------------
-
-   #+begin_src emacs-lisp 
-   (setq org-image-actual-width nil)
-   #+end_src 
-
-   #+RESULTS:
-
-   The following does the following:
-
-   => if there is a #+ATTR.*: width="200", resize to 200,
-   otherwise resize to 600; this was chosen as it is a good display
-   on my screen.
-
-   #+begin_src emacs-lisp 
-   (setq org-image-actual-width '(600))
-
-   ;; (setq org-image-actual-width (/ (display-pixel-width) 3))
-   #+end_src 
-
-   #+RESULTS:
-   | 600 |
-
-** Define shortcuts for particular characters
-
-   #+BEGIN_SRC emacs-lisp
-   (add-hook 'after-init-hook
-	     (lambda () (global-set-key (kbd "M-ü") "~")))
-   #+END_SRC
-
-   #+RESULTS:
-   | (lambda nil (global-set-key (kbd M-ü) ~)) | color-highlight | (lambda nil (global-set-key (kbd M-ì) ~)) | w32-check-shell-configuration | tramp-register-archive-file-name-handler | table--make-cell-map |
-
-   #+begin_src emacs-lisp 
-   (add-hook 'after-init-hook
-	     (lambda () (global-set-key (kbd "C-M-<") "\\")))
-   #+END_SRC
-
-   #+RESULTS:
-   | (lambda nil (global-set-key (kbd C-M-<) \)) | color-highlight | (lambda nil (global-set-key (kbd M-Ã¼) ~)) | w32-check-shell-configuration | tramp-register-archive-file-name-handler | magit-maybe-define-global-key-bindings | table--make-cell-map |
 
 ** Set global encoding 
 
-   #+BEGIN_SRC emacs-lisp
-   ;; UTF-8 as default encoding
-   (set-language-environment "utf-8")
-   (prefer-coding-system 'utf-8)
-   (setq coding-system-for-read 'utf-8)
-   (setq coding-system-for-write 'utf-8)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+;; UTF-8 as default encoding
+(set-language-environment "utf-8")
+(prefer-coding-system 'utf-8)
+(setq coding-system-for-read 'utf-8)
+(setq coding-system-for-write 'utf-8)
+#+END_SRC
 
-   #+RESULTS:
-   : utf-8
+#+RESULTS:
+: utf-8
 
 ** No beeps, scrollbar etc.
 
-   #+BEGIN_SRC emacs-lisp
-   (setq visible-bell t)             ;; Get rid of the beeps
+#+BEGIN_SRC emacs-lisp
+(setq visible-bell t)             ;; Get rid of the beeps
 
-   (when (window-system)
-     (tool-bar-mode 0)               ;; Toolbars were only cool with XEmacs
-     (when (fboundp 'horizontal-scroll-bar-mode)
-       (horizontal-scroll-bar-mode -1))
-     (scroll-bar-mode -1))            ;; Scrollbars are waste screen estate
-   #+END_SRC
+(when (window-system)
+  (tool-bar-mode 0)               ;; Toolbars were only cool with XEmacs
+  (when (fboundp 'horizontal-scroll-bar-mode)
+    (horizontal-scroll-bar-mode -1))
+  (scroll-bar-mode -1))            ;; Scrollbars are waste screen estate
+#+END_SRC
 
-   #+RESULTS:
+#+RESULTS:
 
 ** Highlight color
 
@@ -700,39 +527,39 @@
    color than gray as it is poorly recognizable with the theme and the
    line highlighting mode.
 
-   #+BEGIN_SRC emacs-lisp
-   (defun color-highlight ()
-     (interactive)
-     (set-face-attribute 'region nil :background "indian red" :foreground "grey5"))
-   #+END_SRC
-   #+RESULTS:
-   : color-highlight
+#+BEGIN_SRC emacs-lisp
+      (defun color-highlight ()
+	(interactive)
+	(set-face-attribute 'region nil :background "indian red" :foreground "grey5"))
+#+END_SRC
+#+RESULTS:
+: color-highlight
 
-   #+BEGIN_SRC emacs-lisp
-   (add-hook 'after-init-hook #'color-highlight) ;; to actiavte it when starting emacs.
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'after-init-hook #'color-highlight) ;; to actiavte it when starting emacs.
+#+END_SRC
 
-   #+RESULTS:
-   | color-highlight | (lambda nil (global-set-key (kbd M-\303\254) ~)) | w32-check-shell-configuration | tramp-register-archive-file-name-handler | table--make-cell-map |
+#+RESULTS:
+| color-highlight | w32-check-shell-configuration | table--make-cell-map |
 
-   Create general function to set transparency.
-   #+BEGIN_SRC emacs-lisp
-   ;; Set transparency of emacs
-   (defun transparency (value)
-     "Sets the transparency of the frame window. 0=transparent/100=opaque"
-     (interactive "nTransparency Value 0 - 100 opaque:")
-     (set-frame-parameter (selected-frame) 'alpha value))
-   #+END_SRC
+Create general function to set transparency.
+#+BEGIN_SRC emacs-lisp
+ ;; Set transparency of emacs
+ (defun transparency (value)
+   "Sets the transparency of the frame window. 0=transparent/100=opaque"
+   (interactive "nTransparency Value 0 - 100 opaque:")
+   (set-frame-parameter (selected-frame) 'alpha value))
+#+END_SRC
 
-   #+RESULTS:
-   : transparency
+#+RESULTS:
+: transparency
 
 ** Two very handy tricks from Howard Abraham
 
    - Replace yes-no answers with y-n. 
 
    #+BEGIN_SRC emacs-lisp
-   (fset 'yes-or-no-p 'y-or-n-p)
+     (fset 'yes-or-no-p 'y-or-n-p)
    #+END_SRC
 
    #+RESULTS:
@@ -742,8 +569,8 @@
      return to the previous scrolling position if going down and up.
 
    #+BEGIN_SRC emacs-lisp
-   (setq scroll-conservatively 10000
-	 scroll-preserve-screen-position t)
+     (setq scroll-conservatively 10000
+          scroll-preserve-screen-position t)
    #+END_SRC
 
    #+RESULTS:
@@ -769,7 +596,7 @@
    Require the package and enable it globally.
 
    #+BEGIN_SRC emacs-lisp
-   (use-package undo-tree
+     (use-package undo-tree
      :ensure t
      :init
      (global-undo-tree-mode))
@@ -786,17 +613,11 @@
 
    #+BEGIN_SRC emacs-lisp
    (use-package paredit
-     :ensure t)
-   #+END_SRC
-
-   #+RESULTS:
-
-   #+BEGIN_SRC emacs-lisp
+   :ensure t) 
    (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
    #+END_SRC
 
    #+RESULTS:
-   : enable-paredit-mode
 
    Despite being super useful paredit unfortunately conflicts with the
    usual <DEL>. This will not allow to cancel entire chunks of
@@ -806,49 +627,51 @@
    I do not find it that useful. Another option would just to add
    another line shifting the paredit =<DEL>= to some other key binding. 
 
-   #+BEGIN_SRC emacs-lisp
-   (eval-after-load "paredit" '(define-key paredit-mode-map (kbd "<DEL>") nil))
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load "paredit" '(define-key paredit-mode-map (kbd "<DEL>") nil))
 
-   (add-hook 'org-mode-hook 'enable-paredit-mode) ;; notice at the moment paredit is just bound to org-mode. Expand it.
+  (add-hook 'org-mode-hook 'enable-paredit-mode) ;; notice at the moment paredit is just bound to org-mode. Expand it.
+#+END_SRC
+
+#+RESULTS:
+| (lambda nil (local-set-key (kbd C-c C-x t) (quote org-tags-view))) | (lambda nil (local-set-key (kbd C-c l) (quote org-store-link))) | org-babel-tangle-append-setup | (lambda nil (local-set-key (kbd C-c 3) #+BEGIN_SRC python |
+
+
+
+Rainbow-delimiters is convenient for coloring matching parentheses.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package rainbow-delimiters
+      :ensure t) 
+      (add-hook 'prog-mode-hook 'rainbow-delimiters-mode) ;; to enable it in all programming-related modes
    #+END_SRC
 
    #+RESULTS:
-   | enable-paredit-mode | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
-
-
-   Rainbow-delimiters is convenient for coloring matching parentheses.
-
-   #+BEGIN_SRC emacs-lisp
-   (use-package rainbow-delimiters) 
-   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode) ;; to enable it in all programming-related modes
-   #+END_SRC
-
-   #+RESULTS:
-   | rainbow-delimiters-mode |
+   | smart-hungry-delete-default-prog-mode-hook | rainbow-delimiters-mode |
 
 ** Kill current buffer and close its window
 
-   #+BEGIN_SRC emacs-lisp
-   ;; Always kill current buffer with "C-x k"
-   (defun bjm/kill-this-buffer ()
-     "Kill the current buffer."
-     (interactive)
-     (kill-buffer (current-buffer))
-     (delete-window))
+#+BEGIN_SRC emacs-lisp
+    ;; Always kill current buffer with "C-x k"
+    (defun bjm/kill-this-buffer ()
+      "Kill the current buffer."
+      (interactive)
+      (kill-buffer (current-buffer))
+      (delete-window))
 
-   (global-set-key (kbd "C-x k") 'bjm/kill-this-buffer)
-   #+END_SRC
+    (global-set-key (kbd "C-x k") 'bjm/kill-this-buffer)
+#+END_SRC
 
-   #+RESULTS:
-   : bjm/kill-this-buffer
+#+RESULTS:
+: bjm/kill-this-buffer
 
-   In case you want to select as standard which buffer to kill
-   #+BEGIN_SRC emacs-lisp
-   (global-set-key (kbd "C-x K") 'kill-buffer)
-   #+END_SRC
+In case you want to select as standard which buffer to kill
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x K") 'kill-buffer)
+#+END_SRC
 
-   #+RESULTS:
-   : kill-buffer
+#+RESULTS:
+: kill-buffer
 
 ** Save cursor current position when killing the file
 
@@ -856,34 +679,34 @@
    visit. If I close the file or close the editor, then later re-open
    it, point will be at the last place I visited.
 
-   #+BEGIN_SRC emacs-lisp
-   (save-place-mode t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+    (save-place-mode t)
+#+END_SRC
 
-   #+RESULTS:
-   : t
+#+RESULTS:
+: t
 
 ** Highlight current line
 
-   #+BEGIN_SRC emacs-lisp
-   (global-hl-line-mode +1)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+ (global-hl-line-mode +1)
+#+END_SRC
 
-   #+RESULTS:
-   : t
+#+RESULTS:
+: t
 
 ** Inhibit start up messages
 
-   #+BEGIN_SRC emacs-lisp
-   (setq inhibit-startup-message t);; this will hide the initial tutorial
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+    (setq inhibit-startup-message t);; this will hide the initial tutorial
+#+END_SRC
 
-   #+RESULTS:
-   : t
+#+RESULTS:
+: t
 
 *** Remove Other start up buffers
 
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
     ;; Makes *scratch* empty.
     (setq initial-scratch-message "")
 
@@ -892,21 +715,21 @@
       (if (get-buffer "*scratch*")
 	  (kill-buffer "*scratch*")))
     (add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
-    #+END_SRC
+#+END_SRC
 
-    #+RESULTS:
-    | remove-scratch-buffer | global-undo-tree-mode-enable-in-buffers | doom-modeline-update-buffer-file-icon | ess-r-package-auto-activate | ein:ac-setup-maybe | ein:header-line-setup-maybe | polymode-after-change-major-mode-cleanup | global-eldoc-mode-enable-in-buffers | global-font-lock-mode-enable-in-buffers |
+#+RESULTS:
+| yas-global-mode-enable-in-buffers | global-company-mode-enable-in-buffers | global-aggressive-indent-mode-enable-in-buffers | global-linum-mode-enable-in-buffers | remove-scratch-buffer | global-undo-tree-mode-enable-in-buffers | ess-r-package-auto-activate | global-eldoc-mode-enable-in-buffers | global-font-lock-mode-enable-in-buffers |
 
-    Uncomment the next buffer if you want to inhibit start up messages and
-    kill the buffer. 
+Uncomment the next buffer if you want to inhibit start up messages and
+kill the buffer. 
 
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
     ;; Removes *messages* from the buffer.
     ;;(setq-default message-log-max nil)
     ;;(kill-buffer "*Messages*")
-    #+END_SRC
+#+END_SRC
 
-    #+RESULTS:
+#+RESULTS:
 
 ** Theme
 
@@ -1292,100 +1115,85 @@
     #+RESULTS:
     : my-switch
 
+
 ** Set lining globally
+#+BEGIN_SRC emacs-lisp
+      (global-linum-mode t) ;; load line number at the beginning of the
+			    ;; file. Notice the global argument means that
+			    ;; this line configuration will apply to all
+			    ;; buffers in emacs. You can also enable things
+			    ;; per mode - e.g., python-mode, markdown-mode,
+			    ;; text-mode.
+      
+#+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-   (global-linum-mode t) ;; load line number at the beginning of the
-   ;; file. Notice the global argument means that
-   ;; this line configuration will apply to all
-   ;; buffers in emacs. You can also enable things
-   ;; per mode - e.g., python-mode, markdown-mode,
-   ;; text-mode.
-
-   #+END_SRC
-
-   #+RESULTS:
-   : t
+#+RESULTS:
+: t
 
 ** Moving across windows
 
-   #+BEGIN_SRC emacs-lisp
-   (defun ace/window ()
-     (interactive)
-     (use-package ace-window
-       :ensure t
-       :init
-       (progn
-	 (global-set-key (kbd "C-x s-o") 'ace-window)
-	 (custom-set-faces
-	  '(aw-leading-char-face
-	    ((t (:inherit ace-jump-face-foreground :height 3.0)))))
-	 ))
-     )
-
-   (ace/window)
-   #+END_SRC
-
-   #+RESULTS:
-
-   To move across windows holding the shift key
-
-   #+BEGIN_SRC emacs-lisp
-   (windmove-default-keybindings)
-
-   ;; Make windmove work in Org mode:
-   (add-hook 'org-shiftup-final-hook 'windmove-up)
-   (add-hook 'org-shiftleft-final-hook 'windmove-left)
-   (add-hook 'org-shiftdown-final-hook 'windmove-down)
-   (add-hook 'org-shiftright-final-hook 'windmove-right)
-   #+END_SRC
-
-   #+RESULTS:
-   | windmove-right |
-
-** Highlight comments for improved visualization of important stuff
-
-   This gives the option to delete comments or to mark them in red and
-   green.
-
-   Below there is just the definition of the function. You should add a
-   hook in each programming mode to make sure the comment visualization
-   is working correctly.
-
-   #+BEGIN_SRC emacs-lisp
-   (make-face 'font-lock-comment-important)
-   (set-face-foreground 'font-lock-comment-important "#00ff00")
-
-   (make-face 'font-lock-comment-todo)
-   (set-face-foreground 'font-lock-comment-todo "#ff0000")
-
-   (make-face 'font-lock-comment-strike)
-   (set-face-attribute 'font-lock-comment-strike
-		       nil :strike-through t)
-
-   (defun add-custom-keyw()
-     "adds a few special keywords"
-     (font-lock-add-keywords
-      nil
-      '(("commentStrike \\(.+\\)" 1 'font-lock-comment-strike prepend)
-	("commentRed \\(.+\\)" 1 'font-lock-comment-todo prepend)
-	("commentGreen \\(.+\\)" 1 'font-lock-comment-important prepend)
-	)
+#+BEGIN_SRC emacs-lisp
+  ; add this to init.el
+  (use-package ace-window
+    :ensure t
+    :init
+    (progn
+      (global-set-key [remap other-window] 'ace-window)
+      (custom-set-faces
+       '(aw-leading-char-face
+	 ((t (:inherit ace-jump-face-foreground :height 3.0)))))
       ))
-   #+END_SRC
+#+END_SRC
 
-   #+RESULTS:
-   : add-custom-keyw
+#+RESULTS:
 
-   Example of adding the hook
+To move across windows holding the shift key
 
-   #+Name: Add comments highlighting for python mode.
-   #+BEGIN_SRC emacs-lisp
-   ;;(add-hook 'python-mode-hook 'add-custom-keyw)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(windmove-default-keybindings)
 
-   #+RESULTS: Add comments highlighting for python mode.
+;; Make windmove work in Org mode:
+(add-hook 'org-shiftup-final-hook 'windmove-up)
+(add-hook 'org-shiftleft-final-hook 'windmove-left)
+(add-hook 'org-shiftdown-final-hook 'windmove-down)
+(add-hook 'org-shiftright-final-hook 'windmove-right)
+#+END_SRC
 
+#+RESULTS:
+| windmove-right |
+** Hungry mode
+*** Smart hungry mode
+
+    Try to use the smart-hungry-delete that sets the global keys
+    explicitly.
+
+    Download the package manually from [[https://github.com/hrehfeld/emacs-smart-hungry-delete][smart_hungry-github]]. Could not
+    find the package on MELPA.
+
+ #+BEGIN_SRC emacs-lisp
+   (add-to-list 'load-path "/Users/marco/.emacs.d/emacs-smart-hungry-delete/")
+ #+END_SRC
+
+ #+RESULTS:
+ | /Users/marco/.emacs.d/emacs-smart-hungry-delete/ | c:/Users/marco/.emacs.d/elpa/ace-window-0.9.0 | c:/Users/marco/.emacs.d/elpa/aggressive-indent-1.9.0 | c:/Users/marco/.emacs.d/elpa/all-the-icons-5.0.0 | c:/Users/marco/.emacs.d/elpa/auto-yasnippet-0.3.0 | c:/Users/marco/.emacs.d/elpa/avy-0.5.0 | c:/Users/marco/.emacs.d/elpa/beacon-1.3.4 | c:/Users/marco/.emacs.d/elpa/calfw-1.6 | c:/Users/marco/.emacs.d/elpa/calfw-org-1.6 | c:/Users/marco/.emacs.d/elpa/counsel-0.12.0 | c:/Users/marco/.emacs.d/elpa/doom-modeline-3.4.0 | c:/Users/marco/.emacs.d/elpa/compat-29.1.4.1 | c:/Users/marco/.emacs.d/elpa/elmacro-1.1.1 | c:/Users/marco/.emacs.d/elpa/elpy-1.31.0 | c:/Users/marco/.emacs.d/elpa/company-0.9.10 | c:/Users/marco/.emacs.d/elpa/expand-region-0.11.0 | c:/Users/marco/.emacs.d/elpa/find-file-in-project-5.7.7 | c:/Users/marco/.emacs.d/elpa/flycheck-yamllint-0.1.0 | c:/Users/marco/.emacs.d/elpa/flycheck-32 | c:/Users/marco/.emacs.d/elpa/gnuplot-0.7.0 | c:/Users/marco/.emacs.d/elpa/highlight-indentation-0.7.0 | c:/Users/marco/.emacs.d/elpa/memoize-1.1 | c:/Users/marco/.emacs.d/elpa/monokai-theme-3.5.3 | c:/Users/marco/.emacs.d/elpa/ob-async-1.0.0 | c:/Users/marco/.emacs.d/elpa/org-alert-0.2.0 | c:/Users/marco/.emacs.d/elpa/org-bullets-0.2.4 | c:/Users/marco/.emacs.d/elpa/org-wild-notifier-0.4.1 | c:/Users/marco/.emacs.d/elpa/dash-functional-2.16.0 | c:/Users/marco/.emacs.d/elpa/async-1.9.3 | c:/Users/marco/.emacs.d/elpa/alert-1.3 | c:/Users/marco/.emacs.d/elpa/log4e-0.3.3 | c:/Users/marco/.emacs.d/elpa/gntp-0.1 | c:/Users/marco/.emacs.d/elpa/paredit-24 | c:/Users/marco/.emacs.d/elpa/powerline-2.4 | c:/Users/marco/.emacs.d/elpa/projectile-2.0.0 | c:/Users/marco/.emacs.d/elpa/pkg-info-0.6 | c:/Users/marco/.emacs.d/elpa/epl-0.9 | c:/Users/marco/.emacs.d/elpa/pyvenv-1.21 | c:/Users/marco/.emacs.d/elpa/quelpa-use-package-20201022.94624 | c:/Users/marco/.emacs.d/elpa/quelpa-20221220.123655 | c:/Users/marco/.emacs.d/elpa/rainbow-delimiters-2.1.3 | c:/Users/marco/.emacs.d/elpa/shrink-path-0.3.1 | c:/Users/marco/.emacs.d/elpa/f-0.20.0 | c:/Users/marco/.emacs.d/elpa/swiper-0.12.0 | c:/Users/marco/.emacs.d/elpa/ivy-0.12.0 | c:/Users/marco/.emacs.d/elpa/try-0.0.1 | c:/Users/marco/.emacs.d/elpa/undo-tree-0.6.5 | c:/Users/marco/.emacs.d/elpa/use-package-2.4 | c:/Users/marco/.emacs.d/elpa/bind-key-2.4 | c:/Users/marco/.emacs.d/elpa/virtualenvwrapper-0.2.0 | c:/Users/marco/.emacs.d/elpa/s-1.12.0 | c:/Users/marco/.emacs.d/elpa/dash-2.16.0 | c:/Users/marco/.emacs.d/elpa/yasnippet-0.13.0 | c:/Program Files/GNU Emacs 26.2/share/emacs/site-lisp/ess/obsolete/ | c:/Program Files/GNU Emacs 26.2/share/emacs/site-lisp/ess/ | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/site-lisp | c:/Program Files/GNU Emacs 26.2/share/emacs/site-lisp | c:/Program Files/GNU Emacs 26.2/share/emacs/site-lisp/auctex | c:/Program Files/GNU Emacs 26.2/share/emacs/site-lisp/ess | c:/Program Files/GNU Emacs 26.2/share/emacs/site-lisp/org | c:/Program Files/GNU Emacs 26.2/share/emacs/site-lisp/site-start.d | c:/Program Files/GNU Emacs 26.2/share/emacs/site-lisp/auctex/images | c:/Program Files/GNU Emacs 26.2/share/emacs/site-lisp/auctex/latex | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/vc | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/url | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/textmodes | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/progmodes | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/play | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/org | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/nxml | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/net | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/mh-e | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/mail | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/leim | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/language | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/international | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/image | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/gnus | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/eshell | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/erc | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/emulation | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/emacs-lisp | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/cedet | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/calendar | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/calc | c:/Program Files/GNU Emacs 26.2/share/emacs/26.2/lisp/obsolete |
+
+ #+BEGIN_SRC emacs-lisp
+  (load "smart-hungry-delete")
+ #+END_SRC 
+
+ #+RESULTS:
+ : t
+
+   Add forward hungry deletion
+
+ #+BEGIN_SRC emacs-lisp
+   (smart-hungry-delete-add-default-hooks)
+   (global-set-key (kbd "C-c d") 'smart-hungry-delete-forward-char)
+   (global-set-key (kbd "C-c <backspace>") 'smart-hungry-delete-backward-char)
+ #+END_SRC
+
+ #+RESULTS:
+ : smart-hungry-delete-backward-char
 ** Expand region
 
    This package allows you to expand the highlighting from inside to
@@ -1393,71 +1201,63 @@
    instance if you are into a parenthesis it will allow you to expand
    from letter to word, to the entire parenthesis, function, etc.
 
-   #+BEGIN_SRC emacs-lisp
-   ;; (use-package expand-region
-   ;;   :ensure t 
-   ;;   :config
-   ;;   (global-set-key (kbd "C-*") 'er/expand-region)
-   ;; )
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package expand-region
+  ;;   :ensure t 
+  ;;   :config
+  ;;   (global-set-key (kbd "C-*") 'er/expand-region)
+  ;; )
+#+END_SRC
 
-   #+RESULTS:
+#+RESULTS:
 
-   New version of expand region. Try it and see which one you like better
+New version of expand region. Try it and see which one you like better
 
-   #+BEGIN_SRC emacs-lisp
-   (use-package expand-region
-     :ensure t
-     :config
-     (defun ha/expand-region (lines)
-       "Prefix-oriented wrapper around Magnar's `er/expand-region'.
+#+BEGIN_SRC emacs-lisp
+(use-package expand-region
+  :ensure t
+  :config
+  (defun ha/expand-region (lines)
+    "Prefix-oriented wrapper around Magnar's `er/expand-region'.
 
-   Call with LINES equal to 1 (given no prefix), it expands the
-   region as normal.  When LINES given a positive number, selects
-   the current line and number of lines specified.  When LINES is a
-   negative number, selects the current line and the previous lines
-   specified.  Select the current line if the LINES prefix is zero."
-       (interactive "p")
-       (cond ((= lines 1)   (er/expand-region 1))
-	     ((< lines 0)   (ha/expand-previous-line-as-region lines))
-	     (t             (ha/expand-next-line-as-region (1+ lines)))))
+Call with LINES equal to 1 (given no prefix), it expands the
+region as normal.  When LINES given a positive number, selects
+the current line and number of lines specified.  When LINES is a
+negative number, selects the current line and the previous lines
+specified.  Select the current line if the LINES prefix is zero."
+    (interactive "p")
+    (cond ((= lines 1)   (er/expand-region 1))
+          ((< lines 0)   (ha/expand-previous-line-as-region lines))
+          (t             (ha/expand-next-line-as-region (1+ lines)))))
 
-     (defun ha/expand-next-line-as-region (lines)
-       (message "lines = %d" lines)
-       (beginning-of-line)
-       (set-mark (point))
-       (end-of-line lines))
+  (defun ha/expand-next-line-as-region (lines)
+    (message "lines = %d" lines)
+    (beginning-of-line)
+    (set-mark (point))
+    (end-of-line lines))
 
-     (defun ha/expand-previous-line-as-region (lines)
-       (end-of-line)
-       (set-mark (point))
-       (beginning-of-line (1+ lines)))
+  (defun ha/expand-previous-line-as-region (lines)
+    (end-of-line)
+    (set-mark (point))
+    (beginning-of-line (1+ lines)))
 
-     :bind ("C-*" . ha/expand-region))
-   #+END_SRC
+  :bind ("C-*" . ha/expand-region))
+#+END_SRC
 
-   #+RESULTS:
-   : ha/expand-region
-
+#+RESULTS:
+: ha/expand-region
 ** Autofill Mode
 
-   Goes to next line on the next space when the line becomes too wide.
+Goes to next line on the next space when the line becomes too wide
 
-   #+BEGIN_SRC emacs-lisp
-   ;;  (setq-default auto-fill-function 'do-auto-fill)
+#+BEGIN_SRC emacs-lisp
+;;  (setq-default auto-fill-function 'do-auto-fill)
 
-   (add-hook 'org-mode-hook 'turn-on-auto-fill)
+;;  go to next line but in a horrible way at this stage. try to fix
+;;  the issue.
+#+END_SRC
 
-   ;;  go to next line but in a horrible way at this stage. try to fix
-   ;;  the issue.
-   #+END_SRC
-
-   #+RESULTS:
-   | turn-on-auto-fill | enable-paredit-mode | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
-
-
-   To set the width of the column for which the entry must go to the new
-   line, check at the following [[https://www.emacswiki.org/emacs/FillParagraph][page]].
+#+RESULTS:
 
 ** Beacon Mode
 
@@ -1470,34 +1270,35 @@
    work. Moreover, you define how long the light should flash. For
    this and several other options check at the github repo [[https://github.com/Malabarba/beacon][beacon]].
 
-   #+BEGIN_SRC emacs-lisp
-   (use-package beacon
-     :ensure t 
-     :config
-     (beacon-mode 1)
-     (setq beacon-color "#50D050") ;; a light green
-     )
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package beacon
+    :ensure t 
+    :config
+    (beacon-mode 1)
+    (setq beacon-color "#50D050") ;; a light green
+   )
+#+END_SRC
 
-   #+RESULTS:
-   : t
+#+RESULTS:
+: t
 
    Work nicely. Seems to slow emacs though. Try to observe on the long
    run if it slows it sensibly and remove it if this is the case. 
 
 ** Unfill paragraph
 
-   Might be good. For instance for canceling all of the paragraph quickly or for commenting it away.
+   Might be good. For instance for canceling all of the paragraph quickly
+   or for commenting it away.
 
    #+BEGIN_SRC emacs-lisp
-   (defun unfill-paragraph ()
-     "Convert a multi-line paragraph into a single line of text."
-     (interactive)
-     (let ((fill-column (point-max)))
-       (fill-paragraph nil)))
+     (defun unfill-paragraph ()
+       "Convert a multi-line paragraph into a single line of text."
+       (interactive)
+       (let ((fill-column (point-max)))
+	 (fill-paragraph nil)))
 
-   ;; Handy key definition
-   (define-key global-map "\M-Q" 'unfill-paragraph)
+     ;; Handy key definition
+     (define-key global-map "\M-Q" 'unfill-paragraph)
    #+END_SRC
 
    #+RESULTS:
@@ -1507,436 +1308,82 @@
 
    Automatically indents all of your code. 
 
-   #+BEGIN_SRC emacs-lisp
-   (use-package aggressive-indent
-     :ensure t)
+#+BEGIN_SRC emacs-lisp
+  (use-package aggressive-indent
+  :ensure t)
 
-   (global-aggressive-indent-mode)
-   #+END_SRC
+  (global-aggressive-indent-mode)
+#+END_SRC
 
-   #+RESULTS:
-   : t
+#+RESULTS:
+: t
+
+** Eshell
+
+Fancy Prompt
+#+BEGIN_SRC emacs-lisp
+  (defun with-face (str &rest face-plist)
+    (propertize str 'face face-plist))
+  
+  (defun shk-eshell-prompt ()
+    (let ((header-bg "#292929"))   
+      (concat
+       (with-face (concat (eshell/pwd) " ") :background header-bg :foreground "green")
+       (with-face (format-time-string "(%Y-%m-%d %H:%M) " (current-time)) :background header-bg :foreground "#888")
+       (with-face
+        (or (ignore-errors (format "(%s)" (vc-responsible-backend default-directory))) "")
+        :background header-bg)
+       (with-face "\n" :background header-bg)
+       (with-face user-login-name :foreground "indian red")
+       "@"
+       (with-face "localhost" :foreground "sea green")
+       (if (= (user-uid) 0)
+           (with-face " #" :foreground "red")
+         " $")
+       " ")))
+
+  (setq eshell-prompt-function 'shk-eshell-prompt)
+  (setq eshell-highlight-prompt nil)
+#+END_SRC
+
+#+RESULTS:
+
+A built in solution for search of history commands.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'eshell-mode-hook
+	    (lambda ()
+	      (local-set-key (kbd "C-c h")
+			     (lambda ()
+			       (interactive)
+			       (insert
+				(ido-completing-read "Eshell history: "
+						     (delete-dups
+						      (ring-elements eshell-history-ring))))))
+	      ))
+#+END_SRC
+
+#+RESULTS:
+| (lambda nil (local-set-key (kbd C-c h) (lambda nil (interactive) (insert (ido-completing-read Eshell history:  (delete-dups (ring-elements eshell-history-ring))))))) | tramp-eshell-directory-change | (lambda nil (local-set-key (kbd C-c h) (function (lambda nil (interactive) (insert (ido-completing-read Eshell history:  (delete-dups (ring-elements eshell-history-ring)))))))) | ess-r-package-activate-directory-tracker |
+
+Open Eshell at Start-up
+
+#+BEGIN_SRC emacs-lisp
+(cd "/Users/marco/Desktop/")
+(eshell)
+(delete-other-windows)
+#+END_SRC
+
+#+RESULTS:
 
 ** Set Default Size for all Buffers
 
-   #+BEGIN_SRC emacs-lisp
-   (set-face-attribute 'default nil :height 180)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'default nil :height 150)
+#+END_SRC
 
-   #+RESULTS:
+#+RESULTS:
 
-** Sidebar
-
-   Check at the configuration on [[https://github.com/jojojames/dired-sidebar/issues/26][this thread]]. There might be still
-   interesting content there.
-
-*** Sidebar config
-
-    Show the repo structure in a similar way to VScode. Incompact on
-    Melpa.
-
-    #+begin_src emacs-lisp 
-    ;; (use-package dired-sidebar
-    ;;   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
-    ;;   :ensure t
-    ;;   :commands (dired-sidebar-toggle-sidebar)
-    ;;   :init
-    ;;   (add-hook 'dired-sidebar-mode-hook
-    ;; 	    (lambda ()
-    ;; 	      (unless (file-remote-p default-directory)
-    ;; 		(auto-revert-mode))))
-    ;;   :config
-    ;;   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-    ;;   (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-
-    ;;   (setq dired-sidebar-subtree-line-prefix "__")
-    ;;   (setq dired-sidebar-theme 'vscode)
-    ;;   (setq dired-sidebar-use-term-integration t)
-    ;;   (setq dired-sidebar-use-custom-font t))
-    #+end_src 
-
-    #+RESULTS:
-    : dired-sidebar-toggle-sidebar
-
-    Was downloaded through git following the instruction on the [[https://github.com/jojojames/dired-sidebar][github
-    repo]] in the meanwhile.
-
-    #+begin_src emacs-lisp 
-    (add-to-list 'load-path "C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/dired-sidebar")
-    (add-to-list 'load-path "C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/dired-hacks")
-    #+end_src  
-
-    #+RESULTS:
-    | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/ox-rst/ | c:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/ox-nikola/ | C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/tea-timer.el/ | C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/scimax-ob/ | C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/dired-hacks | C:/Users/MARCO.HASSAN/AppData/Roaming/.emacs.d/dired-sidebar | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/ag-0.48 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/aggressive-indent-1.10.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/auto-complete-nxml-0.5.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/auto-complete-1.5.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/auto-yasnippet-0.3.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/beacon-1.3.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/calfw-1.6 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/calfw-org-1.6 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/counsel-0.13.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/doom-modeline-3.2.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/doom-themes-2.1.6 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/all-the-icons-5.0.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/elpy-1.35.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/company-0.9.13 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/epkg-3.3.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/closql-1.2.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/emacsql-sqlite-3.0.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/emacsql-3.0.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/ess-18.10.2 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/expand-region-0.11.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/flycheck-31 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/flymake-json-0.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/flymake-easy-0.10 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/gnuplot-0.8.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/helm-lsp-0.2 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/helm-3.8.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/helm-core-3.8.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/highlight-indentation-0.7.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/htmlize-1.56 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/json-mode-1.8.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/json-navigator-0.1.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/hierarchy-0.7.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/json-snatcher-1.0.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/julia-mode-0.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/lsp-java-3.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/dap-mode-0.7 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/bui-1.2.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/lsp-treemacs-0.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/lsp-ui-8.0.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/lsp-mode-8.0.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/magit-3.3.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/git-commit-3.3.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/magit-section-3.3.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/markdown-mode-2.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/org-alert-0.1.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/org-bullets-0.2.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/org-pomodoro-2.1.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/org-wild-notifier-0.4.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/dash-functional-2.19.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/async-1.9.5 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/alert-1.3 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/log4e-0.3.3 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/gntp-0.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/org-yt-20180527.245 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/paredit-24 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/pkg-info-0.6 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/epl-0.9 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/pomodoro-20210225.2118 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/popup-0.5.8 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/powerline-2.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/projectile-2.5.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/pyvenv-1.21 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/quelpa-use-package-20201022.946 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/quelpa-20210329.839 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/quickrun-2.3.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/rainbow-delimiters-2.1.5 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/request-0.3.2 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/ripgrep-0.4.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/shell-switcher-1.0.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/shrink-path-0.3.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/f-0.20.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/spinner-1.7.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/swiper-0.13.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/ivy-0.13.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/transient-0.3.7 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/transpose-frame-0.2.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/treemacs-2.9.5 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/cfrs-1.5.4 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/posframe-1.1.2 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/ht-2.3 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/hydra-0.15.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/lv-0.15.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/pfuture-1.9 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/ace-window-0.10.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/avy-0.5.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/try-0.0.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/undo-tree-0.7.5 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/use-package-2.4.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/bind-key-2.4.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/virtualenvwrapper-0.2.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/s-1.12.0 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/dash-2.19.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/vscode-icon-20201214.2327 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/which-key-3.5.3 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/with-editor-3.0.5 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/yafolding-0.4.1 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/yaml-mode-0.0.15 | c:/Users/marco.hassan/AppData/Roaming/.emacs.d/elpa/yasnippet-0.14.0 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/site-lisp | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/site-lisp | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/vc | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/url | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/textmodes | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/progmodes | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/play | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/org | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/nxml | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/net | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/mh-e | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/mail | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/leim | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/language | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/international | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/image | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/gnus | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/eshell | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/erc | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/emulation | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/emacs-lisp | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/cedet | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/calendar | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/calc | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/share/emacs/27.2/lisp/obsolete |
-
-    #+begin_src emacs-lisp 
-    ;; Not using it in any case
-    ;; (load "dired-sidebar")
-    #+end_src 
-
-    #+RESULTS:
-    : t
-
-    Configuration
-
-    #+begin_src emacs-lisp 
-    ;; (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-    ;; (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-
-    ;; ;; (setq dired-sidebar-subtree-line-prefix "__")
-    ;; ;; (setq dired-sidebar-theme 'vscode) -- use it with vscode icons if interested
-    ;; (setq dired-sidebar-use-term-integration t)
-    ;; (setq dired-sidebar-use-custom-font t)
-    ;; (setq dired-sidebar-should-follow-file t)
-    #+end_src
- 
-    #+RESULTS:
-    : t
-
-
-    Also change the default sidebar width.
-
-    #+begin_src emacs-lisp 
-    (setq dired-sidebar-width 20)
-    #+end_src 
-
-    #+RESULTS:
-    : 20
-
-    Enlarge dired-sidebar
-
-    #+begin_src emacs-lisp 
-    (defun enlarge_sidebar()
-      "Convert a multi-line paragraph into a single line of text."
-      (interactive)
-      (dired-sidebar-toggle-sidebar)
-      (setq dired-sidebar-width (+ 5 dired-sidebar-width))
-      (dired-sidebar-toggle-sidebar)
-      )
-
-
-    (defun shrink_sidebar()
-      "Convert a multi-line paragraph into a single line of text."
-      (interactive)
-      (dired-sidebar-toggle-sidebar)
-      (setq dired-sidebar-width (- dired-sidebar-width 5))
-      (dired-sidebar-toggle-sidebar)
-      )
-
-    (defun default_sidebar()
-      "Convert a multi-line paragraph into a single line of text."
-      (interactive)
-      (dired-sidebar-toggle-sidebar)  
-      (setq dired-sidebar-width 20)
-      (dired-sidebar-toggle-sidebar)   
-      )
-
-    ;; bind the two in dired mode
-    (add-hook 'dired-mode-hook
-	      (lambda ()
-		(local-set-key (kbd "C-c <") 'shrink_sidebar)
-		(local-set-key (kbd "C-c >") 'enlarge_sidebar)
-		(local-set-key (kbd "C-c C-d") 'default_sidebar))
-	      )
-    #+end_src 
-
-    #+RESULTS:
-    | (lambda nil (local-set-key (kbd C-c <) 'shrink_sidebar) (local-set-key (kbd C-c >) 'enlarge_sidebar) (local-set-key (kbd C-c C-d) 'default_sidebar)) | doom-modeline-set-project-modeline |
-
-    #+begin_src emacs-lisp 
-    (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
-    #+end_src 
-
-    #+RESULTS:
-    : dired-sidebar-toggle-sidebar
-
-*** Use all the icons for dired
-
-    #+BEGIN_SRC emacs-lisp
-    (use-package all-the-icons-dired
-      :quelpa (shell-switcher :fetcher github :repo "jtbm37/all-the-icons-dired.git")
-      :ensure t
-      )
-    #+END_SRC
-
-    #+RESULTS:
-
-    #+BEGIN_SRC emacs-lisp
-    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-    #+END_SRC
-
-    #+RESULTS:
-    | diredp-nb-marked-in-mode-name | diredp--set-up-font-locking | dired-extra-startup | all-the-icons-dired-mode | (lambda nil (local-set-key (kbd C-c <) 'shrink_sidebar) (local-set-key (kbd C-c >) 'enlarge_sidebar) (local-set-key (kbd C-c C-d) 'default_sidebar)) | doom-modeline-set-project-modeline |
-
-    #+begin_src emacs-lisp 
-(all-the-icons-insert-icons-for 'octicon 10)  
-    #+end_src 
-
-** Buffers
-
-   Switch to most recent visited buffer
-
-   #+begin_src emacs-lisp 
-   (global-set-key (kbd "C-c M-<")  'mode-line-other-buffer)
-   #+end_src 
-
-   #+RESULTS:
-   : mode-line-other-buffer
-
-** Transpose Buffers
-
-   Change the order of the buffers.
-
-   #+begin_src emacs-lisp 
-   (defun transpose-buffers (arg)
-     "Transpose the buffers shown in two windows."
-     (interactive "p")
-     (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
-       (while (/= arg 0)
-	 (let ((this-win (window-buffer))
-	       (next-win (window-buffer (funcall selector))))
-	   (set-window-buffer (selected-window) next-win)
-	   (set-window-buffer (funcall selector) this-win)
-	   (select-window (funcall selector)))
-	 (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
-   #+end_src 
-
-   #+RESULTS:
-   : transpose-buffers
-
-** Switch Frames
-
-   Switches the content of the frames in the two monitors.
-
-   #+begin_src emacs-lisp 
-   (defun switch-buffers-between-frames ()
-     "switch-buffers-between-frames switches the buffers between the two last frames"
-     (interactive)
-     (let ((this-frame-buffer nil)
-	   (other-frame-buffer nil))
-       (setq this-frame-buffer (car (frame-parameter nil 'buffer-list)))
-       (other-frame 1)
-       (setq other-frame-buffer (car (frame-parameter nil 'buffer-list)))
-       (switch-to-buffer this-frame-buffer)
-       (other-frame 1)
-       (switch-to-buffer other-frame-buffer)))
-   #+end_src 
-
-   #+RESULTS:
-   : switch-buffers-between-frames
-
-** Toggle Split
-
-   #+begin_src emacs-lisp 
-   (use-package transpose-frame
-     :ensure t)
-   #+end_src 
-
-   #+RESULTS:
-
-   #+begin_src emacs-lisp 
-   (global-set-key (kbd "C-c 0") 'transpose-frame)
-   #+end_src 
-
-   #+RESULTS:
-   : transpose-frame
-
-** Wrap text in quotes
-
-
-   #+begin_src emacs-lisp 
-   (global-set-key (kbd "M-\"") 'insert-pair)
-   #+end_src 
-
-   #+RESULTS:
-   : insert-pair
-
-** Always split vertically
-
-   #+begin_src emacs-lisp 
-   (setq split-height-threshold nil)
-   (setq split-width-threshold 160)
-   #+end_src 
-
-   #+RESULTS:
-   : 160
-
-** Ibuffer
-
-   [[https://emacs.stackexchange.com/questions/2181/ibuffer-how-to-automatically-create-groups-per-project][This link might still be interesting to look at]].
-
-   #+begin_src emacs-lisp 
-   (setq ibuffer-saved-filter-groups
-	 (quote (("default"
-
-		  ("sidebar" (mode . dired-sidebar-mode))
-
-		  ("terminal"  (or
-				(mode . term-mode)
-				(mode . shell-mode)
-				(mode . eshell-mode)
-				))	       
-
-
-		  ("org" (or
-			  (mode . org-mode)
-			  (name . "^\\*org.*")
-			  )
-		   )
-
-		  ("python" (or
-			     (mode . python-mode)
-			     (mode . inferior-python-mode)
-			     (name . "^\\*ob-ipython.*")
-			     (name . ".pypirc")
-			     (name . "tox.ini")
-			     (name . "requirements.txt")
-			     ))
-
-		  ("ein"    (name . "^\\*ein.*"))
-
-		  ("java" (or
-			   (name . ".*java.*")
-			   ))
-
-		  ("gradle" (or
-			     (name . ".*gradle.*")
-			     ))
-
-		  ("logs" (or
-			   (name . ".*.log")
-			   ))
-	       
-		  ("HTML"    (or
-			      (name . ".*.html")
-			      )
-		   )
-
-		  ("JSON"    (mode . json-mode))
-
-		  ("YAML"  (or
-			    (name . ".*.yml")
-			    (name . ".*.yaml")
-			    ))
-
-
-		  ("magit"  (or
-			     (mode . magit-mode)
-			     (mode . magit-diff-mode)
-			     (mode . magit-process-mode)
-			     (name . "^magit.*")
-			     ))
-
-
-
-		  ("tramp"
-		   (name . "^\\*tramp.*"))
-
-		  ("LSP" (or
-			  (name . "^\\*lsp.*")
-			  (name . "^\\*pyls.*")
-			  (name . "^\\*jdtls.*")
-			  )
-		   )
-
-		  ("dap" (or
-			  (name . "^\\*dap.*")
-			  ))
-
-		  ("Ediffing" (or
-			       (name . "^\\*ediff.*")
-			       (name . "^\\*Ediff.*")
-			       )
-		   )
-
-		  ("PDFs"      (mode . pdf-view-mode))
-
-		  ("planner" (or
-			      (name . "^\\*Calendar\\*$")
-			      (name . "^diary$")
-			      (mode . muse-mode)))
-		  ("emacs" (or
-			    (name . "^\\*scratch\\*$")
-			    (name . "^\\*Messages\\*$")
-			    ))
-
-		  ("dired" (mode . dired-mode))
-
-		  ("latex" (mode . latex-mode))
-
-		  ("gnus" (or
-			   (mode . message-mode)
-			   (mode . bbdb-mode)
-			   (mode . mail-mode)
-			   (mode . gnus-group-mode)
-			   (mode . gnus-summary-mode)
-			   (mode . gnus-article-mode)
-			   (name . "^\\.bbdb$")
-			   (name . "^\\.newsrc-dribble")))
-		  )
-		 )
-		)
-	 )
-   #+end_src 
-
-   #+RESULTS:
-   | default | (sidebar (mode . dired-sidebar-mode)) | (terminal (or (mode . term-mode) (mode . shell-mode) (mode . eshell-mode))) | (org (or (mode . org-mode) (name . ^\*org.*))) | (python (or (mode . python-mode) (mode . inferior-python-mode) (name . ^\*ob-ipython.*) (name . .pypirc) (name . tox.ini) (name . requirements.txt))) | (ein (name . ^\*ein.*)) | (java (or (name . .*java.*))) | (gradle (or (name . .*gradle.*))) | (HTML (or (name . .*.html))) | (JSON (mode . json-mode)) | (YAML (or (name . .*.yml) (name . .*.yaml))) | (magit (or (mode . magit-mode) (mode . magit-diff-mode) (mode . magit-process-mode) (name . ^magit.*))) | (tramp (name . ^\*tramp.*)) | (LSP (or (name . ^\*lsp.*) (name . ^\*pyls.*) (name . ^\*jdtls.*))) | (dap (or (name . ^\*dap.*))) | (Ediffing (or (name . ^\*ediff.*) (name . ^\*Ediff.*))) | (PDFs (mode . pdf-view-mode)) | (planner (or (name . ^\*Calendar\*$) (name . ^diary$) (mode . muse-mode))) | (emacs (or (name . ^\*scratch\*$) (name . ^\*Messages\*$))) | (dired (mode . dired-mode)) | (latex (mode . latex-mode)) | (gnus (or (mode . message-mode) (mode . bbdb-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode) (name . ^\.bbdb$) (name . ^\.newsrc-dribble))) |
-
-   #+begin_src emacs-lisp 
-   (add-hook 'ibuffer-mode-hook
-	     (lambda ()
-	       (ibuffer-switch-to-saved-filter-groups "default")))
-   #+end_src 
-
-   #+RESULTS:
-   | lambda | nil | (ibuffer-switch-to-saved-filter-groups default) |
-
-
-   #+begin_src emacs-lisp 
-   (global-set-key (kbd "C-x C-b") 'ibuffer)
-   #+end_src 
-
-   #+RESULTS:
-   : ibuffer
-
-   #+begin_src emacs-lisp 
-   (defun ibuffer-collapse-all-filter-groups ()
-     "Collapse all filter groups at once"
-     (interactive)
-     (setq ibuffer-hidden-filter-groups
-	   (mapcar #'car (ibuffer-current-filter-groups-with-position)))
-     (ibuffer-update nil t))
-   #+end_src 
-
-   #+RESULTS:
-   : ibuffer-collapse-all-filter-groups
-
-   #+begin_src emacs-lisp 
-   (eval-after-load 'ibuffer'
-     (define-key ibuffer-mode-map (kbd "C-c C-c")   'ibuffer-collapse-all-filter-groups) 
-     )
-   #+end_src 
-
-   #+RESULTS:
-
-   #+begin_src emacs-lisp 
-   (defun ibuffer-expand-all-filter-groups ()
-     "Expand all filter groups at once"
-     (interactive)
-     (setq ibuffer-hidden-filter-groups nil)
-     (ibuffer-update nil t))
-   #+end_src 
-
-   #+RESULTS:
-   : ibuffer-expand-all-filter-groups
-
-   #+begin_src emacs-lisp 
-   (eval-after-load 'ibuffer'
-     (define-key ibuffer-mode-map (kbd "C-c C-e")  'ibuffer-expand-all-filter-groups) 
-     )
-   #+end_src 
-
-   #+RESULTS:
 
 
    
@@ -1965,77 +1412,78 @@
   : t
 
 
-
 * Swiper for incremental search
 
-  Swiper allows you to easily leverage regular expressions. By entering
-  a the beginning of a word a space and some other parts of the next
-  world it will automatically search two words pairs each containing the
-  expression entered.
+Swiper allows you to easily leverage regular expressions. By entering
+a the beginning of a word a space and some other parts of the next
+world it will automatically search two words pairs each containing the
+expression entered.
 
-  Before compiling the code below remember to install through melpa both
-  swiper as counsel.
+Before compiling the code below remember to install through melpa both
+swiper as counsel.
 
-  #+BEGIN_SRC emacs-lisp
-  ;; it looks like counsel is a requirement for swiper
-  (use-package counsel
-    :ensure t
-    )
+#+BEGIN_SRC emacs-lisp
+;; it looks like counsel is a requirement for swiper
+(use-package counsel
+:ensure t
+)
 
-  (use-package swiper
-    :ensure try
-    :config
-    (progn
-      (ivy-mode 1)
-      (setq ivy-use-virtual-buffers t)
-      (global-set-key "\C-s" 'swiper)
-      (global-set-key (kbd "C-c C-r") 'ivy-resume)
-      (global-set-key (kbd "<f6>") 'ivy-resume)
-      (global-set-key (kbd "M-x") 'counsel-M-x)
-      (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-      (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-      (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-      (global-set-key (kbd "<f1> l") 'counsel-load-library)
-      (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-      (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-      (global-set-key (kbd "C-c g") 'counsel-git)
-      (global-set-key (kbd "C-c j") 'counsel-git-grep)
-      (global-set-key (kbd "C-c k") 'counsel-ag)
-      (global-set-key (kbd "C-x l") 'counsel-locate)
-      (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-      (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-      ))
-  #+END_SRC
+(use-package swiper
+:ensure try
+:config
+(progn
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "<f6>") 'ivy-resume)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "<f1> f") 'counsel-describe-function)
+(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+(global-set-key (kbd "<f1> l") 'counsel-load-library)
+(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+(global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c k") 'counsel-ag)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+(define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+))
+#+END_SRC
 
-  #+RESULTS:
-  : t
+#+RESULTS:
+: t
 
 
 * Auto completion of words
 
-  To automatically advice on auto-completion given the words used in the
-  buffer.
+To automatically advice on auto-completion given the words used in the
+buffer.
 
 ** Company
+
 *** General set up.
 
-    Try with company mode. Company mode integrates with flyspell in
-    org-mode and it is there chosen as the default auto-completion mode
-    for the org-mode.
-    #+Name: Company-auto-complete
-    #+BEGIN_SRC emacs-lisp
-    (use-package company
-      :config
-      (setq company-dabbrev-downcase 0) ;; I noted that company is particularly slow in suggesting auto-completion words in comparison to auto-complete. 
-      (setq company-idle-delay 0)       ;; The below code was suggested on the internet to speed company suggestion up and is tried now.
-      (global-company-mode t)                                  ;(add-hook 'org-mode-hook 'company-mode)
-      )
-    #+END_SRC
+Try with company mode. Company mode integrates with flyspell in
+org-mode and it is there chosen as the default auto-completion mode
+for the org-mode.
+#+Name: Company-auto-complete
+#+BEGIN_SRC emacs-lisp
+      (use-package company
+      :ensure t
+	:config
+        (setq company-dabbrev-downcase 0) ;; I noted that company is particularly slow in suggesting auto-completion words in comparison to auto-complete. 
+        (setq company-idle-delay 0)       ;; The below code was suggested on the internet to speed company suggestion up and is tried now.
+	(global-company-mode t)                                  ;(add-hook 'org-mode-hook 'company-mode)
+	 )
+#+END_SRC
 
-    #+RESULTS: Company-auto-complete
-    : t
+#+RESULTS: Company-auto-complete
+: t
 
-    The performance of company increased a lot with the two global options.
+The performance of company increased a lot with the two global options.
 
 *** Synchronize company with pcomplete for org mode 
 
@@ -2043,167 +1491,147 @@
     processes, title and author and any other options in org mode
     starting with =#+= it will list all of the available options.
 
-    #+BEGIN_SRC emacs-lisp
-    (defun trigger-org-company-complete ()
-      "Begins company-complete in org-mode buffer after pressing #+ chars."
-      (interactive)
-      (if (string-equal "#" (string (preceding-char)))
-	  (progn
-	    (insert "+")
-	    (company-complete))
-	(insert "+")))
+#+BEGIN_SRC emacs-lisp
+(defun trigger-org-company-complete ()
+  "Begins company-complete in org-mode buffer after pressing #+ chars."
+  (interactive)
+  (if (string-equal "#" (string (preceding-char)))
+    (progn
+      (insert "+")
+      (company-complete))
+    (insert "+")))
 
-    (eval-after-load 'org '(define-key org-mode-map
-			     (kbd "+") 'trigger-org-company-complete))
-    #+END_SRC
+(eval-after-load 'org '(define-key org-mode-map
+               (kbd "+") 'trigger-org-company-complete))
+#+END_SRC
 
-    #+RESULTS:
-    : trigger-org-company-complete
+#+RESULTS:
+: trigger-org-company-complete
 
 *** Company cycle through
 
-    Very handy way to work with company such that you do not have to enter
-    the word you are interested in with the =RET= command but can rather
-    cycle through them with the =TAB= command. This will autocomplete the
-    word and you can then continue writing with the space.
+Very handy way to work with company such that you do not have to enter
+the word you are interested in with the =RET= command but can rather
+cycle through them with the =TAB= command. This will autocomplete the
+word and you can then continue writing with the space.
 
-    Link for this handy tool: [[https://gist.github.com/aaronjensen/a46f88dbd1ab9bb3aa22][cycle_company]].
+Link for this handy tool: [[https://gist.github.com/aaronjensen/a46f88dbd1ab9bb3aa22][cycle_company]].
 
-    #+BEGIN_SRC emacs-lisp
-    ;; Modify company so that tab and S-tab cycle through completions without
-    ;; needing to hit enter.
+ #+BEGIN_SRC emacs-lisp
+ ;; Modify company so that tab and S-tab cycle through completions without
+ ;; needing to hit enter.
 
-    (defvar-local company-simple-complete--previous-prefix nil)
-    (defvar-local company-simple-complete--before-complete-point nil)
+ (defvar-local company-simple-complete--previous-prefix nil)
+ (defvar-local company-simple-complete--before-complete-point nil)
 
-    (defun company-simple-complete-frontend (command)
-      (when (or (eq command 'show)
-		(and (eq command 'update)
-		     (not (equal company-prefix company-simple-complete--previous-prefix))))
-	(setq company-selection -1
-	      company-simple-complete--previous-prefix company-prefix
-	      company-simple-complete--before-complete-point nil)))
+ (defun company-simple-complete-frontend (command)
+   (when (or (eq command 'show)
+             (and (eq command 'update)
+                  (not (equal company-prefix company-simple-complete--previous-prefix))))
+     (setq company-selection -1
+           company-simple-complete--previous-prefix company-prefix
+           company-simple-complete--before-complete-point nil)))
 
-    (defun company-simple-complete-next (&optional arg)
-      (interactive "p")
-      (company-select-next arg)
-      (company-simple-complete//complete-selection-and-stay))
+ (defun company-simple-complete-next (&optional arg)
+   (interactive "p")
+   (company-select-next arg)
+   (company-simple-complete//complete-selection-and-stay))
 
-    (defun company-simple-complete-previous (&optional arg)
-      (interactive "p")
-      (company-select-previous arg)
-      (company-simple-complete//complete-selection-and-stay))
+ (defun company-simple-complete-previous (&optional arg)
+   (interactive "p")
+   (company-select-previous arg)
+   (company-simple-complete//complete-selection-and-stay))
 
-    (defun company-simple-complete//complete-selection-and-stay ()
-      (if (cdr company-candidates)
-	  (when (company-manual-begin)
-	    (when company-simple-complete--before-complete-point
-	      (delete-region company-simple-complete--before-complete-point (point)))
-	    (setq company-simple-complete--before-complete-point (point))
-	    (unless (eq company-selection -1)
-	      (company--insert-candidate (nth company-selection company-candidates)))
-	    (company-call-frontends 'update)
-	    (company-call-frontends 'post-command))
-	(company-complete-selection)))
+ (defun company-simple-complete//complete-selection-and-stay ()
+   (if (cdr company-candidates)
+       (when (company-manual-begin)
+         (when company-simple-complete--before-complete-point
+           (delete-region company-simple-complete--before-complete-point (point)))
+         (setq company-simple-complete--before-complete-point (point))
+         (unless (eq company-selection -1)
+           (company--insert-candidate (nth company-selection company-candidates)))
+         (company-call-frontends 'update)
+         (company-call-frontends 'post-command))
+     (company-complete-selection)))
 
-    (defadvice company-set-selection (around allow-no-selection (selection &optional force-update))
-      "Allow selection to be -1"
-      (setq selection
-	    ;; TODO deal w/ wrap-around
-	    (if company-selection-wrap-around
-		(mod selection company-candidates-length)
-	      (max -1 (min (1- company-candidates-length) selection))))
-      (when (or force-update (not (equal selection company-selection)))
-	(setq company-selection selection
-	      company-selection-changed t)
-	(company-call-frontends 'update)))
+ (defadvice company-set-selection (around allow-no-selection (selection &optional force-update))
+   "Allow selection to be -1"
+   (setq selection
+         ;; TODO deal w/ wrap-around
+         (if company-selection-wrap-around
+             (mod selection company-candidates-length)
+           (max -1 (min (1- company-candidates-length) selection))))
+   (when (or force-update (not (equal selection company-selection)))
+     (setq company-selection selection
+           company-selection-changed t)
+     (company-call-frontends 'update)))
 
-    (defadvice company-tooltip--lines-update-offset (before allow-no-selection (selection _num-lines _limit))
-      "Allow selection to be -1"
-      (when (eq selection -1)
-	(ad-set-arg 0 0)))
+ (defadvice company-tooltip--lines-update-offset (before allow-no-selection (selection _num-lines _limit))
+   "Allow selection to be -1"
+   (when (eq selection -1)
+     (ad-set-arg 0 0)))
 
-    (defadvice company-tooltip--simple-update-offset (before allow-no-selection (selection _num-lines limit))
-      "Allow selection to be -1"
-      (when (eq selection -1)
-	(ad-set-arg 0 0)))
+ (defadvice company-tooltip--simple-update-offset (before allow-no-selection (selection _num-lines limit))
+   "Allow selection to be -1"
+   (when (eq selection -1)
+     (ad-set-arg 0 0)))
 
-    (with-eval-after-load 'company
-      (define-key company-active-map [tab] 'company-simple-complete-next)
-      (define-key company-active-map (kbd "TAB") 'company-simple-complete-next)
-      (define-key company-active-map (kbd "<S-tab>") 'company-simple-complete-previous)
-      (define-key company-active-map (kbd "RET") nil)
-      (define-key company-active-map (kbd "<return>") nil)
+ (with-eval-after-load 'company
+   (define-key company-active-map [tab] 'company-simple-complete-next)
+   (define-key company-active-map (kbd "TAB") 'company-simple-complete-next)
+   (define-key company-active-map (kbd "<S-tab>") 'company-simple-complete-previous)
+   (define-key company-active-map (kbd "RET") nil)
+   (define-key company-active-map (kbd "<return>") nil)
 
-      (put 'company-simple-complete-next 'company-keep t)
-      (put 'company-simple-complete-previous 'company-keep t)
-      (setq company-require-match nil)
-      (ad-activate 'company-set-selection)
-      (ad-activate 'company-tooltip--simple-update-offset)
-      (ad-activate 'company-tooltip--lines-update-offset)
-      (add-to-list 'company-frontends 'company-simple-complete-frontend))
+   (put 'company-simple-complete-next 'company-keep t)
+   (put 'company-simple-complete-previous 'company-keep t)
+   (setq company-require-match nil)
+   (ad-activate 'company-set-selection)
+   (ad-activate 'company-tooltip--simple-update-offset)
+   (ad-activate 'company-tooltip--lines-update-offset)
+   (add-to-list 'company-frontends 'company-simple-complete-frontend))
 
-    (provide 'company-simple-complete)
-    #+END_SRC
+ (provide 'company-simple-complete)
+ #+END_SRC
 
-    #+RESULTS:
-    : company-simple-complete
+ #+RESULTS:
+ : company-simple-complete
 
  
 * Redirect Back up files into a single file
 
-  This saves all of the back-up files in the =.~/.saves=  directory and
-  keeps your other directories clear from them.
+This saves all of the back-up files in the =.~/.saves=  directory and
+keeps your other directories clear from them.
 
-  #+BEGIN_SRC emacs-lisp
-  (setq backup-directory-alist `(("." . "~/.saves")))
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+    (setq backup-directory-alist `(("." . "~/.saves")))
+#+END_SRC
 
-  #+RESULTS:
-  : ((. . ~/.saves))
-
-** TODO should also include the # files and the tilde ones... these are also cluttering the code and annoying you
+#+RESULTS:
+: ((. . ~/.saves))
 
 
 * Set Ispell Dictionary
 
+  Cool here the dictionary is working correctly.
+
+  Double check that this work.
+
   Since emacs 24.4+ ispell.el has built-in support for detecting
   Hunspell dictionaries and there is no manual configuration needed.
-
-  protto 
 
   Just specify the global language that should be used when using the
   dictionary.
 
-  #+begin_src emacs-lisp 
-  (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Emacs/hunspell/bin/")
-  #+end_src 
-
-  #+RESULTS:
-  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Emacs/hunspell/bin/ | c:/WINDOWS/system32 | c:/WINDOWS | c:/WINDOWS/System32/Wbem | c:/WINDOWS/System32/WindowsPowerShell/v1.0 | c:/WINDOWS/System32/OpenSSH | c:/Program Files/1E/Client/Extensibility/NomadBranch | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | c:/JavaServer/jdk-11.0.12+7/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Dev/azure_data_studio/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Dev/git/bin | c:/Dev/git/usr/bin | c:/Dev/apache-maven-3.8.2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/software-for-import-on-zurich/hunspell2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
-
   #+Name: Ispell 
   #+BEGIN_SRC emacs-lisp 
-  (setq ispell-program-name "hunspell") ;; Dictionaries
-
-
-  (setq ispell-dictionary "en_US")
+    (setq ispell-dictionary "english")
   #+END_SRC
 
   #+RESULTS: Ispell
-  : en_US
+  : english
 
-  So I think that the emacs config is strong enough. What is missing is
-  the correct hunspell binary. This one you can get via scientific
-  emacs - scimax of kitchin. Not working currently but I did a
-  workaround import. Try to install it again and see what happens. 
-
-  I think it is the classical OS specific stuff and the classical
-  porting problems that docker tries to solve.
-
-  I think that at some point I should refactor this entire emacs into a
-  docker container. It will be a good exercise and - I guess - a big win
-  on the long run.
+  Notice that you have both to install ispell and aspell through brew on OSX.
 
 
 * Flycheck 
@@ -2264,14 +1692,17 @@
    #+END_SRC
 
    #+RESULTS:
-   | flycheck-yamllint-setup | flycheck-mode-set-explicitly | doom-modeline-update-flycheck-text | doom-modeline-update-flycheck-icon |
+   | flycheck-yamllint-setup | flycheck-mode-set-explicitly |
 
 
 * Latex 
 
   #+begin_src emacs-lisp 
-  (setq exec-path (append exec-path '("C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/")))
+  (setq exec-path (append exec-path '("C:/Users/marco/AppData/Local/Programs/MiKTeX/miktex/bin/x64")))
   #+end_src 
+
+  #+RESULTS:
+  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Program Files/Common Files/Oracle/Java/javapath | C:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/R/R-3.6.1/bin/x64 | C:/Program Files/GNU Emacs 26.2/bin | C:/Users/marco/AppData/Roaming/Python/Python38/Scripts | C:/Program Files/Git/cmd | C:/Program Files/dotnet/ | C:/Users/marco/AppData/Local/Programs/Python/Python38-32/Scripts/ | C:/Users/marco/AppData/Local/Programs/Python/Python38-32/ | C:/Users/marco/AppData/Local/Microsoft/WindowsApps | C:/Users/marco/AppData/Local/Programs/Microsoft VS Code/bin | C:/Users/marco/.dotnet/tools | C:/Users/marco/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | c:/Program Files/GNU Emacs 26.2/libexec/emacs/26.2/x86_64-w64-mingw32 | C:/Users/marco/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | C:/Users/marco/AppData/Local/Programs/MiKTeX/miktex/bin/x64 |
 
   #+RESULTS:| c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/virtual_envs/lac_feed_nadine/Scripts | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/python/Scripts | c:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/1E/Client/Extensibility/NomadBranch | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | C:/JavaServer/jdk-11.0.12+7/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | C:/Dev/azure_data_studio/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/fd_program | C:/Dev/git/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/apache-maven-3.8.2/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/Microsoft VS Code/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/emacs-win/bin | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | /Users/marcohassan/.nvm/versions/node/v8.9.0/bin/ | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ |
 
@@ -2282,8 +1713,8 @@
   #+end_src 
 
   #+RESULTS:
-  |   | listingsutf8 |
   |   | minted       |
+  |   | listingsutf8 |
 
   #+begin_src emacs-lisp 
   ;; Allowing minted to highlight code in latex mode when exporting
@@ -2326,25 +1757,27 @@ Compile your LaTeX document.
    #+end_src
 
 
+
 * Snippets
 
-  Snippets are a powerful tool that consists of pre-compiled code that
-  you can enter through some shortcuts. You can either enter and save
-  your own snippet or you can leverage the already built-in
-  snippets. These are various and allows you for instance to create
-  classes, open loops, etc. 
+Snippets are a powerful tool that consists of pre-compiled code that
+you can enter through some shortcuts. You can either enter and save
+your own snippet or you can leverage the already built-in
+snippets. These are various and allows you for instance to create
+classes, open loops, etc. 
 
-  The package for working with snippets is =yasnippet= and the
-  documentation for the various snippets can be found at
+The package for working with snippets is =yasnippet= and the
+documentation for the various snippets can be found at
 
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package auto-yasnippet
-    :ensure t
-    :init
-    (yas-global-mode 1))
-  #+END_SRC
 
-  #+RESULTS:
+  :ensure t
+  :init
+  (yas-global-mode 1))
+#+END_SRC
+
+#+RESULTS:
 
 ** Yasnippet-snippets
 
@@ -2360,6 +1793,14 @@ Compile your LaTeX document.
    automatically be avaiable. No need for configuration in emacs.
 
 
+* Tramp
+
+  Built in. Read on how to integrate it again.
+
+  To be implemented using: [[https://cestlaz.github.io/posts/using-emacs-25-tramp/][tramp_tut]].
+
+
+  
 * Org Mode
 
   Very nice mode.
@@ -2371,6 +1812,7 @@ Compile your LaTeX document.
 
   #+RESULTS:
   : org
+
 
 ** Basic configuration: 
 
@@ -2603,12 +2045,16 @@ Compile your LaTeX document.
    #+RESULTS:
    : t
 
-
-*** TODO fix the dictionary. 
+*** DONE fix the dictionary. 
+    CLOSED: [2023-05-30 Tue 10:56]
 
     check at [[https://lists.gnu.org/archive/html/help-gnu-emacs/2014-04/msg00030.html][this]] url. I did not manage to make it work with
     ispell. did not find a version that could be read by my 64 bit
     computer architecture.
+
+    Working on the personal laptop. Check your setup with ispell
+    given that you did not make any changes on the configuration it
+    must be a matter of ispell path or similar. 
 
 ** Better navigation Scimax like
 
@@ -2961,7 +2407,6 @@ Compile your LaTeX document.
    #+END_SRC
 
    #+RESULTS: write_name
-   | (lambda nil (local-set-key (kbd C-c q) #+Name: )) | org-bullets-mode | flyspell-mode | org-tempo-setup | turn-on-auto-fill | enable-paredit-mode | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
 
 
    The next three chunck define shortcuts for creating chunck in
@@ -2975,7 +2420,6 @@ Compile your LaTeX document.
    #+END_SRC
 
    #+RESULTS: write_source_lisp
-   | (lambda nil (local-set-key (kbd C-c 1) #+BEGIN_SRC emacs-lisp |
 
 
 
@@ -2986,7 +2430,6 @@ Compile your LaTeX document.
    #+END_SRC
 
    #+RESULTS: write_source_R
-   | (lambda nil (local-set-key (kbd C-c 2) #+BEGIN_SRC R |
 
 
 
@@ -2997,7 +2440,6 @@ Compile your LaTeX document.
    #+END_SRC
 
    #+RESULTS: write_source_python
-   | (lambda nil (local-set-key (kbd C-c 3) #+BEGIN_SRC python |
 
 *** TODO Consider Snippets
     :PROPERTIES:
@@ -3022,11 +2464,11 @@ Compile your LaTeX document.
       ;; (R . t)
       (sql . t)
       ;; (ein . t)
-      (ipython . t)
+      ;; (ipython . t)
       (python . t)
       ;; (shell . t)
       (emacs-lisp . t)
-      ;; (latex . t)
+      (latex . t)
       ;; (js . t)
       (java . t)
       (plantuml . t) ;; for UML diagrams
@@ -3051,7 +2493,6 @@ Compile your LaTeX document.
    #+end_src 
 
    #+RESULTS:
-   | org-display-inline-images |
 
    #+begin_src emacs-lisp 
    ;; (setq org-src-preserve-indentation t)
@@ -3084,7 +2525,6 @@ Compile your LaTeX document.
    #+end_src 
 
    #+RESULTS:
-   | org-babel-tangle-append-setup | (lambda nil (local-set-key (kbd C-c 3) #+BEGIN_SRC python |
 
 ** Org results toggle hide shortcut
 
@@ -3109,7 +2549,6 @@ Compile your LaTeX document.
     #+END_SRC
 
     #+RESULTS:
-    | sequence | TODO | IN-PROGRESS | WAITING | TO-BE-INTEGRATED | ISSUE | DEPENDENCY_BLOCK | QUESTION | DONE |
 
 *** Open agenda into its own buffer
     #+BEGIN_SRC emacs-lisp
@@ -3130,7 +2569,7 @@ Compile your LaTeX document.
 
     #+BEGIN_SRC emacs-lisp
     ;; Set archiving location.
-    (setq org-archive-location "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Agenda/archive.org::* From %s")
+    (setq org-archive-location "~/Desktop/Archive/archive.org::* From %s")
 
     ;; Done and archive
     (defun mark-done-and-archive ()
@@ -3157,11 +2596,11 @@ Compile your LaTeX document.
     #+begin_src emacs-lisp 
     ;; where the notes will be stored. the reference is the previously
     ;; defined org directory.
-    (setq org-default-notes-file "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Agenda/capture.org")
+    (setq org-default-notes-file "~/Dropbox/Applicazioni/MobileOrg/capture.org")
     #+end_src 
 
     #+RESULTS:
-    : C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Agenda/capture.org
+    : ~/Dropbox/Applicazioni/MobileOrg/capture.org
 
     Define the global map for using org-capture
 
@@ -3185,7 +2624,6 @@ Compile your LaTeX document.
     #+end_src 
 
     #+RESULTS:
-    | t | todo | entry | (file C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Agenda/capture.org) | * TODO %? |
 
 *** Description of org-agenda properties
 
@@ -3243,18 +2681,36 @@ Compile your LaTeX document.
     #+RESULTS:
     : air-to-org-cfw-agenda
 
-
 *** Task and org-capture management
 
     Set the org-agenda files.
 
-    #+BEGIN_SRC emacs-lisp
-    ;; Create and Specify Agenda folder.
-    (setq org-agenda-files '("C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Agenda/capture.org"))
-    #+END_SRC
+    Org mode has the customizable variable org-agenda-files. The files
+    listed by absolute path under this variable are used for building the
+    org agenda window. If an element in the list is a directory, then all
+    .org files matching the org-agenda-regex are processed to build the
+    agenda view. 
+
+
+    #+begin_src emacs-lisp 
+					    ; Create and Specify Agenda folder.
+    (setq org-agenda-files (list "~/Dropbox/Applicazioni/MobileOrg/capture.org"
+				 "~/Dropbox/Applicazioni/MobileOrg/mobileorg.org"
+				 "~/Dropbox/Applicazioni/MobileOrg/inbox.org"
+				 "~/Dropbox/Applicazioni/MobileOrg/todos.org"))
+    ;;(setq org-directory "~/Dropbox/Applicazioni/MobileOrg/")
+    ;;(setq org-mobile-inbox-for-pull "~/Desktop/org/inbox.org")
+
+    (setq org-mobile-directory "~/Dropbox/Applicazioni/MobileOrg/") 
+    #+end_src 
 
     #+RESULTS:
-    | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Agenda/capture.org |
+    : ~/Dropbox/Applicazioni/MobileOrg/
+
+    Notice that to pull the agendas entries from the mobile; you have to
+    save them in the mobileorg.org file in the
+    Dropbox/Applicazioni/Mobileorg folder. Just then you will be able to
+    pull the agenda into the org-mobile-inbox-for-pull above. 
 
 
 *** IN-PROGRESS notifications for agenda entries
@@ -3347,7 +2803,6 @@ Compile your LaTeX document.
      #+RESULTS:
      : org-wild-notifier--notify
 
-
 *** TODO Encryption
 
     Encrypt messages sent to the app and on dropbox via symmetric
@@ -3365,7 +2820,7 @@ Compile your LaTeX document.
     #+RESULTS:
 
 *** Open index file
-
+    
     I do not remember why I was writing this piece of code.
 
     #+BEGIN_SRC emacs-lisp
@@ -3396,8 +2851,6 @@ Compile your LaTeX document.
    #+END_SRC
 
    #+RESULTS:
-   | (lambda nil (local-set-key (kbd C-c l) 'org-store-link)) | org-babel-tangle-append-setup | (lambda nil (local-set-key (kbd C-c 3) #+BEGIN_SRC python |
-
 
 ** Org view tags 
 
@@ -3407,7 +2860,8 @@ Compile your LaTeX document.
    #+END_SRC
 
    #+RESULTS:
-   | (lambda nil (local-set-key (kbd C-c C-x g) 'org-tags-view)) | (lambda nil (local-set-key (kbd C-c C-x t) 'org-tags-view-command)) | (lambda nil (local-set-key (kbd C-c C-x t) 'org-tags-view)) | (lambda nil (local-set-key (kbd C-c C-x t) '(org-tags-view))) | (lambda nil (local-set-key (kbd C-c l) 'org-store-link)) | org-babel-tangle-append-setup | (lambda nil (local-set-key (kbd C-c 3) #+BEGIN_SRC python |
+
+
 
 
 * Screenshot Management and handling static files for Blog 
@@ -4289,162 +3743,20 @@ Compile your LaTeX document.
    : projectile-test-suffix
    
 
-* Groovy 
+* TODO Groovy 
 
   This is needed as the language is used by gradle in order to specify
   the setup. 
 
   #+BEGIN_SRC emacs-lisp
-  (use-package groovy-mode
-    :ensure t
-    )
+  ;; (use-package groovy-mode
+  ;;   :ensure t
+  ;;   )
   #+END_SRC
 
   #+RESULTS:
   : t
 
-
-* Run Code
-  We can use quickrun package to execute code (if it has main). E.g. If you have a java file with main method, it will run with the associated shortcut key ~C-c r~ or quickrun command. Quickrun has support for several languages.
-
-  #+begin_src emacs-lisp
-  (use-package quickrun 
-    :ensure t
-    :bind ("C-c r" . quickrun))
-  #+end_src
-
-  #+RESULTS:
-  : quickrun
-
-
-* Encryption
-
-** Automatic encryption
-
-   An in initial quote to make things fun - found it when downloading
-   the gpg software that is need for encrypting the stuff:
-
-   #+begin_quote
-   Wir nehmen Abschied von einem sicher geglaubten Fruend dem
-   Fernmeldegeheimnis.
-
-   (Artikel 10 Grundgesetz Maj 1949 - Dezember 2015)
-
-   So it seems that it died and that this is the way to get it back.
-   #+end_quote
-
-   Inspired by Howard Abrams. He sets the option =(setq
-   epa-file-select-keys 2)= for automatically encrypting the docs with
-   his public key such that he will then be able to de-crypt them using
-   his private key.
-
-   *Notice:* The section leverages the =easy pg= package for GnuPG
-   interaction on emacs. The package should  already be installed for
-   Emacs >21.4. You can find it as =epg= in the list of your packages.
-
-   Note that for performing your encryption you need as some encryption
-   software. In the specific I am working with [[https://gnupg.org/download/index.html][gnupg]] - recall to
-   download it from there when switching Laptop - given that it is not
-   on One-Drive.
-
-   Reference it at [[https://www.emacswiki.org/emacs/EasyPG][EasyPG]].
-
-   From this source about [[https://www.gnu.org/software/emacs/manual/html_node/epa/Encrypting_002fdecrypting-gpg-files.html][auto-encryption]] I could understand that a
-   similar point holds also for symmetric encryption.
-
-   Setting the parameter below emacs understands directly that it
-   should work with symmetric encryption. In fact you are telling epa
-   to forget about your public-private keys so to say and therefore the
-   option remaining is the one of symmetric encryption.
-
-   #+BEGIN_SRC emacs-lisp
-   (setq epa-file-select-keys nil) 
-   #+END_SRC
-
-   #+RESULTS:
-
-   Note that it is important to properly set up the gpg binary in order
-   for eamcs to be able to read and work with it.
-
-   You can also add it to the path as an alternative option. Anyways
-   the following is more neat and works well when working on your
-   emacs. Working like a charm.
-
-   #+begin_src emacs-lisp 
-   (custom-set-variables '(epg-gpg-program  "c:/Users/MARCO.HASSAN/AppData/Local/Programs/GnuPG/bin/gpg.exe"))
-   #+end_src 
-
-   #+RESULTS:
-
-   For versions of GnuPG higher than 2.1 you can set the below to set the
-   password directly from emacs mini-buffer and not with the opening of a
-   specific dialogue.
-
-   #+BEGIN_SRC emacs-lisp
-   (setq epa-pinentry-mode 'loopback)
-   #+END_SRC
-
-   #+RESULTS:
-   : loopback
-
-
-** Encrypting sections of org chuncks
-
-   Very nice org-mode link elaborating some other options, such as just
-   encrypting some part of the document etc. [[https://orgmode.org/worg/org-tutorials/encrypting-files.html][Encrypting Org Files]].
-
-   #+begin_src emacs-lisp 
-   (require 'org-crypt)
-   (org-crypt-use-before-save-magic)
-   (setq org-tags-exclude-from-inheritance (quote ("crypt")))
-   ;; GPG key to use for encryption
-   ;; Either the Key ID or set to nil to use symmetric encryption.
-   (setq org-crypt-key nil)
-   #+end_src 
-
-   #+RESULTS:
-
-*** Watch out for backup files
-
-    Emacs Backup Files - a Warning.
-
-    With org-crypt, if you have autosave turned on and decrypt the
-    entries, the autosave file will contain the entries in plain
-    text. For this reason your should *disable autosave for encrypted
-    files*.
-
-
-** On an important side note 
-
-   Note that you should not rely simply on such encryption
-   mechanism. Put further shields around important information. Most
-   of all leverage on *chaos theory*.
-
-   And recall to use both codes and cryptography in tandem:
-
-   #+begin_quote
-   A third class of information theory codes are cryptographic
-   algorithms (both codes and ciphers).
-   #+end_quote
-
-
-** First Test                                                         :crypt:
-
------BEGIN PGP MESSAGE-----
-
-jA0ECQMCb4l8tBLzqk/u0sDpAf7IL6TWCppHbw1LJZckegU4TkIyhbQZqfWFfpgY
-IGHyA/Uf9ir9brT4m4QaT1E3KBbA9hneT11rZl0TUJs6NjRe0ptQaFVhCFzcQ7Fv
-Sack/jurzrmhRefWRKNb54ezdwJGwIPXnAAeoEBV7cXg/o3TyBJS8fx0hUJJUIXk
-/ittzSojqxh6MUUwCzvt7YCwfHZ19MJfycT65cvgGLuU3VQsbyLwkMWoxrkBrdIC
-FHSnQHUxwAwgjKbd6alXiDJKe9/VC7/WQ3NHKBRNpkpBag7tpRWXkzpIge65qiya
-krgOt1B1qksmvCUqTK75Wzjc5orodIGM2VnyMKpc1Ydm3Aob/pZ86Sb0+P3WGy23
-Fo2kV075Fcq7BImx7cl069sn2aLsu+T3XMZjMKrog4ceXZf3td11QjxyM74UUyPO
-kd+qswI3wGIc68fKkRSRUuHd1a/tQF+/wi9yM0dB80BxvDZYyH/t3ZY/0kzxL+TL
-Uy8oxDLWm/zZy8iw9BzrJMssy/lEecF/cfhNyRL65U5MkPvKS0CdbgKlIYsc9E4F
-47+ynVmrEdZY6gc=
-=FRTj
------END PGP MESSAGE-----
-   
 
 * Deal with conflicting key bindings
 
@@ -4520,7 +3832,7 @@ Uy8oxDLWm/zZy8iw9BzrJMssy/lEecF/cfhNyRL65U5MkPvKS0CdbgKlIYsc9E4F
 
    #+RESULTS:
 
-
+   
 * Magit
 
   #+begin_src emacs-lisp 
@@ -4549,7 +3861,7 @@ Uy8oxDLWm/zZy8iw9BzrJMssy/lEecF/cfhNyRL65U5MkPvKS0CdbgKlIYsc9E4F
    Add you git executable to the magit interface.
 
    #+begin_src emacs-lisp 
-   (setq magit-git-executable "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/PortableGit/bin/git.exe")
+   (setq magit-git-executable "c:/Program Files/Git/bin/git.exe")
    #+end_src 
 
    #+RESULTS:
@@ -4692,466 +4004,18 @@ Uy8oxDLWm/zZy8iw9BzrJMssy/lEecF/cfhNyRL65U5MkPvKS0CdbgKlIYsc9E4F
    something causes duplciates create function for that
 
 
-* Language Server
 
-** Disable ansi color in compilation mode
 
-   This will help eliminate weird escape sequences during compilation
-   of projects.
 
-   #+begin_src emacs-lisp
 
-   (defun my/ansi-colorize-buffer ()
-     (let ((buffer-read-only nil))
-       (ansi-color-apply-on-region (point-min) (point-max))))
 
-   (use-package ansi-color
-     :ensure t
-     :config
-     (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)
-     )
-   #+end_src
 
-   #+RESULTS:
-   : t
 
 
-** Install LSP Package
 
-   Let's install the main package for lsp. Here we will integrate lsp
-   with which-key. This way, when we type the prefix key ~C-c l~ we get
-   additional help for compliting the command.
 
-   #+begin_src emacs-lisp
-   (use-package lsp-mode
-     :ensure t
-     :hook (
-	    (lsp-mode . lsp-enable-which-key-integration)
-	    (java-mode . #'lsp-deferred)
-	    (python-mode . lsp)
-	    )
-     :config 
-     (setq lsp-intelephense-multi-root nil) ; don't scan unnecessary projects
-     (with-eval-after-load 'lsp-intelephense
-       (setf (lsp--client-multi-root (gethash 'iph lsp-clients)) nil))
-     (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-     )
-   #+end_src
 
-   #+RESULTS:
-   | lsp-mode |
-
-   #+begin_src emacs-lisp 
-   (setq lsp-keymap-prefix "C-c C-x l")              ; this is for which-key integration documentation, need to use lsp-mode-map
-
-   (setq lsp-enable-file-watchers nil)
-   (setq read-process-output-max (* 1024 1024))  ; 1 mb
-   (setq lsp-completion-provider :capf)
-   (setq lsp-idle-delay 0.100)      ; note that it must be lower than 0.2 or higher than 0.8 otherwise you get errors. 
-   #+end_src 
-
-   #+RESULTS:
-
-   You can start LSP server in a java project by using ~C-c l s s~. Once
-   you type ~C-c l~ ~which-key~ package should guide you through rest of
-   the options. In above setting I have added some memory management
-   settings as suggested in [[https://emacs-lsp.github.io/lsp-mode/page/performance/][this guide]]. Change them to higher numbers, if
-   you find *lsp-mode* sluggish in your computer. 
-
-
-** Dap Mode
-
-   Emacs Debug Adapter Protocol aka DAP Mode allows us to debug your
-   program. Below we will integrate ~dap-mode~ with
-   ~dap-hydra~. ~Dap-hydra~ shows keys you can use to enable various
-   options and jump through code at runtime. After we install dap-mode we
-   will also install ~dap-java~.
-
-   #+begin_src emacs-lisp
-   (use-package dap-mode
-     :ensure t
-     :after (lsp-mode)
-     :functions dap-hydra/nil
-     :config
-     (require 'dap-java)
-     :bind (:map lsp-mode-map
-		 ("<f5>" . dap-debug)
-		 ("M-<f5>" . dap-hydra))
-     :hook ((dap-mode . dap-ui-mode)
-	    (dap-session-created . (lambda (&_rest) (dap-hydra)))
-	    (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
-
-   (use-package dap-java :ensure nil)
-   #+end_src
-
-   #+RESULTS:
-   : t
-
-*** Templates
-
-**** Localhost-development
-
-     #+BEGIN_SRC emacs-lisp
-     (dap-register-debug-template
-      "localhost:8000"
-      (list :type "java"
-       :request "attach"
-       :hostName "localhost"
-       :port 8000))
-     #+END_SRC
-
-     #+RESULTS:
-     | localhost:8000                          | :type | java | :request | attach         | :hostName | localhost | :port | 8000 |              |             |          |           |              |        |              |     |             |     |              |     |            |     |
-     | Java Attach                             | :type | java | :request | attach         | :hostName | localhost | :port | nil  |              |             |          |           |              |        |              |     |             |     |              |     |            |     |
-     | Java Run Configuration (compile/attach) | :type | java | :request | compile_attach | :args     |           | :cwd  | nil  | :host        | localhost   | :request | launch    | :modulePaths | []     | :classPaths  | nil | :name       | Run | :projectName | nil | :mainClass | nil |
-     | Java Run Configuration                  | :type | java | :request | launch         | :args     |           | :cwd  | nil  | :stopOnEntry | :json-false | :host    | localhost | :request     | launch | :modulePaths | []  | :classPaths | nil | :projectName | nil | :mainClass | nil |
-
-     #+BEGIN_SRC emacs-lisp
-     (dap-register-debug-template
-      "localhost:8081"
-      (list :type "java"
-       :request "attach"
-       :hostName "localhost"
-       :port 8081))
-     #+END_SRC
-
-     #+RESULTS:
-     | localhost:8081                          | :type | java | :request | attach         | :hostName | localhost | :port | 8081 |              |             |          |           |              |        |              |     |             |     |              |     |            |     |
-     | localhost:8000                          | :type | java | :request | attach         | :hostName | localhost | :port | 8000 |              |             |          |           |              |        |              |     |             |     |              |     |            |     |
-     | Java Attach                             | :type | java | :request | attach         | :hostName | localhost | :port | nil  |              |             |          |           |              |        |              |     |             |     |              |     |            |     |
-     | Java Run Configuration (compile/attach) | :type | java | :request | compile_attach | :args     |           | :cwd  | nil  | :host        | localhost   | :request | launch    | :modulePaths | []     | :classPaths  | nil | :name       | Run | :projectName | nil | :mainClass | nil |
-     | Java Run Configuration                  | :type | java | :request | launch         | :args     |           | :cwd  | nil  | :stopOnEntry | :json-false | :host    | localhost | :request     | launch | :modulePaths | []  | :classPaths | nil | :projectName | nil | :mainClass | nil |
-
-
-     You can enter in the above all of the other templates for developing
-     in java. 
-
-
-*** Opening and Closing Dap Debugging 
-
-    Makes sense as well to add some binding. 
-
-    #+BEGIN_SRC emacs-lisp
-    (defun stop-debugging-mode ()
-      (interactive)
-      (dap-delete-all-sessions)
-      (dap-mode 0)
-      (dap-ui-mode 0)
-      (dap-ui-controls-mode 0)
-      (delete-other-windows) ;; hide all the dap UI. I might want to delete the buffers as well.
-      )
-    #+END_SRC
-
-    #+RESULTS:
-    : stop-debugging-mode
-
-    Check as well this other function in order to open dubgging with
-    all of the relevant windows. 
-
-    #+BEGIN_SRC emacs-lisp
-    (defun debugging-mode ()
-      (interactive)
-      (dap-mode t)
-      (dap-ui-mode t)
-      (dap-tooltip-mode)
-      (dap-ui-controls-mode 1)
-      (dap-ui-sessions)
-      (dap-ui-locals)
-      (dap-ui-breakpoints)
-      (dap-ui-repl)
-      )
-    #+END_SRC
-
-    #+RESULTS:
-    : debugging-mode
-
-
-** Treemacs
-
-   Treemacs provides UI elements used for LSP UI. Let's install
-   lsp-treemacs and its dependency treemacs. We will also Assign ~M-9~ to
-   show error list.
-
-   #+begin_src emacs-lisp
-   (use-package lsp-treemacs
-     :after (lsp-mode treemacs)
-     :ensure t
-     :commands lsp-treemacs-errors-list
-     :bind (:map lsp-mode-map
-		 ("M-9" . lsp-treemacs-errors-list)))
-
-   (use-package treemacs
-     :ensure t
-     :commands (treemacs)
-     :config 
-     (add-hook 'treemacs-mode-hook
-	       (lambda ()
-		 (message "treemacs-mode-hook `%s'" (current-buffer))
-		 (text-scale-adjust -1)
-		 ))
-     (treemacs-resize-icons 20)
-     :after (lsp-mode))
-   #+end_src
-
-   #+RESULTS:
-   : t
-
-   All good to change the window size, go on the treemacs window and use
-   =t w=.  Then you will unblock the fix size and it will be possible for
-   you to resize. Otherwise work with =treemacs-decrease-width= mapped to
-   =<=.
-
-   Note that you can adjust the scale in your treemacs as in any other
-   buffer in emacs with =C-x -= or =C-x +=.
-
-*** Change the worktree there
-
-    If you have to change your worktree you can do that in the
-    following way by checking at [[https://marcohassan.github.io/bits-of-experience/posts/emacs-as-java-ide-via-lsp/][this one]] (go on the treemacs section
-    there).
- 
-
-
-** LSP UI
-
-   LSP UI is used in various packages that require UI elements in
-   LSP. E.g ~lsp-ui-flycheck-list~ opens a windows where you can see
-   various coding errors while you code. You can use ~C-c l T~ to toggle
-   several UI elements. We have also remapped some of the xref-find
-   functions, so that we can easily jump around between symbols using
-   ~M-.~, ~M-,~ and ~M-?~ keys.
-
-   #+begin_src emacs-lisp
-   (use-package lsp-ui
-     :ensure t
-     :after (lsp-mode)
-     :bind (:map lsp-ui-mode-map
-		 ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-		 ([remap xref-find-references] . lsp-ui-peek-find-references))
-     :init (setq lsp-ui-doc-delay 1.5
-		 lsp-ui-doc-position 'bottom
-		 lsp-ui-doc-max-width 100
-		 ))
-   #+end_src
-
-   #+RESULTS:
-
-   Go through this [[https://github.com/emacs-lsp/lsp-ui/blob/master/lsp-ui-doc.el][link]]  to see what other parameters are provided.
-
-
-** Helm LSP
-
-   Helm-lsp provides various functionality to work with the code. E.g
-   Code actions like adding *getter, setter, toString*, refactoring
-   etc. You can use ~helm-lsp-workspace-symbol~ to find various symbols
-   (classes) within your workspace. 
-
-   LSP's built in symbol explorer uses ~xref-find-apropos~ to provide
-   symbol navigation. Below we will replace that with helm version. After
-   that you can use ~C-c l g a~ to find workspace symbols in a more
-   intuitive way. 
-
-   #+begin_src emacs-lisp
-   (use-package helm-lsp
-     :ensure t
-     :after (lsp-mode)
-     :commands (helm-lsp-workspace-symbol)
-     :init (define-key lsp-mode-map [remap xref-find-apropos] #'helm-lsp-workspace-symbol))
-   #+end_src
-
-   #+RESULTS:
-
-
-** LSP treemacs error list 
-
-   This is very cool as it will give you the errors in a more ordered
-   way that is easier to navigate. 
-
-   There a couple of issues with the Windows OS. Luckily [[https://github.com/emacs-lsp/lsp-treemacs/issues/109][a person]] just
-   solved it.
-
-   You just have to copy that anchestor method in the
-   =lsp-treemacs.el= and then evaluate the region.
-
-   Try to copy it over here and fix it at start up.
-
-   #+BEGIN_SRC emacs-lisp
-   (defun lsp-f-ancestor-of? (path-a-raw path-b-raw)
-     "Return t if PATH-A is an ancestor of PATH-B.
-   Symlinks are not followed."
-     (let ((path-a (if (eq system-type 'windows-nt) (downcase path-a-raw) (path-a-raw)))
-	   (path-b (if (eq system-type 'windows-nt) (downcase path-b-raw) (path-b-raw))))
-    
-       (unless (lsp-f-same? path-a path-b)
-	 (s-prefix? (concat (lsp-f-canonical path-a) (f-path-separator))
-		    (lsp-f-canonical path-b)))))
-
-   (defun lsp-treemacs-errors--list-files (folder &rest _)
-     (->> (lsp-diagnostics)
-	  (ht-keys)
-	  (-keep
-	   (lambda (file)
-	     (when (and (lsp-f-ancestor-of? folder file)
-			(lsp-treemacs-errors--diags? (lsp-diagnostics-stats-for file)))
-	       (list :id file
-		     :label (format "%s %s %s"
-				    (f-filename file)
-				    (->> (append (lsp-diagnostics-stats-for file) ())
-					 (-map-indexed
-					  (lambda (index count)
-					    (unless (zerop count)
-					      (propertize
-					       (number-to-string count)
-					       'face (alist-get index lsp-treemacs-file-face-map)))))
-					 (-filter #'identity)
-					 (s-join "/"))
-				    (propertize (f-dirname (f-relative file folder))
-						'face 'lsp-details-face))
-		     :icon (if (f-directory? file) 'dir-closed (f-ext file))
-		     :children (-partial #'lsp-treeemacs--error-list-diags folder file)
-		     :ret-action (lambda (&rest _)
-				   (interactive)
-				   (lsp-treemacs--open-file-in-mru file))))))))
-   #+END_SRC
-
-   #+RESULTS:
-   : lsp-treemacs-errors--list-files
-
-   Working like a charm.
-
-
-** LSP Java
-
-   This is the package that handles server installation and session
-   management. 
-
-   #+begin_src  emacs-lisp
-   (use-package lsp-java 
-     :ensure t
-     :config (add-hook 'java-mode-hook 'lsp))
-   #+end_src
-
-   #+RESULTS:
-   : t
-
-*** Integration with Lombok
-
-    #+BEGIN_SRC emacs-lisp
-    (setq lsp-java-vmargs
-	  '("-noverify" 
-	    "-Xmx1G" 
-	    "-XX:+UseG1GC" 
-	    "-XX:+UseStringDeduplication" 
-	    "-javaagent:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar" 
-	    "-Xbootclasspath/a:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar"))
-
-    #+END_SRC
-
-    #+RESULTS:
-    | -noverify | -Xmx1G | -XX:+UseG1GC | -XX:+UseStringDeduplication | -javaagent:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar | -Xbootclasspath/a:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar |
-
-
-*** Disable formatting on type
-
-    This is annoying cause the lsp server does not really manage it
-    correctly. 
-
-    I mean it changes too many stuff in the code at each addition such
-    that your version control becomes garbage. This is obviously suboptimal.
-
-    Morever it will on paper save you a bit of resources
-
-    #+BEGIN_SRC emacs-lisp
-    ;; (setq lsp-java-format-enabled nil)
-    ;; (setq lsp-enable-indentation nil)    
-    #+END_SRC
-
-    #+RESULTS:
-
-*** Follow a specific convention for checking at your java syntax.
-
-    You might for instance refer to the google-style: [[https://google.github.io/styleguide/javaguide.html][here]].
-
-    See [[https://www.reddit.com/r/emacs/comments/f98vug/lspjava_not_respecting_formatter_settings/][this]] how to set up in your emacs.
-
-    
-** Workaround 
-
-   Note that I was having issues with the lsp-java server. It took me
-   quite some time to fix the problem. The issue was that everytime I
-   was jumping to a file in my project non-directly using lsp
-   functions - say using projectile-search functionality or treemacs
-   the lsp would not start and I was getting a
-   =textdocument/highlight= error. 
-
-   I decided to switch it off and now everything is working correctly
-
-   #+begin_src emacs-lisp 
-   (setq lsp-enable-symbol-highlighting nil)
-   #+end_src 
-   
-
-** Multiproject Problem opens all of the projects you worked with
-
-   Check at the [[https://issueexplorer.com/issue/emacs-lsp/lsp-java/320][following url]] to understand the issue.
-
-   #+BEGIN_SRC emacs-lisp
-   (advice-add 'lsp :before (lambda (&rest _args) (eval '(setf (lsp-session-server-id->folders (lsp-session)) (ht)))))
-   #+END_SRC
-
-   #+RESULTS:
-
-   It is working now. Check also at the [[https://github.com/emacs-lsp/lsp-mode/discussions/3095][following discussion]] to
-   understand more.
-
-   Just the single project that you open is shown there in the errors
-   sections now in the =lsp-ui-flycheck-list=. If you add a second one
-   this is also added to the list in the sense that is managed by the
-   same server connection. The only issue is that if you close the
-   file it stays in the server connection. This is not ideal and would
-   have to sort it somehow. 
-
-   But basically now you have all of the features you desired. Just
-   have to check the last thing with the debugger but basically you
-   are there. 
-
-   You can now start to run your smaller projects in emacs and start
-   to get up and running with it. 
-
-
-** LSP Python
-
-   In order to use the language server protocol in python you can
-   install the server via pip.
-
-   [[https://www.mattduck.com/lsp-python-getting-started.html#:~:text=The%20most%20popular%20LSP%20client,packages%20like%20Flycheck%20and%20Company.][This]] is a good reference. 
-
-   Note that the =python-language-server= was mantained by
-   palantir. Seems that now the default choice is =python-lsp-server=.
-   
-   
-** LSP Sonarlint
-
-   You can get the idea of this in the following two locations:
-
-   1. [[https://www.sonarsource.com/products/sonarlint/][sonarlint official docu]]
-
-   2. [[https://marcohassan.github.io/bits-of-experience/posts/code-quality-management-and-monitoring/][code quality bits of experience]]
-
-   #+BEGIN_SRC emacs-lisp
-   ;; (use-package lsp-sonarlint
-   ;;   :ensure t)
-   #+END_SRC   
-
-   #+RESULTS:
-
-   #+BEGIN_SRC emacs-lisp
-   ;; (require 'lsp-sonarlint-java)
-   ;; (setq lsp-sonarlint-java-enabled t)
-   #+END_SRC
-
-   #+RESULTS:
-   : t
+* TODO Language Server
 
 
 * Which key
@@ -5430,29 +4294,10 @@ Uy8oxDLWm/zZy8iw9BzrJMssy/lEecF/cfhNyRL65U5MkPvKS0CdbgKlIYsc9E4F
   : Reusing Dired buffers is now ON
 
 
-* Add Ripgrep
+* TODO Encryption
 
-  This is used for searching as you usually do via grep on unix
-  systems. 
 
-  You can then use the search via ripgrep in projectile to search for
-  specific implementations in your projects when lsp is failing for
-  some reason.
-
-  #+begin_src emacs-lisp 
-  (use-package ripgrep
-    :ensure t
-    :defer t) ;; recall to download it trough MELPA at first
-  #+end_src 
-
-  #+RESULTS:
-  
-  #+BEGIN_SRC emacs-lisp
-  (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu")
-  #+END_SRC
-
-  #+RESULTS:
-  | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/virtual_envs/relationalOperations/Scripts | c:/WINDOWS/system32 | c:/WINDOWS | c:/WINDOWS/System32/Wbem | c:/WINDOWS/System32/WindowsPowerShell/v1.0 | c:/WINDOWS/System32/OpenSSH | c:/Program Files/1E/Client/Extensibility/NomadBranch | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | c:/JavaServer/jdk-11.0.12+7/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Dev/azure_data_studio/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Dev/git/bin | c:/Dev/git/usr/bin | c:/Dev/apache-maven-3.8.2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/software-for-import-on-zurich/hunspell2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
+* TODO Ripgrep
 
 
 * Add to execution Path and $PATH 
@@ -5462,28 +4307,28 @@ Uy8oxDLWm/zZy8iw9BzrJMssy/lEecF/cfhNyRL65U5MkPvKS0CdbgKlIYsc9E4F
   #+BEGIN_SRC emacs-lisp
 
   ;; Graphviz - in order to make the plantuml charts
-  (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin")
+  ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin")
 
-  (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin")
+  ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin")
 
-  (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/")
+  ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/")
 
-  ;; Outdated - old python
-  ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32")
-  ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/python.exe") 
+  ;; ;; Outdated - old python
+  ;; ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32")
+  ;; ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/python.exe") 
 
-  ;; Try with the new python that IT installed you
-  (add-to-list 'exec-path "c:/Program Files/Python310/") 
-  (add-to-list 'exec-path "c:/Program Files/Python310/python.exe") 
+  ;; ;; Try with the new python that IT installed you
+  ;; (add-to-list 'exec-path "c:/Program Files/Python310/") 
+  ;; (add-to-list 'exec-path "c:/Program Files/Python310/python.exe") 
 
-  (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/httpd-2.4.53-win64-VS16/Apache24/bin")
+  ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/httpd-2.4.53-win64-VS16/Apache24/bin")
 
-  (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/sqlite-tools-win32-x86-3380300/sqlite-tools-win32-x86-3380300/")
+  ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/sqlite-tools-win32-x86-3380300/sqlite-tools-win32-x86-3380300/")
 
-  (add-to-list 'exec-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/unzip-5.51-1-bin/bin")
+  ;; (add-to-list 'exec-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/unzip-5.51-1-bin/bin")
 
-  ;; With the below you get the executables of git and bash
-  (add-to-list 'exec-path "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/PortableGit/bin")
+  ;; ;; With the below you get the executables of git and bash
+  ;; (add-to-list 'exec-path "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/PortableGit/bin")
 
   #+END_SRC
 
@@ -5557,7 +4402,7 @@ Uy8oxDLWm/zZy8iw9BzrJMssy/lEecF/cfhNyRL65U5MkPvKS0CdbgKlIYsc9E4F
    download git for windows. Either in the portable version or not.
 
    #+begin_src emacs-lisp 
-   (setq explicit-shell-file-name "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/PortableGit/bin/bash.exe")
+   (setq explicit-shell-file-name "c:/Program Files/Git/bin/bash.exe")
    #+end_src 
 
    #+RESULTS:
@@ -5693,14 +4538,13 @@ Uy8oxDLWm/zZy8iw9BzrJMssy/lEecF/cfhNyRL65U5MkPvKS0CdbgKlIYsc9E4F
 ** Decide shell to open at start-up
 
    #+begin_src emacs-lisp 
-   (cd "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/")
+   (cd "~/Desktop")
    (eshell)
    (delete-other-windows)
    #+END_SRC
 
    #+RESULTS:
    : c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/
-
 
 ** Open last opened terminal in term mode
 
@@ -5739,25 +4583,100 @@ Uy8oxDLWm/zZy8iw9BzrJMssy/lEecF/cfhNyRL65U5MkPvKS0CdbgKlIYsc9E4F
   : t
 
 
-* Test-Mode
-
-** Use Emacsclient to speed up start up of Emacs
-
-   Idea: run at the beginning an emacs server on the local machine and
-   let the emacs instances connect to the server. Like this you will not
-   need to run the entire =init= file each time you call emacs.
-
-   The best implementation is then to start the emacs deamon letting the
-   server start right after booting. Like this you will always have the
-   emacs server running in the background at PC start-up.
-
-   #+BEGIN_SRC emacs-lisp
-   ;; (server-start)
-   #+END_SRC
-
-   #+RESULTS:
-
-   /Notice:/ When an emacs server is running, closing the last Emacs
-   instance will leave the server running.
 
 
+
+
+
+
+
+
+* Outdated
+
+** Projectile
+
+ #+BEGIN_SRC emacs-lisp
+ ;; (use-package projectile
+ ;;   :ensure t)
+ ;; ;; Later on, after loading exec-path-from-shell package
+
+ ;; (projectile-mode +1)
+ ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+ #+END_SRC
+
+ #+RESULTS:
+ : projectile-command-map
+
+
+** Python
+
+ Set path to python executable so that emacs can leverage it. This
+ step is necessary when operating through Windows OS.
+
+ #+BEGIN_SRC emacs-lisp
+ ;; ;; Ativate elpy package to run python code
+ ;; (use-package elpy
+ ;;   :ensure t)
+
+ ;; (elpy-enable) ;; initialize elpy for python IDE in emacs
+
+ ;; ;; Activate flycheck instead of flymake from eply package
+ ;; (when (require 'flycheck  nil t)
+ ;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+ ;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+ ;; ;; Activate autopep. This integrates with Emacs so that when you save a
+ ;; ;; file trough the -C-x C-s- cmd it will automatically format and correct
+ ;; ;; any PEP8 errors (excluding the ones that you may specify)
+
+ ;; ;; Did not especially appreciated autopep8. Leave it out.
+ ;; 					;(require 'py-autopep8)
+ ;; 					;(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+
+ ;; ;; Integrate the eply mode with the IPython REPL and the Jupyter Notebooks.
+ ;; ;; This will allow to run Jupyter Notebooks that looks  very much like
+ ;; ;; R .rmd files directly on Emacs !after connecting to the notebook online!
+
+ ;; (setq python-shell-interpreter "ipython" 
+ ;;       python-shell-interpreter-args "-i --simple-prompt");; uses ipython interpreter. Please remember on Windows systems that you have to download python on winodws and install ipython through the automatically downloaded pip. Then add to the path the folder including ipython and you are good to go.
+
+ ;; ;; Set standard python interpreter as python 3
+ ;; (setq elpy-rpc-python-command "python")
+
+ ;; ;; Set up virtual environments emacs connection
+ ;; (use-package virtualenvwrapper
+ ;;   :ensure t)
+ ;; (venv-initialize-interactive-shells) ;; if you want interactive shell support
+ ;; (venv-initialize-eshell) ;; if you want eshell support
+ ;; ;; note that setting `venv-location` is not necessary if you
+ ;; ;; use the default location (`~/.virtualenvs`), or if the
+ ;; ;; the environment variable `WORKON_HOME` points to the right place
+ ;; (setq venv-location "C:/Users/marco/Desktop/python_venv") 
+
+ ;; ;; Add hook for còmment highlighting.
+ ;; ;;(add-hook 'python-mode-hook 'add-custom-keyw)
+ #+END_SRC
+
+ #+RESULTS:
+ : C:/Users/marco/Desktop/python_venv
+
+ #+RESULTS: Python Mode and virtual environment activation.
+ | add-custom-keyw | elpy-mode |
+
+ Good. After installing ipyhton thorugh pip everything is working
+ smoothly. Remember to run pip on DOS and not on emacs shell as at the
+ moment emacs shell is set to be the shell interacting with the Linux
+ partition.
+
+ Notice that in a windows environment the installed packages are under
+ the following path: ~c:/Users/marco/Desktop/python_venv/jupyter/Lib/site-packages~.
+
+
+** Git add the executable such that it appears on the eshell
+
+ #+begin_src emacs-lisp 
+ ;; (setq exec-path (append exec-path '("c:/Program Files/Git/")))
+ #+end_src 
+
+ #+RESULTS:
+ | c:/Program Files/Common Files/Oracle/Java/javapath | C:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/R/R-3.6.1/bin/x64 | C:/Program Files/GNU Emacs 26.2/bin | C:/Users/marco/AppData/Roaming/Python/Python38/Scripts | C:/Program Files/Git/cmd | C:/Program Files/dotnet/ | C:/Users/marco/AppData/Local/Programs/Python/Python38-32/Scripts/ | C:/Users/marco/AppData/Local/Programs/Python/Python38-32/ | C:/Users/marco/AppData/Local/Microsoft/WindowsApps | C:/Users/marco/AppData/Local/Programs/Microsoft VS Code/bin | C:/Users/marco/.dotnet/tools | C:/Users/marco/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | c:/Program Files/GNU Emacs 26.2/libexec/emacs/26.2/x86_64-w64-mingw32 | c:/Program Files/Git/ |
