@@ -3281,6 +3281,7 @@ documentation for the various snippets can be found at
      #+RESULTS:
      : org-wild-notifier--notify
 
+
 *** TODO Encryption
 
     Encrypt messages sent to the app and on dropbox via symmetric
@@ -4496,6 +4497,465 @@ documentation for the various snippets can be found at
 * TODO Language Server
 
 
+** Disable ansi color in compilation mode
+
+   This will help eliminate weird escape sequences during compilation
+   of projects.
+
+   #+begin_src emacs-lisp
+
+   ;; (defun my/ansi-colorize-buffer ()
+   ;;   (let ((buffer-read-only nil))
+   ;;     (ansi-color-apply-on-region (point-min) (point-max))))
+
+   ;; (use-package ansi-color
+   ;;   :ensure t
+   ;;   :config
+   ;;   (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)
+   ;;   )
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+
+** Install LSP Package
+
+   Let's install the main package for lsp. Here we will integrate lsp
+   with which-key. This way, when we type the prefix key ~C-c l~ we get
+   additional help for compliting the command.
+
+   #+begin_src emacs-lisp
+   ;; (use-package lsp-mode
+   ;;   :ensure t
+   ;;   :hook (
+   ;; 	 (lsp-mode . lsp-enable-which-key-integration)
+   ;; 	 (java-mode . #'lsp-deferred)
+   ;; 	 (python-mode . lsp)
+   ;; 	 )
+   ;;   :config 
+   ;;   (setq lsp-intelephense-multi-root nil) ; don't scan unnecessary projects
+   ;;   (with-eval-after-load 'lsp-intelephense
+   ;;     (setf (lsp--client-multi-root (gethash 'iph lsp-clients)) nil))
+   ;;   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
+   ;;   )
+   #+end_src
+
+   #+RESULTS:
+   | lsp-mode |
+
+   #+begin_src emacs-lisp 
+   ;; (setq lsp-keymap-prefix "C-c C-x l")              ; this is for which-key integration documentation, need to use lsp-mode-map
+   ;; (setq lsp-enable-file-watchers nil)
+   ;; (setq read-process-output-max (* 1024 1024))  ; 1 mb
+   ;; (setq lsp-completion-provider :capf)
+   ;; (setq lsp-idle-delay 0.100)      ; note that it must be lower than 0.2 or higher than 0.8 otherwise you get errors. 
+   #+end_src 
+
+   #+RESULTS:
+
+   You can start LSP server in a java project by using ~C-c l s s~. Once
+   you type ~C-c l~ ~which-key~ package should guide you through rest of
+   the options. In above setting I have added some memory management
+   settings as suggested in [[https://emacs-lsp.github.io/lsp-mode/page/performance/][this guide]]. Change them to higher numbers, if
+   you find *lsp-mode* sluggish in your computer. 
+
+
+** Dap Mode
+
+   Emacs Debug Adapter Protocol aka DAP Mode allows us to debug your
+   program. Below we will integrate ~dap-mode~ with
+   ~dap-hydra~. ~Dap-hydra~ shows keys you can use to enable various
+   options and jump through code at runtime. After we install dap-mode we
+   will also install ~dap-java~.
+
+   #+begin_src emacs-lisp
+   ;; (use-package dap-mode
+   ;;   :ensure t
+   ;;   :after (lsp-mode)
+   ;;   :functions dap-hydra/nil
+   ;;   :config
+   ;;   (require 'dap-java)
+   ;;   :bind (:map lsp-mode-map
+   ;; 	      ("<f5>" . dap-debug)
+   ;; 	      ("M-<f5>" . dap-hydra))
+   ;;   :hook ((dap-mode . dap-ui-mode)
+   ;; 	 (dap-session-created . (lambda (&_rest) (dap-hydra)))
+   ;; 	 (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+
+   ;; (use-package dap-java :ensure nil)
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+*** Templates
+
+**** Localhost-development
+
+     #+BEGIN_SRC emacs-lisp
+     ;; (dap-register-debug-template
+     ;;  "localhost:8000"
+     ;;  (list :type "java"
+     ;;   :request "attach"
+     ;;   :hostName "localhost"
+     ;;   :port 8000))
+     #+END_SRC
+
+     #+RESULTS:
+     | localhost:8000                          | :type | java | :request | attach         | :hostName | localhost | :port | 8000 |              |             |          |           |              |        |              |     |             |     |              |     |            |     |
+     | Java Attach                             | :type | java | :request | attach         | :hostName | localhost | :port | nil  |              |             |          |           |              |        |              |     |             |     |              |     |            |     |
+     | Java Run Configuration (compile/attach) | :type | java | :request | compile_attach | :args     |           | :cwd  | nil  | :host        | localhost   | :request | launch    | :modulePaths | []     | :classPaths  | nil | :name       | Run | :projectName | nil | :mainClass | nil |
+     | Java Run Configuration                  | :type | java | :request | launch         | :args     |           | :cwd  | nil  | :stopOnEntry | :json-false | :host    | localhost | :request     | launch | :modulePaths | []  | :classPaths | nil | :projectName | nil | :mainClass | nil |
+
+     #+BEGIN_SRC emacs-lisp
+     ;; (dap-register-debug-template
+     ;;  "localhost:8081"
+     ;;  (list :type "java"
+     ;;   :request "attach"
+     ;;   :hostName "localhost"
+     ;;   :port 8081))
+     #+END_SRC
+
+     #+RESULTS:
+     | localhost:8081                          | :type | java | :request | attach         | :hostName | localhost | :port | 8081 |              |             |          |           |              |        |              |     |             |     |              |     |            |     |
+     | localhost:8000                          | :type | java | :request | attach         | :hostName | localhost | :port | 8000 |              |             |          |           |              |        |              |     |             |     |              |     |            |     |
+     | Java Attach                             | :type | java | :request | attach         | :hostName | localhost | :port | nil  |              |             |          |           |              |        |              |     |             |     |              |     |            |     |
+     | Java Run Configuration (compile/attach) | :type | java | :request | compile_attach | :args     |           | :cwd  | nil  | :host        | localhost   | :request | launch    | :modulePaths | []     | :classPaths  | nil | :name       | Run | :projectName | nil | :mainClass | nil |
+     | Java Run Configuration                  | :type | java | :request | launch         | :args     |           | :cwd  | nil  | :stopOnEntry | :json-false | :host    | localhost | :request     | launch | :modulePaths | []  | :classPaths | nil | :projectName | nil | :mainClass | nil |
+
+
+     You can enter in the above all of the other templates for developing
+     in java. 
+
+
+*** Opening and Closing Dap Debugging 
+
+    Makes sense as well to add some binding. 
+
+    #+BEGIN_SRC emacs-lisp
+    ;; (defun stop-debugging-mode ()
+    ;;   (interactive)
+    ;;   (dap-delete-all-sessions)
+    ;;   (dap-mode 0)
+    ;;   (dap-ui-mode 0)
+    ;;   (dap-ui-controls-mode 0)
+    ;;   (delete-other-windows) ;; hide all the dap UI. I might want to delete the buffers as well.
+    ;;   )
+    #+END_SRC
+
+    #+RESULTS:
+    : stop-debugging-mode
+
+    Check as well this other function in order to open dubgging with
+    all of the relevant windows. 
+
+    #+BEGIN_SRC emacs-lisp
+    ;; (defun debugging-mode ()
+    ;;   (interactive)
+    ;;   (dap-mode t)
+    ;;   (dap-ui-mode t)
+    ;;   (dap-tooltip-mode)
+    ;;   (dap-ui-controls-mode 1)
+    ;;   (dap-ui-sessions)
+    ;;   (dap-ui-locals)
+    ;;   (dap-ui-breakpoints)
+    ;;   (dap-ui-repl)
+    ;;   )
+    #+END_SRC
+
+    #+RESULTS:
+    : debugging-mode
+
+
+** Treemacs
+
+   Treemacs provides UI elements used for LSP UI. Let's install
+   lsp-treemacs and its dependency treemacs. We will also Assign ~M-9~ to
+   show error list.
+
+   #+begin_src emacs-lisp
+   ;; (use-package lsp-treemacs
+   ;;   :after (lsp-mode treemacs)
+   ;;   :ensure t
+   ;;   :commands lsp-treemacs-errors-list
+   ;;   :bind (:map lsp-mode-map
+   ;; 	      ("M-9" . lsp-treemacs-errors-list)))
+
+   ;; (use-package treemacs
+   ;;   :ensure t
+   ;;   :commands (treemacs)
+   ;;   :config 
+   ;;   (add-hook 'treemacs-mode-hook
+   ;; 	    (lambda ()
+   ;; 	      (message "treemacs-mode-hook `%s'" (current-buffer))
+   ;; 	      (text-scale-adjust -1)
+   ;; 	      ))
+   ;;   (treemacs-resize-icons 20)
+   ;;   :after (lsp-mode))
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+   All good to change the window size, go on the treemacs window and use
+   =t w=.  Then you will unblock the fix size and it will be possible for
+   you to resize. Otherwise work with =treemacs-decrease-width= mapped to
+   =<=.
+
+   Note that you can adjust the scale in your treemacs as in any other
+   buffer in emacs with =C-x -= or =C-x +=.
+
+*** Change the worktree there
+
+    If you have to change your worktree you can do that in the
+    following way by checking at [[https://marcohassan.github.io/bits-of-experience/posts/emacs-as-java-ide-via-lsp/][this one]] (go on the treemacs section
+    there).
+ 
+
+
+** LSP UI
+
+   LSP UI is used in various packages that require UI elements in
+   LSP. E.g ~lsp-ui-flycheck-list~ opens a windows where you can see
+   various coding errors while you code. You can use ~C-c l T~ to toggle
+   several UI elements. We have also remapped some of the xref-find
+   functions, so that we can easily jump around between symbols using
+   ~M-.~, ~M-,~ and ~M-?~ keys.
+
+   #+begin_src emacs-lisp
+   ;; (use-package lsp-ui
+   ;;   :ensure t
+   ;;   :after (lsp-mode)
+   ;;   :bind (:map lsp-ui-mode-map
+   ;; 	      ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+   ;; 	      ([remap xref-find-references] . lsp-ui-peek-find-references))
+   ;;   :init (setq lsp-ui-doc-delay 1.5
+   ;; 	      lsp-ui-doc-position 'bottom
+   ;; 	      lsp-ui-doc-max-width 100
+   ;; 	      ))
+   #+end_src
+
+   #+RESULTS:
+
+   Go through this [[https://github.com/emacs-lsp/lsp-ui/blob/master/lsp-ui-doc.el][link]]  to see what other parameters are provided.
+
+
+** Helm LSP
+
+   Helm-lsp provides various functionality to work with the code. E.g
+   Code actions like adding *getter, setter, toString*, refactoring
+   etc. You can use ~helm-lsp-workspace-symbol~ to find various symbols
+   (classes) within your workspace. 
+
+   LSP's built in symbol explorer uses ~xref-find-apropos~ to provide
+   symbol navigation. Below we will replace that with helm version. After
+   that you can use ~C-c l g a~ to find workspace symbols in a more
+   intuitive way. 
+
+   #+begin_src emacs-lisp
+   ;; (use-package helm-lsp
+   ;;   :ensure t
+   ;;   :after (lsp-mode)
+   ;;   :commands (helm-lsp-workspace-symbol)
+   ;;   :init (define-key lsp-mode-map [remap xref-find-apropos] #'helm-lsp-workspace-symbol))
+   #+end_src
+
+   #+RESULTS:
+
+
+** LSP treemacs error list 
+
+   This is very cool as it will give you the errors in a more ordered
+   way that is easier to navigate. 
+
+   There a couple of issues with the Windows OS. Luckily [[https://github.com/emacs-lsp/lsp-treemacs/issues/109][a person]] just
+   solved it.
+
+   You just have to copy that anchestor method in the
+   =lsp-treemacs.el= and then evaluate the region.
+
+   Try to copy it over here and fix it at start up.
+
+   #+BEGIN_SRC emacs-lisp
+   ;; (defun lsp-f-ancestor-of? (path-a-raw path-b-raw)
+   ;;   "Return t if PATH-A is an ancestor of PATH-B.
+   ;; Symlinks are not followed."
+   ;;   (let ((path-a (if (eq system-type 'windows-nt) (downcase path-a-raw) (path-a-raw)))
+   ;; 	(path-b (if (eq system-type 'windows-nt) (downcase path-b-raw) (path-b-raw))))
+
+   ;;     (unless (lsp-f-same? path-a path-b)
+   ;;       (s-prefix? (concat (lsp-f-canonical path-a) (f-path-separator))
+   ;; 		 (lsp-f-canonical path-b)))))
+
+   ;; (defun lsp-treemacs-errors--list-files (folder &rest _)
+   ;;   (->> (lsp-diagnostics)
+   ;;        (ht-keys)
+   ;;        (-keep
+   ;; 	(lambda (file)
+   ;; 	  (when (and (lsp-f-ancestor-of? folder file)
+   ;; 		     (lsp-treemacs-errors--diags? (lsp-diagnostics-stats-for file)))
+   ;; 	    (list :id file
+   ;; 		  :label (format "%s %s %s"
+   ;; 				 (f-filename file)
+   ;; 				 (->> (append (lsp-diagnostics-stats-for file) ())
+   ;; 				      (-map-indexed
+   ;; 				       (lambda (index count)
+   ;; 					 (unless (zerop count)
+   ;; 					   (propertize
+   ;; 					    (number-to-string count)
+   ;; 					    'face (alist-get index lsp-treemacs-file-face-map)))))
+   ;; 				      (-filter #'identity)
+   ;; 				      (s-join "/"))
+   ;; 				 (propertize (f-dirname (f-relative file folder))
+   ;; 					     'face 'lsp-details-face))
+   ;; 		  :icon (if (f-directory? file) 'dir-closed (f-ext file))
+   ;; 		  :children (-partial #'lsp-treeemacs--error-list-diags folder file)
+   ;; 		  :ret-action (lambda (&rest _)
+   ;; 				(interactive)
+   ;; 				(lsp-treemacs--open-file-in-mru file))))))))
+   #+END_SRC
+
+   #+RESULTS:
+   : lsp-treemacs-errors--list-files
+
+   Working like a charm.
+
+
+** LSP Java
+
+   This is the package that handles server installation and session
+   management. 
+
+   #+begin_src  emacs-lisp
+   ;; (use-package lsp-java 
+   ;;   :ensure t
+   ;;   :config (add-hook 'java-mode-hook 'lsp))
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+*** Integration with Lombok
+
+    #+BEGIN_SRC emacs-lisp
+    ;; (setq lsp-java-vmargs
+    ;;       '("-noverify" 
+    ;; 	"-Xmx1G" 
+    ;; 	"-XX:+UseG1GC" 
+    ;; 	"-XX:+UseStringDeduplication" 
+    ;; 	"-javaagent:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar" 
+    ;; 	"-Xbootclasspath/a:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar"))
+
+    #+END_SRC
+
+    #+RESULTS:
+    | -noverify | -Xmx1G | -XX:+UseG1GC | -XX:+UseStringDeduplication | -javaagent:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar | -Xbootclasspath/a:C:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Eclipse/eclipse-jee-2021-06-R-win32-x86_64/lombok-1.18.22.jar |
+
+
+*** Disable formatting on type
+
+    This is annoying cause the lsp server does not really manage it
+    correctly. 
+
+    I mean it changes too many stuff in the code at each addition such
+    that your version control becomes garbage. This is obviously suboptimal.
+
+    Morever it will on paper save you a bit of resources
+
+    #+BEGIN_SRC emacs-lisp
+    ;; (setq lsp-java-format-enabled nil)
+    ;; (setq lsp-enable-indentation nil)    
+    #+END_SRC
+
+    #+RESULTS:
+
+*** Follow a specific convention for checking at your java syntax.
+
+    You might for instance refer to the google-style: [[https://google.github.io/styleguide/javaguide.html][here]].
+
+    See [[https://www.reddit.com/r/emacs/comments/f98vug/lspjava_not_respecting_formatter_settings/][this]] how to set up in your emacs.
+
+    
+** Workaround 
+
+   Note that I was having issues with the lsp-java server. It took me
+   quite some time to fix the problem. The issue was that everytime I
+   was jumping to a file in my project non-directly using lsp
+   functions - say using projectile-search functionality or treemacs
+   the lsp would not start and I was getting a
+   =textdocument/highlight= error. 
+
+   I decided to switch it off and now everything is working correctly
+
+   #+begin_src emacs-lisp 
+   ;; (setq lsp-enable-symbol-highlighting nil)
+   #+end_src 
+   
+
+** Multiproject Problem opens all of the projects you worked with
+
+   Check at the [[https://issueexplorer.com/issue/emacs-lsp/lsp-java/320][following url]] to understand the issue.
+
+   #+BEGIN_SRC emacs-lisp
+   ;; (advice-add 'lsp :before (lambda (&rest _args) (eval '(setf (lsp-session-server-id->folders (lsp-session)) (ht)))))
+   #+END_SRC
+
+   #+RESULTS:
+
+   It is working now. Check also at the [[https://github.com/emacs-lsp/lsp-mode/discussions/3095][following discussion]] to
+   understand more.
+
+   Just the single project that you open is shown there in the errors
+   sections now in the =lsp-ui-flycheck-list=. If you add a second one
+   this is also added to the list in the sense that is managed by the
+   same server connection. The only issue is that if you close the
+   file it stays in the server connection. This is not ideal and would
+   have to sort it somehow. 
+
+   But basically now you have all of the features you desired. Just
+   have to check the last thing with the debugger but basically you
+   are there. 
+
+   You can now start to run your smaller projects in emacs and start
+   to get up and running with it. 
+
+
+** LSP Python
+
+   In order to use the language server protocol in python you can
+   install the server via pip.
+
+   [[https://www.mattduck.com/lsp-python-getting-started.html#:~:text=The%20most%20popular%20LSP%20client,packages%20like%20Flycheck%20and%20Company.][This]] is a good reference. 
+
+   Note that the =python-language-server= was mantained by
+   palantir. Seems that now the default choice is =python-lsp-server=.
+   
+   
+** LSP Sonarlint
+
+   You can get the idea of this in the following two locations:
+
+   1. [[https://www.sonarsource.com/products/sonarlint/][sonarlint official docu]]
+
+   2. [[https://marcohassan.github.io/bits-of-experience/posts/code-quality-management-and-monitoring/][code quality bits of experience]]
+
+   #+BEGIN_SRC emacs-lisp
+   ;; (use-package lsp-sonarlint
+   ;;   :ensure t)
+   #+END_SRC   
+
+   #+RESULTS:
+
+   #+BEGIN_SRC emacs-lisp
+   ;; (require 'lsp-sonarlint-java)
+   ;; (setq lsp-sonarlint-java-enabled t)
+   #+END_SRC
+
+   #+RESULTS:
+   : t
+
+
 * Which key
 
   #+begin_src emacs-lisp 
@@ -4772,10 +5232,151 @@ documentation for the various snippets can be found at
   : Reusing Dired buffers is now ON
 
 
-* TODO Encryption
+* Encryption
+
+** Automatic encryption
+
+   An in initial quote to make things fun - found it when downloading
+   the gpg software that is need for encrypting the stuff:
+
+   #+begin_quote
+   Wir nehmen Abschied von einem sicher geglaubten Fruend dem
+   Fernmeldegeheimnis.
+
+   (Artikel 10 Grundgesetz Maj 1949 - Dezember 2015)
+
+   So it seems that it died and that this is the way to get it back.
+   #+end_quote
+
+   Inspired by Howard Abrams. He sets the option =(setq
+   epa-file-select-keys 2)= for automatically encrypting the docs with
+   his public key such that he will then be able to de-crypt them using
+   his private key.
+
+   *Notice:* The section leverages the =easy pg= package for GnuPG
+   interaction on emacs. The package should  already be installed for
+   Emacs >21.4. You can find it as =epg= in the list of your packages.
+
+   Note that for performing your encryption you need as some encryption
+   software. In the specific I am working with [[https://gnupg.org/download/index.html][gnupg]] - recall to
+   download it from there when switching Laptop - given that it is not
+   on One-Drive.
+
+   Reference it at [[https://www.emacswiki.org/emacs/EasyPG][EasyPG]].
+
+   From this source about [[https://www.gnu.org/software/emacs/manual/html_node/epa/Encrypting_002fdecrypting-gpg-files.html][auto-encryption]] I could understand that a
+   similar point holds also for symmetric encryption.
+
+   Setting the parameter below emacs understands directly that it
+   should work with symmetric encryption. In fact you are telling epa
+   to forget about your public-private keys so to say and therefore the
+   option remaining is the one of symmetric encryption.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq epa-file-select-keys nil) 
+   #+END_SRC
+
+   #+RESULTS:
+
+   Note that it is important to properly set up the gpg binary in order
+   for eamcs to be able to read and work with it.
+
+   You can also add it to the path as an alternative option. Anyways
+   the following is more neat and works well when working on your
+   emacs. Working like a charm.
+
+   #+begin_src emacs-lisp 
+   (custom-set-variables '(epg-gpg-program  "c:/Program Files/Git/usr/bin/gpg.exe"))
+   #+end_src 
+
+   #+RESULTS:
+
+   For versions of GnuPG higher than 2.1 you can set the below to set the
+   password directly from emacs mini-buffer and not with the opening of a
+   specific dialogue.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq epa-pinentry-mode 'loopback)
+   #+END_SRC
+
+   #+RESULTS:
+   : loopback
 
 
-* TODO Ripgrep
+** Encrypting sections of org chuncks
+
+   Very nice org-mode link elaborating some other options, such as just
+   encrypting some part of the document etc. [[https://orgmode.org/worg/org-tutorials/encrypting-files.html][Encrypting Org Files]].
+
+   #+begin_src emacs-lisp 
+   (require 'org-crypt)
+   (org-crypt-use-before-save-magic)
+   (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+   ;; GPG key to use for encryption
+   ;; Either the Key ID or set to nil to use symmetric encryption.
+   (setq org-crypt-key nil)
+   #+end_src 
+
+   #+RESULTS:
+
+*** Watch out for backup files
+
+    Emacs Backup Files - a Warning.
+
+    With org-crypt, if you have autosave turned on and decrypt the
+    entries, the autosave file will contain the entries in plain
+    text. For this reason your should *disable autosave for encrypted
+    files*.
+
+
+** On an important side note 
+
+   Note that you should not rely simply on such encryption
+   mechanism. Put further shields around important information. Most
+   of all leverage on *chaos theory*.
+
+   And recall to use both codes and cryptography in tandem:
+
+   #+begin_quote
+   A third class of information theory codes are cryptographic
+   algorithms (both codes and ciphers).
+   #+end_quote
+
+
+** First Test                                                         :crypt:
+-----BEGIN PGP MESSAGE-----
+
+jA0ECQMC8Feu+4dL8ynO0nIBC5ivmRgRXxr0ZdaEa6i/SZ2xuTL2mHv1lhbgEE2A
+x3fOaPUGYaIU9FCaxa8Y9ESGABmO+9wANuM3NpXvQMm7/rfDVkAcI68S4Slh7NIK
+sjUHtOtkPJrdxHqnuA2rtbn2UQGF2X9lMWAv82gVcspfT3g=
+=DsHr
+-----END PGP MESSAGE-----
+
+
+
+
+* Ripgrep
+
+  This is used for searching as you usually do via grep on unix
+  systems. 
+
+  You can then use the search via ripgrep in projectile to search for
+  specific implementations in your projects when lsp is failing for
+  some reason.
+
+  #+begin_src emacs-lisp 
+  (use-package ripgrep
+    :ensure t
+    :defer t) ;; recall to download it trough MELPA at first
+  #+end_src 
+
+  #+RESULTS:
+  
+  #+BEGIN_SRC emacs-lisp
+  (add-to-list 'exec-path "C:/Users/marco/AppData/Local/Programs/Microsoft VS Code/resources/app/node_modules.asar.unpacked/@vscode/ripgrep/bin")
+  #+END_SRC
+
+  #+RESULTS:
 
 
 * Add to execution Path and $PATH 
@@ -4785,33 +5386,30 @@ documentation for the various snippets can be found at
   #+BEGIN_SRC emacs-lisp
 
   ;; Graphviz - in order to make the plantuml charts
-  ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin")
+  (add-to-list 'exec-path "C:/Program Files/Graphviz/bin")
 
-  ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin")
 
-  ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/")
+  ;; Gradle
+  ;; (add-to-list 'exec-path "blabla/Desktop/programs_executables/gradle-7.1.1/bin")
 
-  ;; ;; Outdated - old python
-  ;; ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32")
-  ;; ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/python.exe") 
 
-  ;; ;; Try with the new python that IT installed you
+  ;; Imagemagick for having icons etc.
+  ;; (add-to-list 'exec-path "blabla/Desktop/programs_executables/ImageMagick/")
+
+  ;; Python
   ;; (add-to-list 'exec-path "c:/Program Files/Python310/") 
   ;; (add-to-list 'exec-path "c:/Program Files/Python310/python.exe") 
 
-  ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/httpd-2.4.53-win64-VS16/Apache24/bin")
+  ;; Unzip
+  ;; (add-to-list 'exec-path "blabla/unzip-5.51-1-bin/bin")
 
-  ;; (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/sqlite-tools-win32-x86-3380300/sqlite-tools-win32-x86-3380300/")
-
-  ;; (add-to-list 'exec-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/unzip-5.51-1-bin/bin")
-
-  ;; ;; With the below you get the executables of git and bash
-  ;; (add-to-list 'exec-path "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/PortableGit/bin")
+  ;; Git Functionalities like diff etc.
+  (add-to-list 'exec-path "C:/Program Files/Git/usr/bin")
 
   #+END_SRC
 
   #+RESULTS:
-  | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/unzip-5.51-1-bin/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/sqlite-tools-win32-x86-3380300/sqlite-tools-win32-x86-3380300/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/httpd-2.4.53-win64-VS16/Apache24/bin | c:/Program Files/Python310/python.exe | c:/Program Files/Python310/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ImageMagick/ | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-17.0.6+10/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Emacs/hunspell/bin/ | c:/Program Files/Python310 | C:/Program Files/Python310/Scripts | C:/Windows/system32 | C:/Windows | C:/Windows/System32/Wbem | C:/Windows/System32/WindowsPowerShell/v1.0/ | C:/Windows/System32/OpenSSH/ | C:/Program Files/Azure Data Studio/bin | C:/Program Files (x86)/Microsoft SQL Server/150/DTS/Binn/ | C:/Program Files/Microsoft VS Code/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/PortableGit/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-17.0.6+10/bin | C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | C:/Users/MARCO.HASSAN/AppData/Local/Microsoft/WindowsApps | C:/Users/MARCO.HASSAN/AppData/Local/Programs/Gpg4win/../GnuPG/bin | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 | C:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ |
+  | C:/Program Files/Git/usr/bin | C:/Program Files/Graphviz/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7/bin | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Program Files/Common Files/Oracle/Java/javapath | C:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/R/R-3.6.1/bin/x64 | C:/Program Files/GNU Emacs 26.2/bin | C:/Users/marco/AppData/Roaming/Python/Python38/Scripts | C:/Program Files/Git/cmd | C:/Program Files/dotnet/ | C:/Users/marco/AppData/Local/Programs/Python/Python38-32/Scripts/ | C:/Users/marco/AppData/Local/Programs/Python/Python38-32/ | C:/Users/marco/AppData/Local/Microsoft/WindowsApps | C:/Users/marco/AppData/Local/Programs/Microsoft VS Code/bin | C:/Users/marco/.dotnet/tools | C:/Users/marco/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | c:/Program Files/GNU Emacs 26.2/libexec/emacs/26.2/x86_64-w64-mingw32 | C:/Users/marco/AppData/Local/Programs/MiKTeX/miktex/bin/x64 |
 
   Ok so this is what you should do... and then remove all of the
   exec-path stuff. 
@@ -5069,92 +5667,3 @@ documentation for the various snippets can be found at
 
 
 
-* Outdated
-
-** Projectile
-
- #+BEGIN_SRC emacs-lisp
- ;; (use-package projectile
- ;;   :ensure t)
- ;; ;; Later on, after loading exec-path-from-shell package
-
- ;; (projectile-mode +1)
- ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
- #+END_SRC
-
- #+RESULTS:
- : projectile-command-map
-
-
-** Python
-
- Set path to python executable so that emacs can leverage it. This
- step is necessary when operating through Windows OS.
-
- #+BEGIN_SRC emacs-lisp
- ;; ;; Ativate elpy package to run python code
- ;; (use-package elpy
- ;;   :ensure t)
-
- ;; (elpy-enable) ;; initialize elpy for python IDE in emacs
-
- ;; ;; Activate flycheck instead of flymake from eply package
- ;; (when (require 'flycheck  nil t)
- ;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
- ;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
-
- ;; ;; Activate autopep. This integrates with Emacs so that when you save a
- ;; ;; file trough the -C-x C-s- cmd it will automatically format and correct
- ;; ;; any PEP8 errors (excluding the ones that you may specify)
-
- ;; ;; Did not especially appreciated autopep8. Leave it out.
- ;; 					;(require 'py-autopep8)
- ;; 					;(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-
- ;; ;; Integrate the eply mode with the IPython REPL and the Jupyter Notebooks.
- ;; ;; This will allow to run Jupyter Notebooks that looks  very much like
- ;; ;; R .rmd files directly on Emacs !after connecting to the notebook online!
-
- ;; (setq python-shell-interpreter "ipython" 
- ;;       python-shell-interpreter-args "-i --simple-prompt");; uses ipython interpreter. Please remember on Windows systems that you have to download python on winodws and install ipython through the automatically downloaded pip. Then add to the path the folder including ipython and you are good to go.
-
- ;; ;; Set standard python interpreter as python 3
- ;; (setq elpy-rpc-python-command "python")
-
- ;; ;; Set up virtual environments emacs connection
- ;; (use-package virtualenvwrapper
- ;;   :ensure t)
- ;; (venv-initialize-interactive-shells) ;; if you want interactive shell support
- ;; (venv-initialize-eshell) ;; if you want eshell support
- ;; ;; note that setting `venv-location` is not necessary if you
- ;; ;; use the default location (`~/.virtualenvs`), or if the
- ;; ;; the environment variable `WORKON_HOME` points to the right place
- ;; (setq venv-location "C:/Users/marco/Desktop/python_venv") 
-
- ;; ;; Add hook for còmment highlighting.
- ;; ;;(add-hook 'python-mode-hook 'add-custom-keyw)
- #+END_SRC
-
- #+RESULTS:
- : C:/Users/marco/Desktop/python_venv
-
- #+RESULTS: Python Mode and virtual environment activation.
- | add-custom-keyw | elpy-mode |
-
- Good. After installing ipyhton thorugh pip everything is working
- smoothly. Remember to run pip on DOS and not on emacs shell as at the
- moment emacs shell is set to be the shell interacting with the Linux
- partition.
-
- Notice that in a windows environment the installed packages are under
- the following path: ~c:/Users/marco/Desktop/python_venv/jupyter/Lib/site-packages~.
-
-
-** Git add the executable such that it appears on the eshell
-
- #+begin_src emacs-lisp 
- ;; (setq exec-path (append exec-path '("c:/Program Files/Git/")))
- #+end_src 
-
- #+RESULTS:
- | c:/Program Files/Common Files/Oracle/Java/javapath | C:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/R/R-3.6.1/bin/x64 | C:/Program Files/GNU Emacs 26.2/bin | C:/Users/marco/AppData/Roaming/Python/Python38/Scripts | C:/Program Files/Git/cmd | C:/Program Files/dotnet/ | C:/Users/marco/AppData/Local/Programs/Python/Python38-32/Scripts/ | C:/Users/marco/AppData/Local/Programs/Python/Python38-32/ | C:/Users/marco/AppData/Local/Microsoft/WindowsApps | C:/Users/marco/AppData/Local/Programs/Microsoft VS Code/bin | C:/Users/marco/.dotnet/tools | C:/Users/marco/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | c:/Program Files/GNU Emacs 26.2/libexec/emacs/26.2/x86_64-w64-mingw32 | c:/Program Files/Git/ |
