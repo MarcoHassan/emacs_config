@@ -2928,6 +2928,7 @@ documentation for the various snippets can be found at
     insert a chunk. Another viable solution is to use
     snippets. Consider that
 
+
 ** Babel
 
    #+BEGIN_SRC emacs-lisp
@@ -2941,7 +2942,7 @@ documentation for the various snippets can be found at
       ;; (C . t)
       ;; (R . t)
       (sql . t)
-      ;; (ein . t)
+      (ein . t)
       ;; (ipython . t)
       (python . t)
       ;; (shell . t)
@@ -3094,14 +3095,15 @@ documentation for the various snippets can be found at
 
     #+begin_src emacs-lisp 
     (setq org-capture-templates
-	  (quote (("t" "todo" entry (file "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Agenda/capture.org")
+	  (quote (("t" "todo" entry (file "C:/Users/marco/Dropbox/Agenda/capture.org")
 		   "* TODO %?\n%U\n%a\n:PROPERTIES:\n:WILD_NOTIFIER_NOTIFY_BEFORE: 30 10 5\n:END:") ;; if you want to clock in time --- :clock-in t :clock-resume t)
-		  ("n" "note" entry (file "C:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Agenda/capture.org")
+		  ("n" "note" entry (file "C:/Users/marco/Dropbox/Agenda/capture.org")
 		   "* %? :NOTE:\n%U\n%a\n") ;; if you want to clock in time --- :clock-in t :clock-resume t)
 		  )))
     #+end_src 
 
     #+RESULTS:
+    | t | todo | entry | (file C:/Users/marco/Dropbox/Agenda/capture.org) | * TODO %? |
 
 *** Description of org-agenda properties
 
@@ -3367,7 +3369,7 @@ documentation for the various snippets can be found at
      (interactive)
      (with-current-buffer "*eshell*"
        (eshell-return-to-prompt)
-       (insert "cd 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Blog/bits-of-experience'; git checkout windows_OS; cp -r ../pdfs ./output/pdfs; cp ../images/* ./output/images; cp -r ../videos/* ./output/videos;")
+       (insert "cd 'c:/Users/marco/Desktop/Blog/bits-of-experience'; git checkout windows_OS; cp -r ../pdfs ./output/pdfs; cp ../images/* ./output/images; cp -r ../videos/* ./output/videos;")
        (eshell-send-input)
        )
      )
@@ -3377,17 +3379,36 @@ documentation for the various snippets can be found at
    : blog/move_blog_files
 
 
+** Push all of the images videos and pdfs to your blog
+
+   #+begin_src emacs-lisp 
+   (defun blog/push_resources_to_blog()
+     "Adds all of the resources to the blog"
+     (interactive)
+     (with-current-buffer "*eshell*"
+       (eshell-return-to-prompt)
+       (insert "cd 'c:/Users/marco/Desktop/Blog/bits-of-experience'; git checkout gh-pages; cp -r ../pdfs .; cp ../images/* ./images; cp -r ../videos .; git add .; git commit -m 'add pdfs and videos'; git push; git checkout windows_OS")
+       (eshell-send-input)
+       )
+     )
+   #+end_src 
+
+   #+RESULTS:
+   : blog/push_resources_to_blog
+
+
+
 ** Name last picture saved
 
    Add awk to the exec-path. Will be used by eshell for inserting the
    last image. 
 
    #+begin_src emacs-lisp 
-   (add-to-list 'exec-path "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin")
+   (add-to-list 'exec-path "c:/Program Files/Git/usr/bin")
    #+END_SRC
 
    #+RESULTS:
-   | c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/WINDOWS/system32 | c:/WINDOWS | c:/WINDOWS/System32/Wbem | c:/WINDOWS/System32/WindowsPowerShell/v1.0 | c:/WINDOWS/System32/OpenSSH | c:/Program Files/1E/Client/Extensibility/NomadBranch | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/bin | c:/JavaServer/jdk-11.0.12+7/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Scripts | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/Python38-32/Lib/site-packages | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/awk/bin | c:/Dev/azure_data_studio/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/test_emacs_doom/.emacs.d/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/ripgrep-13.0.0-x86_64-pc-windows-gnu | c:/Dev/git/bin | c:/Dev/git/usr/bin | c:/Dev/apache-maven-3.8.2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/software-for-import-on-zurich/hunspell2/bin | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/software-for-import-on-zurich/Graphviz/bin | c:/Users/MARCO.HASSAN/AppData/Local/Programs/MiKTeX/miktex/bin/x64 | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Desktop/programs_executables/gradle-7.1.1/bin | c:/Users/marco.hassan/AppData/Local/Microsoft/WindowsApps | . | c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Emacs/libexec/emacs/27.2/x86_64-w64-mingw32 |
+   | c:/Program Files/Git/usr/bin | C:/Program Files/Git/usr/bin | C:/Program Files/Graphviz/bin | c:/Users/marco/Desktop/Desktop/programs_executables/awk/bin | c:/Program Files/Common Files/Oracle/Java/javapath | C:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/R/R-3.6.1/bin/x64 | C:/Program Files/GNU Emacs 26.2/bin | C:/Users/marco/AppData/Roaming/Python/Python38/Scripts | C:/Program Files/Git/cmd | C:/Program Files/dotnet/ | C:/Program Files (x86)/Gpg4win/../GnuPG/bin | C:/Users/marco/.cargo/bin | C:/Users/marco/AppData/Local/Programs/Python/Python311 | C:/Users/marco/AppData/Local/Microsoft/WindowsApps | C:/Users/marco/AppData/Local/Programs/Microsoft VS Code/bin | C:/Users/marco/.dotnet/tools | C:/Users/marco/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | C:/Users/marco/Desktop/program executables and installers/ripgrep-13.0.0-i686-pc-windows-msvc | c:/Users/marco/.cargo/bin | . | c:/Program Files/GNU Emacs 26.2/libexec/emacs/26.2/x86_64-w64-mingw32 | C:/Users/marco/AppData/Local/Programs/MiKTeX/miktex/bin/x64 |
 
    Ok with the below you have the desired workflow. You have to call
    the two functions separately. I tried to combine the two into a
@@ -3404,7 +3425,7 @@ documentation for the various snippets can be found at
      (interactive)
      (with-current-buffer "*eshell*"
        (eshell-return-to-prompt)
-       (insert "cd 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Pictures/Saved Pictures/'; ls -lt | awk 'FNR == 2 {a=match($0, $9); print substr($0,a)}'")
+       (insert "cd 'c:/Users/marco/Pictures/Screenshots/'; ls -lt | awk 'FNR == 2 {a=match($0, $9); print substr($0,a)}'")
        (eshell-send-input)
        (search-forward "Screenshot")
        (beginning-of-line)
@@ -3432,8 +3453,8 @@ documentation for the various snippets can be found at
      (interactive)
      (with-current-buffer "*eshell*"
        (eshell-return-to-prompt)
-       (insert (concat "mv 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Pictures/Saved Pictures/"
-		       (concat (car kill-ring) "' 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Blog/images/'")
+       (insert (concat "mv 'c:/Users/marco/Pictures/Screenshots/"
+		       (concat (car kill-ring) "' 'c:/Users/marco/Desktop/Blog/images/'")
 		       )
 	       )
        (eshell-send-input)
@@ -3443,71 +3464,6 @@ documentation for the various snippets can be found at
 
    #+RESULTS:
    : blog/move_last_screenshot_to_blog
-
-   #+begin_src emacs-lisp 
-   (defun blog/move_last_screenshot_to_blog()
-     "Move the last Picture to the blog"
-     (interactive)
-     (with-current-buffer "*eshell*"
-       (eshell-return-to-prompt)
-       (insert (concat "mv 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Pictures/Saved Pictures/"
-		       (concat (car kill-ring) "' 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Blog/images/'")
-		       )
-	       )
-       (eshell-send-input)
-       )
-     )
-   #+end_src 
-
-   #+RESULTS:
-   : blog/move_last_screenshot_to_blog
-
-
-** Screenshot Management for technical notes
-
-   #+begin_src emacs-lisp 
-   (defun screenshot/move_last_screenshot_to_techNotes()
-     "Move the last Picture to the blog"
-     (interactive)
-     (with-current-buffer "*eshell*"
-       (eshell-return-to-prompt)
-       (insert (concat "mv 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Pictures/Saved Pictures/"
-		       (concat (car kill-ring) "' 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Notes/technical_material/images/'")
-		       )
-	       )
-       (eshell-send-input)
-       )
-     )
-   #+end_src 
-
-   #+RESULTS:
-   : screenshot/move_last_screenshot_to_techNotes
-
-   Enter the screenshot that you just moved in the relevant archive.
-
-   #+begin_src emacs-lisp 
-   (defun screenshot/techNotes_enter_last_img()
-     (interactive)
-     (insert (concat "\n[[file:../images/" 
-		     (concat (car kill-ring) "]]\n"))
-	     )
-     )
-   #+end_src 
-
-   #+RESULTS:
-   : screenshot/techNotes_enter_last_img
-
-   Make it consumable via shortcut across your application.
-
-   #+begin_src emacs-lisp 
-   (eval-after-load 'org' 
-     (define-key org-mode-map
-       (kbd "C-c M-t") 'screenshot/techNotes_enter_last_img)
-     )
-   #+end_src 
-
-   #+RESULTS:
-   : screenshot/techNotes_enter_last_img
 
 
 ** Screenshot Management for org mode - keeping screenshot in default folder
@@ -3518,7 +3474,7 @@ documentation for the various snippets can be found at
       Recall to execute name_last_pic before executing the function."
      (interactive)
      (insert 
-      (concat "[[file:c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Pictures/Saved Pictures/"
+      (concat "[[file:c:/Users/marco/Pictures/Screenshots/"
 	      (concat (car kill-ring) "]]")
 	      )
       )
@@ -3547,7 +3503,7 @@ documentation for the various snippets can be found at
      "
      (interactive)
      (insert 
-      (concat "[[file:../images/Saved Pictures/"
+      (concat "[[file:../images/Screenshots/"
 	      (concat (car kill-ring) "]]")
 	      )
       )
@@ -3556,25 +3512,6 @@ documentation for the various snippets can be found at
 
    #+RESULTS:
    : techBlog/last_image
-
-
-
-** Push all of the images videos and pdfs to your blog
-
-   #+begin_src emacs-lisp 
-   (defun blog/push_resources_to_blog()
-     "Adds all of the resources to the blog"
-     (interactive)
-     (with-current-buffer "*eshell*"
-       (eshell-return-to-prompt)
-       (insert "cd 'c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/Blog/bits-of-experience'; git checkout gh-pages; cp -r ../pdfs .; cp ../images/* ./images; cp -r ../videos .; git add .; git commit -m 'add pdfs and videos'; git push; git checkout windows_OS")
-       (eshell-send-input)
-       )
-     )
-   #+end_src 
-
-   #+RESULTS:
-   : blog/push_resources_to_blog
 
 
 ** TODO HEIC to jpeg
@@ -4051,14 +3988,14 @@ documentation for the various snippets can be found at
   ;; note that setting `venv-location` is not necessary if you
   ;; use the default location (`~/.virtualenvs`), or if the
   ;; the environment variable `WORKON_HOME` points to the right place
-  (setq venv-location "c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/virtual_envs/")
+  (setq venv-location "c:/Users/marco/Desktop/python_venv/")
 
   ;; ;; Add hook for còmment highlighting.
   ;; (add-hook 'python-mode-hook 'add-custom-keyw)
   #+END_SRC
 
   #+RESULTS: Python Mode and virtual environment activation.
-  : c:/Users/marco.hassan/OneDrive - Zurich Insurance/Desktop/virtual_envs/
+  : c:/Users/marco/Desktop/python_venv/
 
   Good. After installing ipyhton thorugh pip everything is working
   smoothly. Remember to run pip on DOS and not on emacs shell as at the
@@ -4107,10 +4044,10 @@ documentation for the various snippets can be found at
 
   ;; JAVA 11 ;;
 
-  (setenv "JAVA_HOME"  "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7")
-  (add-to-list 'exec-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7/bin")
+  ;; (setenv "JAVA_HOME"  "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7")
+  ;; (add-to-list 'exec-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7/bin")
 
-  (setq lsp-java-java-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7/bin/java.exe")
+  ;; (setq lsp-java-java-path "c:/Users/MARCO.HASSAN/OneDrive - Zurich Insurance/JavaServer/jdk-11.0.12+7/bin/java.exe")
 
   #+end_src 
 
@@ -4279,13 +4216,16 @@ documentation for the various snippets can be found at
 
   #+begin_src emacs-lisp 
   ;; (use-package ein
-  ;;   :quelpa (ein :fetcher github :repo "dickmao/emacs-ipython-notebook"))
+  ;;   :ensure t)
 
-  ;; (define-key python-mode-map (kbd "C-c s-c") 'ein:edit-cell-save-and-execute)
+  (use-package ein
+    :quelpa (ein :fetcher github :repo "millejoh/emacs-ipython-notebook"))
+
+  (define-key python-mode-map (kbd "C-c s-c") 'ein:edit-cell-save-and-execute)
   #+end_src 
 
   #+RESULTS:
-  : t
+  : ein:edit-cell-save-and-execute
 
   Consider [[https://github.com/nnicandro/emacs-jupyter][this package]]. Looks promising.
 
@@ -4495,7 +4435,6 @@ documentation for the various snippets can be found at
 
 
 * TODO Language Server
-
 
 ** Disable ansi color in compilation mode
 
@@ -5373,10 +5312,11 @@ sjUHtOtkPJrdxHqnuA2rtbn2UQGF2X9lMWAv82gVcspfT3g=
   #+RESULTS:
   
   #+BEGIN_SRC emacs-lisp
-  (add-to-list 'exec-path "C:/Users/marco/AppData/Local/Programs/Microsoft VS Code/resources/app/node_modules.asar.unpacked/@vscode/ripgrep/bin")
+  (add-to-list 'exec-path "C:/Users/marco/Desktop/program executables and installers/ripgrep-13.0.0-i686-pc-windows-msvc")
   #+END_SRC
 
   #+RESULTS:
+  | C:/Users/marco/Desktop/program executables and installers/ripgrep-13.0.0-i686-pc-windows-msvc | c:/Users/marco/Desktop/python_venv/nikola/Scripts | C:/Program Files/Git/usr/bin | C:/Program Files/Graphviz/bin | C:/Users/marco/AppData/Local/Programs/Microsoft VS Code/resources/app/node_modules.asar.unpacked/@vscode/ripgrep/bin | c:/Users/marco/Desktop/Desktop/programs_executables/awk/bin | c:/Program Files/Common Files/Oracle/Java/javapath | C:/WINDOWS/system32 | C:/WINDOWS | C:/WINDOWS/System32/Wbem | C:/WINDOWS/System32/WindowsPowerShell/v1.0/ | C:/WINDOWS/System32/OpenSSH/ | C:/Program Files/R/R-3.6.1/bin/x64 | C:/Program Files/GNU Emacs 26.2/bin | C:/Users/marco/AppData/Roaming/Python/Python38/Scripts | C:/Program Files/Git/cmd | C:/Program Files/dotnet/ | C:/Program Files (x86)/Gpg4win/../GnuPG/bin | C:/Users/marco/AppData/Local/Programs/Python/Python38-32/Scripts/ | C:/Users/marco/AppData/Local/Programs/Python/Python38-32/ | C:/Users/marco/AppData/Local/Microsoft/WindowsApps | C:/Users/marco/AppData/Local/Programs/Microsoft VS Code/bin | C:/Users/marco/.dotnet/tools | C:/Users/marco/AppData/Local/Programs/MiKTeX/miktex/bin/x64/ | c:/Program Files/GNU Emacs 26.2/libexec/emacs/26.2/x86_64-w64-mingw32 | C:/Users/marco/AppData/Local/Programs/MiKTeX/miktex/bin/x64 |
 
 
 * Add to execution Path and $PATH 
